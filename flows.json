@@ -36,6 +36,28 @@
         "out": []
     },
     {
+        "id": "f6d7d9218b71e0a8",
+        "type": "subflow",
+        "name": "Subflow 3",
+        "info": "",
+        "category": "",
+        "in": [
+            {
+                "x": 120,
+                "y": 240,
+                "wires": [
+                    {
+                        "id": "2b8d83c6327f23eb"
+                    }
+                ]
+            }
+        ],
+        "out": [],
+        "env": [],
+        "meta": {},
+        "color": "#DDAA99"
+    },
+    {
         "id": "1854d4d7690cc4cd",
         "type": "group",
         "z": "f5c539ef0fa2b547",
@@ -59,6 +81,49 @@
         ],
         "x": 194,
         "y": 79
+    },
+    {
+        "id": "0efdf64f7eaaebed",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "cert.pem",
+        "keyname": "key_ca90416a-50ec-47f3-9a5d-f6f8e2b2d22c.pem",
+        "caname": "",
+        "servername": "",
+        "verifyservercert": false,
+        "alpnprotocol": ""
+    },
+    {
+        "id": "3903fc410f8aa96e",
+        "type": "tls-config",
+        "z": "f6d7d9218b71e0a8",
+        "name": "visa_cert",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "cert.pem",
+        "keyname": "privateKey.pem",
+        "caname": "",
+        "servername": "",
+        "verifyservercert": true,
+        "alpnprotocol": ""
+    },
+    {
+        "id": "84e59769f7f05b82",
+        "type": "tls-config",
+        "name": "visa_api",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "cert.pem",
+        "keyname": "privateKey.pem",
+        "caname": "",
+        "servername": "",
+        "verifyservercert": true,
+        "alpnprotocol": ""
     },
     {
         "id": "6dd8fa262d9e3daf",
@@ -151,126 +216,169 @@
         "wires": []
     },
     {
-        "id": "c3c50023.3bbed",
+        "id": "4ea81ebdcea68d61",
         "type": "http request",
-        "z": "412669072e03744e",
-        "name": "Recent Quakes",
-        "method": "GET",
+        "z": "f6d7d9218b71e0a8",
+        "name": "",
+        "method": "POST",
         "ret": "txt",
         "paytoqs": "ignore",
-        "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.csv",
+        "url": "https://sandbox.api.visa.com/visaaliasdirectory/v1/manage/createalias?apikey=W0AAA74A0VOBZKEH2YK021rvaPFuNFF1BtpVdA5pMCjEqGQv4",
         "tls": "",
         "persist": false,
         "proxy": "",
         "insecureHTTPParser": false,
         "authType": "",
         "senderr": false,
-        "headers": [],
-        "x": 280,
-        "y": 380,
-        "wires": [
-            [
-                "687258b80e990ef9",
-                "8afc6cac.e0812"
-            ]
-        ]
-    },
-    {
-        "id": "44779781.4190f8",
-        "type": "debug",
-        "z": "412669072e03744e",
-        "name": "",
-        "active": true,
-        "complete": false,
-        "x": 810,
-        "y": 380,
-        "wires": []
-    },
-    {
-        "id": "6f0eb546.9e208c",
-        "type": "switch",
-        "z": "412669072e03744e",
-        "name": "",
-        "property": "payload.mag",
-        "propertyType": "msg",
-        "rules": [
+        "headers": [
             {
-                "t": "gte",
-                "v": "7",
-                "vt": "num"
+                "keyType": "other",
+                "keyValue": "x-pay-token",
+                "valueType": "msg",
+                "valueValue": "xPayToken"
+            },
+            {
+                "keyType": "Accept",
+                "keyValue": "",
+                "valueType": "application/json",
+                "valueValue": ""
             }
         ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 1,
-        "x": 610,
-        "y": 500,
+        "x": 670,
+        "y": 400,
         "wires": [
-            [
-                "d78d4aa8.8c8208"
-            ]
+            []
         ]
     },
     {
-        "id": "72fddece.fac0d",
+        "id": "2b8d83c6327f23eb",
+        "type": "function",
+        "z": "f6d7d9218b71e0a8",
+        "name": "generate x-pay-token",
+        "func": "const { resourcePath, queryParams, postBody, sharedSecret } = msg.payload;\n\n\nconst timestamp = Math.floor(Date.now() / 1000);\nconst preHashString = timestamp + resourcePath + queryParams + postBody\n \nconst hashString = crypto.createHmac('SHA256', sharedSecret).update(preHashString).digest('hex');\n\nconsole.log(timestamp);\nmsg.xPayToken = 'xv2:' + timestamp + ':' + hashString;\nmsg.payload = postBody;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [
+            {
+                "var": "crypto",
+                "module": "crypto"
+            }
+        ],
+        "x": 360,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4c88ec067a059b83",
         "type": "debug",
-        "z": "412669072e03744e",
-        "name": "",
+        "z": "f6d7d9218b71e0a8",
+        "name": "debug 6",
         "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 920,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "83828904382c2df7",
+        "type": "inject",
+        "z": "412669072e03744e",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"country\":\"KE\",\"recipientLastName\":\"Bakari\",\"recipientMiddleName\":\"M\",\"city\":\"Nairobi\",\"address2\":\"Region 1\",\"recipientFirstName\":\"Jamie\",\"recipientPrimaryAccountNumber\":\"4895140000066666\",\"address1\":\"Street 1\",\"issuerName\":\"Test Bank 1\",\"postalCode\":\"00111\",\"cardType\":\"Visa Classic\",\"consentDateTime\":\"2018-03-01 01:02:03\",\"aliasType\":\"01\",\"guid\":\"574f4b6a4c2b70472f306f300099515a789092348832455975343637a4d3170\",\"alias\":\"254711333888\"}",
+        "payloadType": "json",
+        "x": 130,
+        "y": 220,
+        "wires": [
+            [
+                "dda7d6fbd87c59dc"
+            ]
+        ]
+    },
+    {
+        "id": "186f36b5ed6b4afb",
+        "type": "subflow:f6d7d9218b71e0a8",
+        "z": "412669072e03744e",
+        "name": "visa api",
+        "x": 940,
+        "y": 120,
+        "wires": [],
+        "icon": "node-red/white-globe.svg"
+    },
+    {
+        "id": "c5ed5af6e10fedbd",
+        "type": "http request",
+        "z": "412669072e03744e",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://sandbox.api.visa.com/visaaliasdirectory/v2/resolve",
+        "tls": "84e59769f7f05b82",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "basic",
+        "senderr": false,
+        "headers": [
+            {
+                "keyType": "Content-Type",
+                "keyValue": "",
+                "valueType": "application/json",
+                "valueValue": ""
+            },
+            {
+                "keyType": "Accept",
+                "keyValue": "",
+                "valueType": "application/json",
+                "valueValue": ""
+            }
+        ],
+        "x": 650,
+        "y": 220,
+        "wires": [
+            [
+                "38a0a94e5c4c3912"
+            ]
+        ]
+    },
+    {
+        "id": "38a0a94e5c4c3912",
+        "type": "debug",
+        "z": "412669072e03744e",
+        "name": "debug 7",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": true,
         "complete": "payload",
         "targetType": "msg",
-        "statusVal": "",
+        "statusVal": "payload",
         "statusType": "auto",
-        "x": 1010,
-        "y": 480,
+        "x": 970,
+        "y": 220,
         "wires": []
     },
     {
-        "id": "687258b80e990ef9",
-        "type": "debug",
-        "z": "412669072e03744e",
-        "name": "debug 1",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 420,
-        "y": 300,
-        "wires": []
-    },
-    {
-        "id": "8afc6cac.e0812",
-        "type": "csv",
-        "z": "412669072e03744e",
-        "name": "",
-        "sep": ",",
-        "hdrin": true,
-        "hdrout": "",
-        "multi": "one",
-        "ret": "\\n",
-        "temp": "",
-        "skip": 0,
-        "strings": true,
-        "include_empty_strings": false,
-        "include_null_values": false,
-        "x": 590,
-        "y": 380,
-        "wires": [
-            [
-                "44779781.4190f8",
-                "6f0eb546.9e208c"
-            ]
-        ]
-    },
-    {
-        "id": "d78d4aa8.8c8208",
+        "id": "8d50ad368c5974dd",
         "type": "change",
         "z": "412669072e03744e",
         "name": "",
@@ -279,7 +387,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "PANIC!",
+                "to": "",
                 "tot": "str"
             }
         ],
@@ -288,46 +396,62 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 760,
-        "y": 600,
+        "x": 240,
+        "y": 400,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "dda7d6fbd87c59dc",
+        "type": "function",
+        "z": "412669072e03744e",
+        "name": "function 1",
+        "func": "msg.payload = {\n    \"businessApplicationId\": \"PP\",\n    \"alias\": \"254711001987\"\n};\nreturn msg; ",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 220,
         "wires": [
             [
-                "72fddece.fac0d"
+                "c5ed5af6e10fedbd"
             ]
         ]
     },
     {
-        "id": "0fb76160ac5b326a",
-        "type": "http in",
+        "id": "ab3e3cd8d1bb97e7",
+        "type": "switch",
         "z": "412669072e03744e",
-        "name": "earthquake",
-        "url": "/earthquake",
-        "method": "get",
-        "upload": false,
-        "swaggerDoc": "",
-        "x": 120,
-        "y": 240,
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "cont",
+                "v": "",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 590,
+        "y": 360,
         "wires": [
-            [
-                "287bdba2e58613c4"
-            ]
+            []
         ]
     },
     {
-        "id": "287bdba2e58613c4",
-        "type": "debug",
+        "id": "f2b4205ab99d3f46",
+        "type": "comment",
         "z": "412669072e03744e",
-        "name": "debug 4",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 360,
-        "y": 200,
+        "name": "",
+        "info": "",
+        "x": 220,
+        "y": 540,
         "wires": []
     }
 ]
