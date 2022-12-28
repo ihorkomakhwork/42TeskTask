@@ -8,79 +8,33 @@
         "env": []
     },
     {
-        "id": "b89181f53cbb300c",
+        "id": "1c8cb1edd05e1ccb",
         "type": "subflow",
         "name": "Subflow 1",
         "info": "",
         "in": [
             {
-                "x": 50,
-                "y": 30,
-                "wires": []
-            }
-        ],
-        "out": [
-            {
-                "x": 500,
-                "y": 120,
-                "wires": []
-            }
-        ]
-    },
-    {
-        "id": "f5c539ef0fa2b547",
-        "type": "subflow",
-        "name": "Subflow 2",
-        "info": "",
-        "in": [],
-        "out": []
-    },
-    {
-        "id": "f6d7d9218b71e0a8",
-        "type": "subflow",
-        "name": "Subflow 3",
-        "info": "",
-        "category": "",
-        "in": [
-            {
-                "x": 120,
-                "y": 240,
+                "x": 40,
+                "y": 160,
                 "wires": [
                     {
-                        "id": "2b8d83c6327f23eb"
+                        "id": "079fe9eab5dbce95"
                     }
                 ]
             }
         ],
-        "out": [],
-        "env": [],
-        "meta": {},
-        "color": "#DDAA99"
-    },
-    {
-        "id": "1854d4d7690cc4cd",
-        "type": "group",
-        "z": "f5c539ef0fa2b547",
-        "name": "Debug",
-        "style": {
-            "stroke": "#ff0000",
-            "fill": "#ffff00",
-            "label": true,
-            "color": "#92d04f"
-        },
-        "nodes": [
-            "342781e071ac6ce1",
-            "593489135bf806a8"
-        ],
-        "env": [
+        "out": [
             {
-                "name": "hugeass",
-                "value": "sdcsdcsdc",
-                "type": "str"
+                "x": 800,
+                "y": 20,
+                "wires": []
+            },
+            {
+                "x": 800,
+                "y": 160,
+                "wires": []
             }
-        ],
-        "x": 194,
-        "y": 79
+        ]
     },
     {
         "id": "0efdf64f7eaaebed",
@@ -94,21 +48,6 @@
         "caname": "",
         "servername": "",
         "verifyservercert": false,
-        "alpnprotocol": ""
-    },
-    {
-        "id": "3903fc410f8aa96e",
-        "type": "tls-config",
-        "z": "f6d7d9218b71e0a8",
-        "name": "visa_cert",
-        "cert": "",
-        "key": "",
-        "ca": "",
-        "certname": "cert.pem",
-        "keyname": "privateKey.pem",
-        "caname": "",
-        "servername": "",
-        "verifyservercert": true,
         "alpnprotocol": ""
     },
     {
@@ -126,166 +65,96 @@
         "alpnprotocol": ""
     },
     {
-        "id": "6dd8fa262d9e3daf",
-        "type": "inject",
-        "z": "b89181f53cbb300c",
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 140,
-        "y": 160,
-        "wires": [
-            [
-                "8f27f5cb510e6960"
-            ]
-        ]
-    },
-    {
-        "id": "8f27f5cb510e6960",
-        "type": "debug",
-        "z": "b89181f53cbb300c",
-        "name": "debug 3",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 320,
-        "y": 120,
-        "wires": []
-    },
-    {
-        "id": "342781e071ac6ce1",
-        "type": "inject",
-        "z": "f5c539ef0fa2b547",
-        "g": "1854d4d7690cc4cd",
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 300,
-        "y": 140,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "593489135bf806a8",
-        "type": "debug",
-        "z": "f5c539ef0fa2b547",
-        "g": "1854d4d7690cc4cd",
-        "name": "debug 2",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 620,
-        "y": 120,
-        "wires": []
-    },
-    {
-        "id": "4ea81ebdcea68d61",
+        "id": "c5ed5af6e10fedbd",
         "type": "http request",
-        "z": "f6d7d9218b71e0a8",
+        "z": "1c8cb1edd05e1ccb",
         "name": "",
         "method": "POST",
         "ret": "txt",
         "paytoqs": "ignore",
-        "url": "https://sandbox.api.visa.com/visaaliasdirectory/v1/manage/createalias?apikey=W0AAA74A0VOBZKEH2YK021rvaPFuNFF1BtpVdA5pMCjEqGQv4",
-        "tls": "",
+        "url": "https://sandbox.api.visa.com/{{resource}}",
+        "tls": "84e59769f7f05b82",
         "persist": false,
         "proxy": "",
         "insecureHTTPParser": false,
-        "authType": "",
+        "authType": "basic",
         "senderr": false,
-        "headers": [
+        "headers": [],
+        "x": 450,
+        "y": 160,
+        "wires": [
+            [
+                "343dec3e360d3a6a"
+            ]
+        ]
+    },
+    {
+        "id": "079fe9eab5dbce95",
+        "type": "change",
+        "z": "1c8cb1edd05e1ccb",
+        "name": "set default",
+        "rules": [
             {
-                "keyType": "other",
-                "keyValue": "x-pay-token",
-                "valueType": "msg",
-                "valueValue": "xPayToken"
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.postBody",
+                "tot": "msg",
+                "dc": true
             },
             {
-                "keyType": "Accept",
-                "keyValue": "",
-                "valueType": "application/json",
-                "valueValue": ""
-            }
-        ],
-        "x": 670,
-        "y": 400,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "2b8d83c6327f23eb",
-        "type": "function",
-        "z": "f6d7d9218b71e0a8",
-        "name": "generate x-pay-token",
-        "func": "const { resourcePath, queryParams, postBody, sharedSecret } = msg.payload;\n\n\nconst timestamp = Math.floor(Date.now() / 1000);\nconst preHashString = timestamp + resourcePath + queryParams + postBody\n \nconst hashString = crypto.createHmac('SHA256', sharedSecret).update(preHashString).digest('hex');\n\nconsole.log(timestamp);\nmsg.xPayToken = 'xv2:' + timestamp + ':' + hashString;\nmsg.payload = postBody;\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [
+                "t": "set",
+                "p": "resource",
+                "pt": "msg",
+                "to": "payload.resource",
+                "tot": "msg"
+            },
             {
-                "var": "crypto",
-                "module": "crypto"
+                "t": "set",
+                "p": "headers['Content-Type']",
+                "pt": "msg",
+                "to": "application/json",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "headers['Accept']",
+                "pt": "msg",
+                "to": "application/json",
+                "tot": "str"
             }
         ],
-        "x": 360,
-        "y": 240,
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 230,
+        "y": 160,
         "wires": [
-            []
+            [
+                "c5ed5af6e10fedbd"
+            ]
+        ],
+        "inputLabels": [
+            "ваымаымммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммм"
         ]
     },
     {
-        "id": "4c88ec067a059b83",
+        "id": "343dec3e360d3a6a",
         "type": "debug",
-        "z": "f6d7d9218b71e0a8",
-        "name": "debug 6",
+        "z": "1c8cb1edd05e1ccb",
+        "name": "debug 8",
         "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "false",
+        "complete": "payload",
+        "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 920,
-        "y": 240,
+        "x": 660,
+        "y": 180,
         "wires": []
     },
     {
@@ -308,56 +177,7 @@
         "x": 130,
         "y": 220,
         "wires": [
-            [
-                "dda7d6fbd87c59dc"
-            ]
-        ]
-    },
-    {
-        "id": "186f36b5ed6b4afb",
-        "type": "subflow:f6d7d9218b71e0a8",
-        "z": "412669072e03744e",
-        "name": "visa api",
-        "x": 940,
-        "y": 120,
-        "wires": [],
-        "icon": "node-red/white-globe.svg"
-    },
-    {
-        "id": "c5ed5af6e10fedbd",
-        "type": "http request",
-        "z": "412669072e03744e",
-        "name": "",
-        "method": "POST",
-        "ret": "txt",
-        "paytoqs": "ignore",
-        "url": "https://sandbox.api.visa.com/visaaliasdirectory/v2/resolve",
-        "tls": "84e59769f7f05b82",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "basic",
-        "senderr": false,
-        "headers": [
-            {
-                "keyType": "Content-Type",
-                "keyValue": "",
-                "valueType": "application/json",
-                "valueValue": ""
-            },
-            {
-                "keyType": "Accept",
-                "keyValue": "",
-                "valueType": "application/json",
-                "valueValue": ""
-            }
-        ],
-        "x": 650,
-        "y": 220,
-        "wires": [
-            [
-                "38a0a94e5c4c3912"
-            ]
+            []
         ]
     },
     {
@@ -407,17 +227,17 @@
         "type": "function",
         "z": "412669072e03744e",
         "name": "function 1",
-        "func": "msg.payload = {\n    \"businessApplicationId\": \"PP\",\n    \"alias\": \"254711001987\"\n};\nreturn msg; ",
+        "func": "msg.payload = {\n    \"systemsTraceAuditNumber\": \"743720\",\n    \"cardCvv2Value\": \"022\",\n    \"cardAcceptor\": {\n        \"address\": {},\n        \"idCode\": \"111111\",\n        \"name\": \"ABC Corp\",\n        \"terminalId\": \"12345678\"\n    },\n    \"primaryAccountNumber\": \"4957030420210462\",\n    \"retrievalReferenceNumber\": \"015221743720\",\n    \"cardExpiryDate\": \"2040-10\",\n    \"addressVerificationResults\": {\n        \"street\": \"801 Metro Center Blv\",\n        \"postalCode\": \"94404\"\n    }\n};\n\n\nreturn msg; ",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 340,
+        "x": 460,
         "y": 220,
         "wires": [
             [
-                "c5ed5af6e10fedbd"
+                "984387afbaa32a6e"
             ]
         ]
     },
@@ -453,5 +273,188 @@
         "x": 220,
         "y": 540,
         "wires": []
+    },
+    {
+        "id": "984387afbaa32a6e",
+        "type": "subflow:1c8cb1edd05e1ccb",
+        "z": "412669072e03744e",
+        "name": "visa api",
+        "x": 630,
+        "y": 220,
+        "wires": [
+            [],
+            []
+        ],
+        "icon": "font-awesome/fa-bank"
+    },
+    {
+        "id": "41747a17.54ffd4",
+        "type": "http request",
+        "z": "412669072e03744e",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://jsonplaceholder.typicode.com/posts/{{post}}",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 410,
+        "y": 680,
+        "wires": [
+            [
+                "d682318c.36823"
+            ]
+        ]
+    },
+    {
+        "id": "d682318c.36823",
+        "type": "debug",
+        "z": "412669072e03744e",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "payload",
+        "x": 570,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "90bfea22.dd2b98",
+        "type": "inject",
+        "z": "412669072e03744e",
+        "name": "post id",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "topic": "",
+        "payload": "2",
+        "payloadType": "str",
+        "x": 110,
+        "y": 680,
+        "wires": [
+            [
+                "e67a0cc.596d4f"
+            ]
+        ]
+    },
+    {
+        "id": "e67a0cc.596d4f",
+        "type": "change",
+        "z": "412669072e03744e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "post",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 250,
+        "y": 680,
+        "wires": [
+            [
+                "41747a17.54ffd4"
+            ]
+        ]
+    },
+    {
+        "id": "cb1dfcde.fd153",
+        "type": "function",
+        "z": "412669072e03744e",
+        "name": "set payload and headers",
+        "func": "msg.payload = \"data to post\";\nmsg.headers = {};\nmsg.headers['X-Auth-User'] = 'mike';\nmsg.headers['X-Auth-Key'] = 'fred-key';\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 560,
+        "wires": [
+            [
+                "e44209e7.752698"
+            ]
+        ]
+    },
+    {
+        "id": "dcf34aab.218928",
+        "type": "inject",
+        "z": "412669072e03744e",
+        "name": "",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 460,
+        "y": 560,
+        "wires": [
+            [
+                "cb1dfcde.fd153"
+            ]
+        ]
+    },
+    {
+        "id": "e44209e7.752698",
+        "type": "http request",
+        "z": "412669072e03744e",
+        "name": "post to HttpBin",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://httpbin.org/post",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 860,
+        "y": 560,
+        "wires": [
+            [
+                "ee306582.f0dde8"
+            ]
+        ]
+    },
+    {
+        "id": "ee306582.f0dde8",
+        "type": "debug",
+        "z": "412669072e03744e",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "false",
+        "x": 1030,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "e26d55d756ecb5dc",
+        "type": "function",
+        "z": "412669072e03744e",
+        "name": "function 2",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 220,
+        "wires": [
+            []
+        ]
     }
 ]
