@@ -356,7 +356,7 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "{\"aliasType\":\"PHONE\",\"aliasValue\":\"7657890765789765789657\",\"identification\":{\"type\":\"NIDN\",\"value\":\"A123456d\"},\"consent\":{\"presenter\":\"Wallmart\",\"version\":\"2.0\"},\"paymentCredentials\":[\"string\",1,\"string\",true]}",
+        "payload": "{\"aliasType\":\"PHONE\",\"aliasValue\":\"7657890765789765789657\",\"identification\":{\"type\":\"NIDN\",\"value\":\"A123456d\"},\"consent\":{\"presenter\":\"Wallmart\",\"version\":\"2.0\"},\"paymentCredentials\":[\"string\",1,\"string\",1]}",
         "payloadType": "json",
         "x": 190,
         "y": 280,
