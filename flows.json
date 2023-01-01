@@ -509,6 +509,35 @@
         "wires": []
     },
     {
+        "id": "fc57ea6402090e73",
+        "type": "switch",
+        "z": "412669072e03744e",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "",
+                "vt": "str"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "x": 550,
+        "y": 360,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
         "id": "429f2ffb076cd474",
         "type": "link in",
         "z": "2fc48cc339f00e42",
