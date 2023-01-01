@@ -2,7 +2,63 @@
     {
         "id": "412669072e03744e",
         "type": "tab",
+        "label": "/alias",
+        "disabled": false,
+        "info": "",
+        "env": [
+            {
+                "name": "VISA_AUTH_ID",
+                "value": "XUODRN89PMITTDKCWHTJ21M862xJYdnMaV2B2ivXUZeGEB7bM",
+                "type": "str"
+            },
+            {
+                "name": "VISA_AUTH_PASSWORD",
+                "value": "7S8ZTHJcr4B1QH",
+                "type": "str"
+            },
+            {
+                "name": "VISA_HOST",
+                "value": "https://sandbox.api.visa.com/",
+                "type": "str"
+            }
+        ]
+    },
+    {
+        "id": "75217cfbf0795720",
+        "type": "tab",
         "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "dfabc4eb4e54cb9a",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "0127f0442eaff100",
+        "type": "tab",
+        "label": "/transaction",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "e5a93a558b3c6776",
+        "type": "tab",
+        "label": "Onboarding",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "2fc48cc339f00e42",
+        "type": "tab",
+        "label": "Error handler",
         "disabled": false,
         "info": "",
         "env": []
@@ -10,31 +66,111 @@
     {
         "id": "1c8cb1edd05e1ccb",
         "type": "subflow",
-        "name": "Subflow 1",
+        "name": "visa api",
         "info": "",
+        "category": "API",
         "in": [
             {
-                "x": 40,
-                "y": 160,
+                "x": 60,
+                "y": 220,
                 "wires": [
                     {
-                        "id": "079fe9eab5dbce95"
+                        "id": "c5ed5af6e10fedbd"
                     }
                 ]
             }
         ],
         "out": [
             {
-                "x": 800,
-                "y": 20,
-                "wires": []
+                "x": 1280,
+                "y": 140,
+                "wires": [
+                    {
+                        "id": "c5ed5af6e10fedbd",
+                        "port": 0
+                    }
+                ]
             },
             {
-                "x": 800,
-                "y": 160,
-                "wires": []
+                "x": 1320,
+                "y": 240,
+                "wires": [
+                    {
+                        "id": "c5ed5af6e10fedbd",
+                        "port": 0
+                    }
+                ]
+            },
+            {
+                "x": 1160,
+                "y": 320,
+                "wires": [
+                    {
+                        "id": "c5ed5af6e10fedbd",
+                        "port": 0
+                    }
+                ]
             }
-        ]
+        ],
+        "env": [
+            {
+                "name": "Resource",
+                "type": "str",
+                "value": ""
+            }
+        ],
+        "meta": {},
+        "color": "#359df3",
+        "icon": "font-awesome/fa-credit-card-alt"
+    },
+    {
+        "id": "3d8368539d02f074",
+        "type": "subflow",
+        "name": "json schema validator",
+        "info": "",
+        "category": "",
+        "in": [
+            {
+                "x": 40,
+                "y": 80,
+                "wires": [
+                    {
+                        "id": "9e44cfa7fa94eaa0"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 680,
+                "y": 80,
+                "wires": [
+                    {
+                        "id": "9e44cfa7fa94eaa0",
+                        "port": 0
+                    }
+                ]
+            }
+        ],
+        "env": [
+            {
+                "name": "schema",
+                "type": "json",
+                "value": "{}",
+                "ui": {
+                    "icon": "font-awesome/fa-list-alt",
+                    "type": "input",
+                    "opts": {
+                        "types": [
+                            "json"
+                        ]
+                    }
+                }
+            }
+        ],
+        "meta": {},
+        "color": "#3FADB5",
+        "icon": "node-red/parser-json.svg"
     },
     {
         "id": "0efdf64f7eaaebed",
@@ -53,7 +189,7 @@
     {
         "id": "84e59769f7f05b82",
         "type": "tls-config",
-        "name": "visa_api",
+        "name": "visa_config",
         "cert": "",
         "key": "",
         "ca": "",
@@ -61,7 +197,7 @@
         "keyname": "privateKey.pem",
         "caname": "",
         "servername": "",
-        "verifyservercert": true,
+        "verifyservercert": false,
         "alpnprotocol": ""
     },
     {
@@ -72,16 +208,29 @@
         "method": "POST",
         "ret": "txt",
         "paytoqs": "ignore",
-        "url": "https://sandbox.api.visa.com/{{resource}}",
+        "url": "{env.VISA_HOST}",
         "tls": "84e59769f7f05b82",
         "persist": false,
         "proxy": "",
         "insecureHTTPParser": false,
         "authType": "basic",
         "senderr": false,
-        "headers": [],
-        "x": 450,
-        "y": 160,
+        "headers": [
+            {
+                "keyType": "Content-Type",
+                "keyValue": "",
+                "valueType": "application/json",
+                "valueValue": ""
+            },
+            {
+                "keyType": "Accept",
+                "keyValue": "",
+                "valueType": "application/json",
+                "valueValue": ""
+            }
+        ],
+        "x": 410,
+        "y": 220,
         "wires": [
             [
                 "343dec3e360d3a6a"
@@ -89,39 +238,74 @@
         ]
     },
     {
-        "id": "079fe9eab5dbce95",
-        "type": "change",
+        "id": "343dec3e360d3a6a",
+        "type": "debug",
         "z": "1c8cb1edd05e1ccb",
-        "name": "set default",
+        "name": "log",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1050,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "9e44cfa7fa94eaa0",
+        "type": "function",
+        "z": "3d8368539d02f074",
+        "name": "alias validation",
+        "func": "const ajv = new Ajv();\n\nconst schema = env.get('schema');\nconst validate = ajv.compile(schema);\n\nif (validate(msg.payload)) return msg;\nelse node.error(\"Invalid massge\", msg);",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [
+            {
+                "var": "Ajv",
+                "module": "ajv"
+            }
+        ],
+        "x": 320,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f83075e5cc12da3c",
+        "type": "http in",
+        "z": "412669072e03744e",
+        "name": "[post] v1.0/alias",
+        "url": "api/v1.0/alias",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 180,
+        "y": 220,
+        "wires": [
+            [
+                "0709cf8790772006"
+            ]
+        ],
+        "icon": "font-awesome/fa-bank"
+    },
+    {
+        "id": "0709cf8790772006",
+        "type": "change",
+        "z": "412669072e03744e",
+        "name": "",
         "rules": [
             {
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "payload.postBody",
-                "tot": "msg",
-                "dc": true
-            },
-            {
-                "t": "set",
-                "p": "resource",
-                "pt": "msg",
-                "to": "payload.resource",
+                "to": "req.body",
                 "tot": "msg"
-            },
-            {
-                "t": "set",
-                "p": "headers['Content-Type']",
-                "pt": "msg",
-                "to": "application/json",
-                "tot": "str"
-            },
-            {
-                "t": "set",
-                "p": "headers['Accept']",
-                "pt": "msg",
-                "to": "application/json",
-                "tot": "str"
             }
         ],
         "action": "",
@@ -129,36 +313,36 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 230,
-        "y": 160,
+        "x": 420,
+        "y": 220,
         "wires": [
             [
-                "c5ed5af6e10fedbd"
+                "add41942c9b6ea29"
             ]
-        ],
-        "inputLabels": [
-            "ваымаымммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммммм"
         ]
     },
     {
-        "id": "343dec3e360d3a6a",
-        "type": "debug",
-        "z": "1c8cb1edd05e1ccb",
-        "name": "debug 8",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 660,
-        "y": 180,
-        "wires": []
+        "id": "add41942c9b6ea29",
+        "type": "subflow:3d8368539d02f074",
+        "z": "412669072e03744e",
+        "name": "validate alias",
+        "env": [
+            {
+                "name": "schema",
+                "value": "{\"type\":\"object\",\"properties\":{\"aliasType\":{\"type\":\"string\",\"enum\":[\"PHONE\",\"EMAIL\"]},\"consent\":{\"type\":\"object\",\"properties\":{\"presenter\":{\"type\":\"string\"},\"version\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":9,\"pattern\":\"^[0-9]+\\\\.[0-9]+$\"}},\"required\":[\"presenter\",\"version\"]},\"identification\":{\"type\":\"object\",\"properties\":{\"type\":{\"type\":\"string\",\"enum\":[\"PASSPORT\",\"DL\",\"NIDN\",\"DPI\"]},\"value\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":36}},\"required\":[\"type\",\"value\"]},\"paymentCredentials\":{\"type\":\"array\",\"items\":[{\"type\":\"string\"},{\"type\":\"integer\"}]},\"tamplate\":{\"type\":\"object\",\"properties\":{},\"required\":[]}},\"allOf\":[{\"if\":{\"properties\":{\"aliasType\":{\"const\":\"EMAIL\"}}},\"then\":{\"properties\":{\"aliasValue\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":128,\"pattern\":\"^([a-z0-9_\\\\.-]+)@([\\\\da-z\\\\.-]+)\\\\.([a-z\\\\.]{2,6})$\"}}}},{\"if\":{\"properties\":{\"aliasType\":{\"const\":\"PHONE\"}}},\"then\":{\"properties\":{\"aliasValue\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":128,\"pattern\":\"^[1-9]+[0-9]*$\"}}}}],\"required\":[\"aliasType\",\"aliasValue\",\"consent\",\"identification\"]}",
+                "type": "json"
+            }
+        ],
+        "x": 630,
+        "y": 220,
+        "wires": [
+            [
+                "ea0feadba0c93e71"
+            ]
+        ]
     },
     {
-        "id": "83828904382c2df7",
+        "id": "2f062a5572c1ac19",
         "type": "inject",
         "z": "412669072e03744e",
         "name": "",
@@ -172,77 +356,79 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "{\"country\":\"KE\",\"recipientLastName\":\"Bakari\",\"recipientMiddleName\":\"M\",\"city\":\"Nairobi\",\"address2\":\"Region 1\",\"recipientFirstName\":\"Jamie\",\"recipientPrimaryAccountNumber\":\"4895140000066666\",\"address1\":\"Street 1\",\"issuerName\":\"Test Bank 1\",\"postalCode\":\"00111\",\"cardType\":\"Visa Classic\",\"consentDateTime\":\"2018-03-01 01:02:03\",\"aliasType\":\"01\",\"guid\":\"574f4b6a4c2b70472f306f300099515a789092348832455975343637a4d3170\",\"alias\":\"254711333888\"}",
+        "payload": "{\"aliasType\":\"PHONE\",\"aliasValue\":\"7657890765789765789657\",\"identification\":{\"type\":\"NIDN\",\"value\":\"A123456d\"},\"consent\":{\"presenter\":\"Wallmart\",\"version\":\"2.0\"},\"paymentCredentials\":[1,2,3,\"string\"]}",
         "payloadType": "json",
-        "x": 130,
-        "y": 220,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "38a0a94e5c4c3912",
-        "type": "debug",
-        "z": "412669072e03744e",
-        "name": "debug 7",
-        "active": true,
-        "tosidebar": true,
-        "console": true,
-        "tostatus": true,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "payload",
-        "statusType": "auto",
-        "x": 970,
-        "y": 220,
-        "wires": []
-    },
-    {
-        "id": "8d50ad368c5974dd",
-        "type": "change",
-        "z": "412669072e03744e",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "",
-                "tot": "str"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 240,
-        "y": 400,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "dda7d6fbd87c59dc",
-        "type": "function",
-        "z": "412669072e03744e",
-        "name": "function 1",
-        "func": "msg.payload = {\n    \"systemsTraceAuditNumber\": \"743720\",\n    \"cardCvv2Value\": \"022\",\n    \"cardAcceptor\": {\n        \"address\": {},\n        \"idCode\": \"111111\",\n        \"name\": \"ABC Corp\",\n        \"terminalId\": \"12345678\"\n    },\n    \"primaryAccountNumber\": \"4957030420210462\",\n    \"retrievalReferenceNumber\": \"015221743720\",\n    \"cardExpiryDate\": \"2040-10\",\n    \"addressVerificationResults\": {\n        \"street\": \"801 Metro Center Blv\",\n        \"postalCode\": \"94404\"\n    }\n};\n\n\nreturn msg; ",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 460,
-        "y": 220,
+        "x": 190,
+        "y": 280,
         "wires": [
             [
-                "984387afbaa32a6e"
+                "0709cf8790772006"
             ]
         ]
     },
     {
-        "id": "ab3e3cd8d1bb97e7",
+        "id": "4d4d480fadc22978",
+        "type": "catch",
+        "z": "412669072e03744e",
+        "name": "",
+        "scope": null,
+        "uncaught": false,
+        "x": 160,
+        "y": 420,
+        "wires": [
+            [
+                "4b7d7fb79a291177"
+            ]
+        ]
+    },
+    {
+        "id": "96d591075ce16a69",
+        "type": "http request",
+        "z": "412669072e03744e",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "84e59769f7f05b82",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "basic",
+        "senderr": false,
+        "headers": [],
+        "x": 1030,
+        "y": 220,
+        "wires": [
+            [
+                "9ac105a7ce1bd126"
+            ]
+        ]
+    },
+    {
+        "id": "8513a15eeda3a034",
+        "type": "http response",
+        "z": "412669072e03744e",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1430,
+        "y": 140,
+        "wires": [],
+        "icon": "font-awesome/fa-bank"
+    },
+    {
+        "id": "cf0204ff01d91717",
+        "type": "comment",
+        "z": "412669072e03744e",
+        "name": "",
+        "info": "",
+        "x": 1440,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "9ac105a7ce1bd126",
         "type": "switch",
         "z": "412669072e03744e",
         "name": "",
@@ -250,7 +436,7 @@
         "propertyType": "msg",
         "rules": [
             {
-                "t": "cont",
+                "t": "eq",
                 "v": "",
                 "vt": "str"
             }
@@ -258,203 +444,98 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 590,
-        "y": 360,
+        "x": 1210,
+        "y": 220,
         "wires": [
-            []
+            [
+                "8513a15eeda3a034",
+                "a65b29bfc0e63ea8"
+            ]
         ]
     },
     {
-        "id": "f2b4205ab99d3f46",
+        "id": "a65b29bfc0e63ea8",
+        "type": "http response",
+        "z": "412669072e03744e",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1430,
+        "y": 300,
+        "wires": [],
+        "icon": "font-awesome/fa-bank"
+    },
+    {
+        "id": "ee35a1d69279ea44",
         "type": "comment",
         "z": "412669072e03744e",
         "name": "",
         "info": "",
-        "x": 220,
-        "y": 540,
+        "x": 1440,
+        "y": 260,
         "wires": []
     },
     {
-        "id": "984387afbaa32a6e",
-        "type": "subflow:1c8cb1edd05e1ccb",
-        "z": "412669072e03744e",
-        "name": "visa api",
-        "x": 630,
-        "y": 220,
-        "wires": [
-            [],
-            []
-        ],
-        "icon": "font-awesome/fa-bank"
-    },
-    {
-        "id": "41747a17.54ffd4",
-        "type": "http request",
-        "z": "412669072e03744e",
-        "name": "",
-        "method": "GET",
-        "ret": "txt",
-        "paytoqs": "ignore",
-        "url": "https://jsonplaceholder.typicode.com/posts/{{post}}",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 410,
-        "y": 680,
-        "wires": [
-            [
-                "d682318c.36823"
-            ]
-        ]
-    },
-    {
-        "id": "d682318c.36823",
+        "id": "4b7d7fb79a291177",
         "type": "debug",
         "z": "412669072e03744e",
-        "name": "",
+        "name": "debug 3",
         "active": true,
-        "console": "false",
-        "complete": "payload",
-        "x": 570,
-        "y": 680,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 360,
+        "y": 440,
         "wires": []
     },
     {
-        "id": "90bfea22.dd2b98",
-        "type": "inject",
-        "z": "412669072e03744e",
-        "name": "post id",
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "topic": "",
-        "payload": "2",
-        "payloadType": "str",
-        "x": 110,
-        "y": 680,
-        "wires": [
-            [
-                "e67a0cc.596d4f"
-            ]
-        ]
-    },
-    {
-        "id": "e67a0cc.596d4f",
-        "type": "change",
-        "z": "412669072e03744e",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "post",
-                "pt": "msg",
-                "to": "payload",
-                "tot": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 250,
-        "y": 680,
-        "wires": [
-            [
-                "41747a17.54ffd4"
-            ]
-        ]
-    },
-    {
-        "id": "cb1dfcde.fd153",
-        "type": "function",
-        "z": "412669072e03744e",
-        "name": "set payload and headers",
-        "func": "msg.payload = \"data to post\";\nmsg.headers = {};\nmsg.headers['X-Auth-User'] = 'mike';\nmsg.headers['X-Auth-Key'] = 'fred-key';\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 650,
-        "y": 560,
-        "wires": [
-            [
-                "e44209e7.752698"
-            ]
-        ]
-    },
-    {
-        "id": "dcf34aab.218928",
-        "type": "inject",
-        "z": "412669072e03744e",
-        "name": "",
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 460,
-        "y": 560,
-        "wires": [
-            [
-                "cb1dfcde.fd153"
-            ]
-        ]
-    },
-    {
-        "id": "e44209e7.752698",
-        "type": "http request",
-        "z": "412669072e03744e",
-        "name": "post to HttpBin",
-        "method": "POST",
-        "ret": "obj",
-        "paytoqs": "ignore",
-        "url": "https://httpbin.org/post",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "authType": "",
-        "x": 860,
-        "y": 560,
-        "wires": [
-            [
-                "ee306582.f0dde8"
-            ]
-        ]
-    },
-    {
-        "id": "ee306582.f0dde8",
+        "id": "ea0feadba0c93e71",
         "type": "debug",
         "z": "412669072e03744e",
-        "name": "",
+        "name": "debug 4",
         "active": true,
-        "console": "false",
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
         "complete": "false",
-        "x": 1030,
-        "y": 560,
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 220,
         "wires": []
     },
     {
-        "id": "e26d55d756ecb5dc",
-        "type": "function",
-        "z": "412669072e03744e",
-        "name": "function 2",
-        "func": "\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 280,
-        "y": 220,
+        "id": "429f2ffb076cd474",
+        "type": "link in",
+        "z": "2fc48cc339f00e42",
+        "name": "link in 1",
+        "links": [],
+        "x": 155,
+        "y": 200,
         "wires": [
-            []
+            [
+                "dd4c08856d5b724b"
+            ]
         ]
+    },
+    {
+        "id": "dd4c08856d5b724b",
+        "type": "debug",
+        "z": "2fc48cc339f00e42",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 300,
+        "y": 200,
+        "wires": []
     }
 ]
