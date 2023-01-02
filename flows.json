@@ -64,64 +64,12 @@
         "env": []
     },
     {
-        "id": "1c8cb1edd05e1ccb",
-        "type": "subflow",
-        "name": "visa api",
+        "id": "42f285c336936ac1",
+        "type": "tab",
+        "label": "Miscellaneous",
+        "disabled": false,
         "info": "",
-        "category": "API",
-        "in": [
-            {
-                "x": 60,
-                "y": 220,
-                "wires": [
-                    {
-                        "id": "c5ed5af6e10fedbd"
-                    }
-                ]
-            }
-        ],
-        "out": [
-            {
-                "x": 1280,
-                "y": 140,
-                "wires": [
-                    {
-                        "id": "c5ed5af6e10fedbd",
-                        "port": 0
-                    }
-                ]
-            },
-            {
-                "x": 1320,
-                "y": 240,
-                "wires": [
-                    {
-                        "id": "c5ed5af6e10fedbd",
-                        "port": 0
-                    }
-                ]
-            },
-            {
-                "x": 1160,
-                "y": 320,
-                "wires": [
-                    {
-                        "id": "c5ed5af6e10fedbd",
-                        "port": 0
-                    }
-                ]
-            }
-        ],
-        "env": [
-            {
-                "name": "Resource",
-                "type": "str",
-                "value": ""
-            }
-        ],
-        "meta": {},
-        "color": "#359df3",
-        "icon": "font-awesome/fa-credit-card-alt"
+        "env": []
     },
     {
         "id": "3d8368539d02f074",
@@ -173,6 +121,63 @@
         "icon": "node-red/parser-json.svg"
     },
     {
+        "id": "d70e53f04ea4219d",
+        "type": "subflow",
+        "name": "error handler",
+        "info": "",
+        "category": "",
+        "in": [
+            {
+                "x": 100,
+                "y": 160,
+                "wires": [
+                    {
+                        "id": "51d088d99949334d"
+                    }
+                ]
+            }
+        ],
+        "out": [],
+        "env": [],
+        "meta": {},
+        "color": "#eb6363",
+        "icon": "font-awesome/fa-warning"
+    },
+    {
+        "id": "a19c35db171e7c08",
+        "type": "subflow",
+        "name": "visa api",
+        "info": "",
+        "category": "",
+        "in": [
+            {
+                "x": 140,
+                "y": 140,
+                "wires": [
+                    {
+                        "id": "f30d1578157685b0"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 720,
+                "y": 140,
+                "wires": [
+                    {
+                        "id": "c6801ec5417f1bb9",
+                        "port": 0
+                    }
+                ]
+            }
+        ],
+        "env": [],
+        "meta": {},
+        "color": "#359df3",
+        "icon": "font-awesome/fa-credit-card"
+    },
+    {
         "id": "0efdf64f7eaaebed",
         "type": "tls-config",
         "name": "",
@@ -201,65 +206,11 @@
         "alpnprotocol": ""
     },
     {
-        "id": "c5ed5af6e10fedbd",
-        "type": "http request",
-        "z": "1c8cb1edd05e1ccb",
-        "name": "",
-        "method": "POST",
-        "ret": "txt",
-        "paytoqs": "ignore",
-        "url": "{env.VISA_HOST}",
-        "tls": "84e59769f7f05b82",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "basic",
-        "senderr": false,
-        "headers": [
-            {
-                "keyType": "Content-Type",
-                "keyValue": "",
-                "valueType": "application/json",
-                "valueValue": ""
-            },
-            {
-                "keyType": "Accept",
-                "keyValue": "",
-                "valueType": "application/json",
-                "valueValue": ""
-            }
-        ],
-        "x": 410,
-        "y": 220,
-        "wires": [
-            [
-                "343dec3e360d3a6a"
-            ]
-        ]
-    },
-    {
-        "id": "343dec3e360d3a6a",
-        "type": "debug",
-        "z": "1c8cb1edd05e1ccb",
-        "name": "log",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1050,
-        "y": 120,
-        "wires": []
-    },
-    {
         "id": "9e44cfa7fa94eaa0",
         "type": "function",
         "z": "3d8368539d02f074",
         "name": "alias validation",
-        "func": "const ajv = new Ajv({ strict: false});\n\nconst schema = env.get('schema');\nconst validate = ajv.compile(schema);\n\nif (validate(msg.payload)) return msg;\nnode.warn(validate.errors);\nnode.error(`Invalid massge`, msg);\n",
+        "func": "const ajv = new Ajv({ strict: false});\n\nconst schema = env.get('schema');\nconst validate = ajv.compile(schema);\n\nif (validate(msg.payload)) return msg;\nnode.error(`Invalid massge`, msg);",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -274,6 +225,116 @@
         "y": 80,
         "wires": [
             []
+        ]
+    },
+    {
+        "id": "51d088d99949334d",
+        "type": "switch",
+        "z": "d70e53f04ea4219d",
+        "name": "",
+        "property": "error.message",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "",
+                "vt": "str"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 1,
+        "x": 310,
+        "y": 160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ddcc4203cdae4bab",
+        "type": "http response",
+        "z": "d70e53f04ea4219d",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 510,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "034531df60d423c1",
+        "type": "http response",
+        "z": "d70e53f04ea4219d",
+        "name": "",
+        "statusCode": "404",
+        "headers": {},
+        "x": 520,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "adad5243ec9d9eeb",
+        "type": "http response",
+        "z": "d70e53f04ea4219d",
+        "name": "",
+        "statusCode": "500",
+        "headers": {},
+        "x": 520,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "c6801ec5417f1bb9",
+        "type": "http request",
+        "z": "a19c35db171e7c08",
+        "name": "",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "84e59769f7f05b82",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "basic",
+        "senderr": false,
+        "headers": [
+            {
+                "keyType": "Accept",
+                "keyValue": "",
+                "valueType": "application/json",
+                "valueValue": ""
+            },
+            {
+                "keyType": "Content-Type",
+                "keyValue": "",
+                "valueType": "application/json",
+                "valueValue": ""
+            }
+        ],
+        "x": 550,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f30d1578157685b0",
+        "type": "function",
+        "z": "a19c35db171e7c08",
+        "name": "set request",
+        "func": "\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 140,
+        "wires": [
+            [
+                "c6801ec5417f1bb9"
+            ]
         ]
     },
     {
@@ -333,11 +394,11 @@
                 "type": "json"
             }
         ],
-        "x": 670,
+        "x": 650,
         "y": 220,
         "wires": [
             [
-                "96d591075ce16a69"
+                "4fd869c8b618edd5"
             ]
         ]
     },
@@ -374,34 +435,10 @@
         "scope": null,
         "uncaught": false,
         "x": 160,
-        "y": 420,
+        "y": 440,
         "wires": [
             [
-                "4b7d7fb79a291177"
-            ]
-        ]
-    },
-    {
-        "id": "96d591075ce16a69",
-        "type": "http request",
-        "z": "412669072e03744e",
-        "name": "",
-        "method": "POST",
-        "ret": "txt",
-        "paytoqs": "ignore",
-        "url": "",
-        "tls": "84e59769f7f05b82",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "basic",
-        "senderr": false,
-        "headers": [],
-        "x": 870,
-        "y": 220,
-        "wires": [
-            [
-                "9ac105a7ce1bd126"
+                "890a307b4d633211"
             ]
         ]
     },
@@ -412,8 +449,8 @@
         "name": "",
         "statusCode": "",
         "headers": {},
-        "x": 1650,
-        "y": 140,
+        "x": 1530,
+        "y": 180,
         "wires": [],
         "icon": "font-awesome/fa-bank"
     },
@@ -423,76 +460,8 @@
         "z": "412669072e03744e",
         "name": "",
         "info": "",
-        "x": 1640,
-        "y": 100,
-        "wires": []
-    },
-    {
-        "id": "9ac105a7ce1bd126",
-        "type": "switch",
-        "z": "412669072e03744e",
-        "name": "",
-        "property": "error",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "null"
-            },
-            {
-                "t": "nnull"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 2,
-        "x": 1050,
-        "y": 220,
-        "wires": [
-            [
-                "64b1a466a3b587f9"
-            ],
-            [
-                "8aee4449174fc9e3"
-            ]
-        ]
-    },
-    {
-        "id": "a65b29bfc0e63ea8",
-        "type": "http response",
-        "z": "412669072e03744e",
-        "name": "",
-        "statusCode": "",
-        "headers": {},
-        "x": 1610,
-        "y": 300,
-        "wires": [],
-        "icon": "font-awesome/fa-bank"
-    },
-    {
-        "id": "ee35a1d69279ea44",
-        "type": "comment",
-        "z": "412669072e03744e",
-        "name": "",
-        "info": "",
-        "x": 1600,
-        "y": 260,
-        "wires": []
-    },
-    {
-        "id": "4b7d7fb79a291177",
-        "type": "debug",
-        "z": "412669072e03744e",
-        "name": "debug 3",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 360,
-        "y": 440,
+        "x": 1540,
+        "y": 140,
         "wires": []
     },
     {
@@ -517,45 +486,12 @@
         "checkall": "false",
         "repair": false,
         "outputs": 2,
-        "x": 550,
-        "y": 360,
+        "x": 470,
+        "y": 320,
         "wires": [
             [],
             []
         ]
-    },
-    {
-        "id": "5facd351d8f33d6d",
-        "type": "debug",
-        "z": "412669072e03744e",
-        "name": "debug 4",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1440,
-        "y": 180,
-        "wires": []
-    },
-    {
-        "id": "6b9630b1e5fbb325",
-        "type": "debug",
-        "z": "412669072e03744e",
-        "name": "debug 5",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1440,
-        "y": 300,
-        "wires": []
     },
     {
         "id": "64b1a466a3b587f9",
@@ -576,39 +512,49 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1260,
-        "y": 200,
+        "x": 1320,
+        "y": 180,
         "wires": [
             [
-                "5facd351d8f33d6d"
+                "8513a15eeda3a034"
             ]
         ]
     },
     {
-        "id": "8aee4449174fc9e3",
-        "type": "change",
+        "id": "ac3657e7afd769ed",
+        "type": "function",
+        "z": "412669072e03744e",
+        "name": "throw error",
+        "func": "node.error(`sadvavsavdssavd`, msg);",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1250,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "890a307b4d633211",
+        "type": "subflow:d70e53f04ea4219d",
         "z": "412669072e03744e",
         "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "{\"value\": 2}",
-                "tot": "json"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 1260,
-        "y": 260,
+        "x": 330,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "4fd869c8b618edd5",
+        "type": "subflow:a19c35db171e7c08",
+        "z": "412669072e03744e",
+        "name": "",
+        "x": 830,
+        "y": 220,
         "wires": [
-            [
-                "6b9630b1e5fbb325"
-            ]
+            []
         ]
     },
     {
@@ -639,6 +585,69 @@
         "statusType": "auto",
         "x": 300,
         "y": 200,
+        "wires": []
+    },
+    {
+        "id": "e60b12c1.93bb3",
+        "type": "inject",
+        "z": "42f285c336936ac1",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "0.0000001",
+        "topic": "",
+        "payload": "Started!",
+        "payloadType": "str",
+        "x": 240,
+        "y": 200,
+        "wires": [
+            [
+                "a40f8ee942c51d70",
+                "9c3b891cc7646254"
+            ]
+        ]
+    },
+    {
+        "id": "a40f8ee942c51d70",
+        "type": "function",
+        "z": "42f285c336936ac1",
+        "name": "function 1",
+        "func": "\n\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9c3b891cc7646254",
+        "type": "debug",
+        "z": "42f285c336936ac1",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 460,
+        "y": 120,
         "wires": []
     }
 ]
