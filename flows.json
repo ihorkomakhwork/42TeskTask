@@ -565,8 +565,8 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "hello",
-                "tot": "str"
+                "to": "{\"value\": 1}",
+                "tot": "json"
             }
         ],
         "action": "",
@@ -592,7 +592,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "world",
+                "to": "{\"value\": 2}",
                 "tot": "str"
             }
         ],
