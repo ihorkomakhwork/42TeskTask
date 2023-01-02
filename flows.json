@@ -566,7 +566,7 @@
                 "p": "payload",
                 "pt": "msg",
                 "to": "1",
-                "tot": "num"
+                "tot": "str"
             }
         ],
         "action": "",
