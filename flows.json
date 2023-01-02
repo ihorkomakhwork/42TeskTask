@@ -443,14 +443,15 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 1090,
+        "x": 1050,
         "y": 220,
         "wires": [
             [
-                "64b1a466a3b587f9",
-                "8aee4449174fc9e3"
+                "64b1a466a3b587f9"
             ],
-            []
+            [
+                "8aee4449174fc9e3"
+            ]
         ]
     },
     {
