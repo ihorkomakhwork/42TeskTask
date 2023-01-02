@@ -434,16 +434,16 @@
         "propertyType": "msg",
         "rules": [
             {
-                "t": "false"
+                "t": "true"
             },
             {
-                "t": "true"
+                "t": "false"
             }
         ],
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 1050,
+        "x": 1030,
         "y": 220,
         "wires": [
             [
