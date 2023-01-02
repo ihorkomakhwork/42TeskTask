@@ -430,7 +430,7 @@
         "type": "switch",
         "z": "412669072e03744e",
         "name": "",
-        "property": "payload.error",
+        "property": "error",
         "propertyType": "msg",
         "rules": [
             {
