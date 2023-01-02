@@ -434,10 +434,10 @@
         "propertyType": "msg",
         "rules": [
             {
-                "t": "true"
+                "t": "null"
             },
             {
-                "t": "false"
+                "t": "nnull"
             }
         ],
         "checkall": "true",
