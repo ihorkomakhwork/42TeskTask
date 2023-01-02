@@ -589,7 +589,7 @@
                 "p": "payload",
                 "pt": "msg",
                 "to": "{\"value\": 2}",
-                "tot": "str"
+                "tot": "json"
             }
         ],
         "action": "",
