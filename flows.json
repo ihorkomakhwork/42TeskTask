@@ -259,7 +259,7 @@
         "type": "function",
         "z": "3d8368539d02f074",
         "name": "alias validation",
-        "func": "const ajv = new Ajv({ strict: false});\n\nconst schema = env.get('schema');\nconst validate = ajv.compile(schema);\n\nif (validate(msg.payload)) return msg;\nelse {\n    node.debug(validate.errors);\n    node.error(`Invalid massge`, msg);\n} ",
+        "func": "const ajv = new Ajv({ strict: false});\n\nconst schema = env.get('schema');\nconst validate = ajv.compile(schema);\n\nif (validate(msg.payload)) return msg;\nelse {\n    node.warn(validate.errors);\n    node.error(`Invalid massge`, msg);\n} ",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
