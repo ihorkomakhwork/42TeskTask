@@ -329,7 +329,7 @@
         "method": "post",
         "upload": false,
         "swaggerDoc": "",
-        "x": 180,
+        "x": 160,
         "y": 220,
         "wires": [
             [
@@ -545,30 +545,17 @@
         "type": "http request",
         "z": "412669072e03744e",
         "name": "",
-        "method": "POST",
+        "method": "GET",
         "ret": "txt",
         "paytoqs": "ignore",
-        "url": "http://127.0.0.1:1860/api/v1.0/alias",
+        "url": "http://127.0.0.1:1860/api/test",
         "tls": "",
         "persist": false,
         "proxy": "",
         "insecureHTTPParser": false,
         "authType": "basic",
         "senderr": false,
-        "headers": [
-            {
-                "keyType": "Accept",
-                "keyValue": "",
-                "valueType": "application/json",
-                "valueValue": ""
-            },
-            {
-                "keyType": "Content-Type",
-                "keyValue": "",
-                "valueType": "application/json",
-                "valueValue": ""
-            }
-        ],
+        "headers": [],
         "x": 930,
         "y": 320,
         "wires": [
@@ -641,6 +628,40 @@
                 "bf232cdc33a00b2c"
             ]
         ]
+    },
+    {
+        "id": "9146949f02ef9a56",
+        "type": "http in",
+        "z": "412669072e03744e",
+        "name": "",
+        "url": "/api/test",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 310,
+        "y": 520,
+        "wires": [
+            [
+                "8ff0bdaf2ae6198a"
+            ]
+        ]
+    },
+    {
+        "id": "8ff0bdaf2ae6198a",
+        "type": "debug",
+        "z": "412669072e03744e",
+        "name": "debug 5",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 480,
+        "y": 520,
+        "wires": []
     },
     {
         "id": "429f2ffb076cd474",
