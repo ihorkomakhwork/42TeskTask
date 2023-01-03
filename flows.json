@@ -559,7 +559,9 @@
         "x": 710,
         "y": 340,
         "wires": [
-            []
+            [
+                "8772971c026d2941"
+            ]
         ]
     },
     {
@@ -635,6 +637,23 @@
         "headers": {},
         "x": 420,
         "y": 580,
+        "wires": []
+    },
+    {
+        "id": "8772971c026d2941",
+        "type": "debug",
+        "z": "412669072e03744e",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 980,
+        "y": 340,
         "wires": []
     },
     {
