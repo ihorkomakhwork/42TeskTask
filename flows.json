@@ -550,6 +550,13 @@
         "type": "subflow:a19c35db171e7c08",
         "z": "412669072e03744e",
         "name": "",
+        "env": [
+            {
+                "name": "resource",
+                "value": "vdp/helloword",
+                "type": "str"
+            }
+        ],
         "x": 830,
         "y": 220,
         "wires": [
