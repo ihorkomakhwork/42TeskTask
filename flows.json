@@ -548,7 +548,7 @@
         "method": "POST",
         "ret": "txt",
         "paytoqs": "ignore",
-        "url": "http://127.0.0.1:3000/g",
+        "url": "http://127.0.0.1:1860/api/v1.0/alias",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -569,7 +569,7 @@
                 "valueValue": ""
             }
         ],
-        "x": 970,
+        "x": 930,
         "y": 320,
         "wires": [
             [
