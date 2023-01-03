@@ -557,7 +557,7 @@
                 "type": "str"
             }
         ],
-        "x": 820,
+        "x": 840,
         "y": 220,
         "wires": [
             [
@@ -711,8 +711,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 940,
-        "y": 160,
+        "x": 1000,
+        "y": 220,
         "wires": []
     },
     {
