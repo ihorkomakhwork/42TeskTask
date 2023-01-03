@@ -145,7 +145,7 @@
         ],
         "out": [
             {
-                "x": 720,
+                "x": 900,
                 "y": 140,
                 "wires": [
                     {
@@ -295,7 +295,7 @@
                 "valueValue": ""
             }
         ],
-        "x": 550,
+        "x": 730,
         "y": 140,
         "wires": [
             []
@@ -313,6 +313,25 @@
         "finalize": "",
         "libs": [],
         "x": 330,
+        "y": 140,
+        "wires": [
+            [
+                "2c8b047003540c25"
+            ]
+        ]
+    },
+    {
+        "id": "2c8b047003540c25",
+        "type": "template",
+        "z": "a19c35db171e7c08",
+        "name": "",
+        "field": "url",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "This is the payload: {{env.VISA_HOST}} !",
+        "output": "str",
+        "x": 540,
         "y": 140,
         "wires": [
             [
