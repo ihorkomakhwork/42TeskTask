@@ -553,7 +553,7 @@
         "env": [
             {
                 "name": "resource",
-                "value": "aliasdirectory/v1/aliases",
+                "value": "visaaliasdirectory/v1/manage/createalias",
                 "type": "str"
             }
         ],
