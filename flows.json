@@ -317,7 +317,20 @@
         "insecureHTTPParser": false,
         "authType": "basic",
         "senderr": false,
-        "headers": [],
+        "headers": [
+            {
+                "keyType": "Content-Type",
+                "keyValue": "",
+                "valueType": "application/json",
+                "valueValue": ""
+            },
+            {
+                "keyType": "Accept",
+                "keyValue": "",
+                "valueType": "application/json",
+                "valueValue": ""
+            }
+        ],
         "x": 570,
         "y": 140,
         "wires": [
