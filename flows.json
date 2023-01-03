@@ -594,52 +594,6 @@
         ]
     },
     {
-        "id": "8135224414046c81",
-        "type": "http in",
-        "z": "412669072e03744e",
-        "name": "",
-        "url": "/g",
-        "method": "get",
-        "upload": false,
-        "swaggerDoc": "",
-        "x": 190,
-        "y": 560,
-        "wires": [
-            [
-                "f2b2ba95ca62e6a1",
-                "ec69f6a7c50d421b"
-            ]
-        ]
-    },
-    {
-        "id": "f2b2ba95ca62e6a1",
-        "type": "debug",
-        "z": "412669072e03744e",
-        "name": "debug 3",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 380,
-        "y": 520,
-        "wires": []
-    },
-    {
-        "id": "ec69f6a7c50d421b",
-        "type": "http response",
-        "z": "412669072e03744e",
-        "name": "",
-        "statusCode": "200",
-        "headers": {},
-        "x": 420,
-        "y": 580,
-        "wires": []
-    },
-    {
         "id": "8772971c026d2941",
         "type": "debug",
         "z": "412669072e03744e",
