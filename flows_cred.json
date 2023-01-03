@@ -9,7 +9,7 @@
     },
     "c6801ec5417f1bb9": {},
     "bf232cdc33a00b2c": {
-        "user": "${env.VISA_AUTH_ID}",
+        "user": "{{{VISA_AUTH_ID}}}",
         "password": "${VISA_AUTH_PASSWORD}"
     }
 }
