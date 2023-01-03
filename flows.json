@@ -317,20 +317,7 @@
         "insecureHTTPParser": false,
         "authType": "",
         "senderr": false,
-        "headers": [
-            {
-                "keyType": "Accept",
-                "keyValue": "",
-                "valueType": "application/json",
-                "valueValue": ""
-            },
-            {
-                "keyType": "Content-Type",
-                "keyValue": "",
-                "valueType": "application/json",
-                "valueValue": ""
-            }
-        ],
+        "headers": [],
         "x": 570,
         "y": 140,
         "wires": [
@@ -342,7 +329,7 @@
         "type": "function",
         "z": "a19c35db171e7c08",
         "name": "set request",
-        "func": "const VISA_HOST =  env.get(\"VISA_HOST\");\nconst VISA_AUTH_ID = env.get(\"VISA_AUTH_ID\");\nconst VISA_AUTH_PASSWORD = env.get(\"VISA_AUTH_ID\");\n\nconst resource = env.get(\"resource\");\nconst query = env.get(\"query\");  \n\nconst token = Buffer.from(`${VISA_AUTH_ID}:${VISA_AUTH_PASSWORD }`, 'utf8').toString('base64');  \n\nnode.warn(token);\n\nmsg.headers = {\n    \"Authorization\": `Basic ${token}`\n};\nmsg.method = env.get(\"method\");\nmsg.url = VISA_HOST + resource + query;\nreturn msg\n",
+        "func": "const VISA_HOST =  env.get(\"VISA_HOST\");\nconst VISA_AUTH_ID = env.get(\"VISA_AUTH_ID\");\nconst VISA_AUTH_PASSWORD = env.get(\"VISA_AUTH_ID\");\n\nconst resource = env.get(\"resource\");\nconst query = env.get(\"query\");  \n\nconst token = Buffer.from(`${VISA_AUTH_ID}:${VISA_AUTH_PASSWORD }`, 'utf8').toString('base64');  \n\nnode.warn(token);\n\nmsg.headers = {\n    \"Authorization\": `Basic ${token}`,\n    \"Content-Type\": \"application/json;\", \n    \"Accept\": \"application/json;\" \n};\nmsg.method = env.get(\"method\");\nmsg.url = VISA_HOST + resource + query;\nreturn msg\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
