@@ -596,8 +596,8 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "VISA_AUTH_ID",
-        "payloadType": "env",
+        "payload": "xvfxghfgdjfx",
+        "payloadType": "str",
         "x": 490,
         "y": 400,
         "wires": [
