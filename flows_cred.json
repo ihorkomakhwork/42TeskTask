@@ -9,7 +9,7 @@
     },
     "c6801ec5417f1bb9": {
         "user": "${VISA_AUTH_ID}",
-        "password": "7S8ZTHJcr4B1QH"
+        "password": "${VISA_AUTH_PASSWORD}"
     },
     "bf232cdc33a00b2c": {
         "user": "${VISA_AUTH_ID}",
