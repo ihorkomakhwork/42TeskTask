@@ -555,11 +555,6 @@
                 "name": "resource",
                 "value": "vdp/helloword",
                 "type": "str"
-            },
-            {
-                "name": "query",
-                "value": "?quary=hello_world",
-                "type": "str"
             }
         ],
         "x": 830,
