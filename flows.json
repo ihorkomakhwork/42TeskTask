@@ -555,6 +555,11 @@
                 "name": "resource",
                 "value": "vdp/helloword",
                 "type": "str"
+            },
+            {
+                "name": "method",
+                "value": "GET",
+                "type": "str"
             }
         ],
         "x": 830,
