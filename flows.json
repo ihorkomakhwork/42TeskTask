@@ -553,12 +553,7 @@
         "env": [
             {
                 "name": "resource",
-                "value": "vdp/helloword",
-                "type": "str"
-            },
-            {
-                "name": "method",
-                "value": "GET",
+                "value": "aliasdirectory/v1/aliases",
                 "type": "str"
             }
         ],
