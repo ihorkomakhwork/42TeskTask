@@ -559,7 +559,9 @@
         "x": 970,
         "y": 320,
         "wires": [
-            []
+            [
+                "8772971c026d2941"
+            ]
         ]
     },
     {
@@ -600,12 +602,12 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
+        "complete": "true",
+        "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1020,
-        "y": 400,
+        "x": 1140,
+        "y": 340,
         "wires": []
     },
     {
