@@ -4,24 +4,7 @@
         "type": "tab",
         "label": "/alias",
         "disabled": false,
-        "info": "",
-        "env": [
-            {
-                "name": "VISA_AUTH_ID",
-                "value": "XUODRN89PMITTDKCWHTJ21M862xJYdnMaV2B2ivXUZeGEB7bM",
-                "type": "str"
-            },
-            {
-                "name": "VISA_AUTH_PASSWORD",
-                "value": "7S8ZTHJcr4B1QH",
-                "type": "str"
-            },
-            {
-                "name": "VISA_HOST",
-                "value": "https://sandbox.api.visa.com/",
-                "type": "str"
-            }
-        ]
+        "info": ""
     },
     {
         "id": "75217cfbf0795720",
@@ -556,6 +539,91 @@
         "wires": [
             []
         ]
+    },
+    {
+        "id": "bf232cdc33a00b2c",
+        "type": "http request",
+        "z": "412669072e03744e",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "http://127.0.01/",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "basic",
+        "senderr": false,
+        "headers": [],
+        "x": 710,
+        "y": 340,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3383839aad1d223a",
+        "type": "inject",
+        "z": "412669072e03744e",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 480,
+        "y": 400,
+        "wires": [
+            [
+                "bf232cdc33a00b2c"
+            ]
+        ]
+    },
+    {
+        "id": "8135224414046c81",
+        "type": "http in",
+        "z": "412669072e03744e",
+        "name": "",
+        "url": "/",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 190,
+        "y": 520,
+        "wires": [
+            [
+                "f2b2ba95ca62e6a1"
+            ]
+        ]
+    },
+    {
+        "id": "f2b2ba95ca62e6a1",
+        "type": "debug",
+        "z": "412669072e03744e",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": false,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 380,
+        "y": 540,
+        "wires": []
     },
     {
         "id": "429f2ffb076cd474",
