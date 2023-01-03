@@ -287,7 +287,7 @@
         "type": "http request",
         "z": "a19c35db171e7c08",
         "name": "",
-        "method": "GET",
+        "method": "use",
         "ret": "obj",
         "paytoqs": "ignore",
         "url": "",
