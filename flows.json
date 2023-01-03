@@ -636,7 +636,7 @@
         "fieldType": "msg",
         "format": "handlebars",
         "syntax": "mustache",
-        "template": "This is the payload: {{env.VISA_AUTH_ID}} !",
+        "template": "This is the payload: ${VISA_AUTH_ID} !",
         "output": "str",
         "x": 700,
         "y": 360,
