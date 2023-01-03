@@ -586,7 +586,9 @@
         "x": 470,
         "y": 400,
         "wires": [
-            []
+            [
+                "8772971c026d2941"
+            ]
         ]
     },
     {
@@ -598,11 +600,11 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
+        "complete": "$env('VISA_AUTH_ID')",
+        "targetType": "jsonata",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1060,
+        "x": 780,
         "y": 340,
         "wires": []
     },
