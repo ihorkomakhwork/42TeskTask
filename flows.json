@@ -322,7 +322,7 @@
         "type": "function",
         "z": "a19c35db171e7c08",
         "name": "set request",
-        "func": "const VISA_HOST = env.get(\"VISA_HOST\")\nconst resource = env.get(\"resource\");\nconst query = env.get(\"query\");  \n\nmsg.method = env.get(\"method\");\n\nmsg.url = VISA_HOST + resource + query;\nnode.warn(msg.url)\nreturn msg;",
+        "func": "const VISA_HOST = env.get(\"VISA_HOST\")\nconst resource = env.get(\"resource\");\nconst query = env.get(\"query\");  \n\nmsg.method = env.get(\"method\");\nmsg.url = VISA_HOST + resource + query;\nnode.warn(msg.url)\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
