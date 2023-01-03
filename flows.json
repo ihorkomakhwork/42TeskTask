@@ -693,7 +693,7 @@
         "type": "function",
         "z": "42f285c336936ac1",
         "name": "function 1",
-        "func": "let port = env.get(\"PORT\");\nnode.warn(port)\n\n\nreturn msg;",
+        "func": "let port = env.get(\"VISA_AUTH_ID\");\nnode.warn(port)\n\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
