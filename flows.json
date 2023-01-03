@@ -604,7 +604,8 @@
         "y": 520,
         "wires": [
             [
-                "f2b2ba95ca62e6a1"
+                "f2b2ba95ca62e6a1",
+                "ec69f6a7c50d421b"
             ]
         ]
     },
@@ -622,6 +623,17 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 380,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "ec69f6a7c50d421b",
+        "type": "http response",
+        "z": "412669072e03744e",
+        "name": "",
+        "statusCode": "200",
+        "headers": {},
+        "x": 420,
         "y": 540,
         "wires": []
     },
