@@ -601,7 +601,7 @@
         "upload": false,
         "swaggerDoc": "",
         "x": 190,
-        "y": 520,
+        "y": 560,
         "wires": [
             [
                 "f2b2ba95ca62e6a1",
@@ -623,7 +623,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 380,
-        "y": 480,
+        "y": 520,
         "wires": []
     },
     {
@@ -634,7 +634,7 @@
         "statusCode": "200",
         "headers": {},
         "x": 420,
-        "y": 540,
+        "y": 580,
         "wires": []
     },
     {
