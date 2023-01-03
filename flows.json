@@ -556,7 +556,7 @@
         "authType": "basic",
         "senderr": false,
         "headers": [],
-        "x": 710,
+        "x": 790,
         "y": 340,
         "wires": [
             [
@@ -589,7 +589,7 @@
         "y": 400,
         "wires": [
             [
-                "bf232cdc33a00b2c"
+                "4c5dbb78def32cc2"
             ]
         ]
     },
@@ -606,9 +606,28 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 980,
+        "x": 1060,
         "y": 340,
         "wires": []
+    },
+    {
+        "id": "4c5dbb78def32cc2",
+        "type": "function",
+        "z": "412669072e03744e",
+        "name": "function 2",
+        "func": "node.warn(\"my warning\");\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 380,
+        "wires": [
+            [
+                "bf232cdc33a00b2c"
+            ]
+        ]
     },
     {
         "id": "429f2ffb076cd474",
