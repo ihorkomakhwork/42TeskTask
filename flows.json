@@ -199,7 +199,7 @@
         "ca": "",
         "certname": "cert.pem",
         "keyname": "privateKey.pem",
-        "caname": "",
+        "caname": "DigiCertGlobalRootCA.pem",
         "servername": "",
         "verifyservercert": false,
         "alpnprotocol": ""
