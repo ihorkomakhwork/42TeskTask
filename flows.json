@@ -581,9 +581,9 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "$env('VISA_AUTH_ID')",
-        "payloadType": "jsonata",
-        "x": 470,
+        "payload": "VISA_AUTH_ID",
+        "payloadType": "env",
+        "x": 490,
         "y": 400,
         "wires": [
             [
