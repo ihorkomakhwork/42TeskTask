@@ -271,10 +271,10 @@
         "type": "http request",
         "z": "a19c35db171e7c08",
         "name": "",
-        "method": "POST",
+        "method": "GET",
         "ret": "obj",
         "paytoqs": "ignore",
-        "url": "",
+        "url": "{{env.VISA_HOST}}vdp/helloworld",
         "tls": "84e59769f7f05b82",
         "persist": false,
         "proxy": "",
@@ -661,6 +661,16 @@
         "statusType": "auto",
         "x": 480,
         "y": 520,
+        "wires": []
+    },
+    {
+        "id": "da30827978644aae",
+        "type": "comment",
+        "z": "412669072e03744e",
+        "name": "",
+        "info": "",
+        "x": 860,
+        "y": 420,
         "wires": []
     },
     {
