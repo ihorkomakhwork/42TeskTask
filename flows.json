@@ -581,14 +581,12 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 480,
+        "payload": "$env('VISA_AUTH_ID')",
+        "payloadType": "jsonata",
+        "x": 470,
         "y": 400,
         "wires": [
-            [
-                "33c708ed4e987fe6"
-            ]
+            []
         ]
     },
     {
@@ -624,25 +622,6 @@
         "wires": [
             [
                 "bf232cdc33a00b2c"
-            ]
-        ]
-    },
-    {
-        "id": "33c708ed4e987fe6",
-        "type": "template",
-        "z": "412669072e03744e",
-        "name": "",
-        "field": "payload",
-        "fieldType": "msg",
-        "format": "handlebars",
-        "syntax": "mustache",
-        "template": "This is the payload: {{env.VISA_AUTH_ID}} !",
-        "output": "str",
-        "x": 700,
-        "y": 360,
-        "wires": [
-            [
-                "8772971c026d2941"
             ]
         ]
     },
