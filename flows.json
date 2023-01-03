@@ -274,7 +274,7 @@
         "method": "GET",
         "ret": "obj",
         "paytoqs": "ignore",
-        "url": "{{{VISA_HOST}}}vdp/helloworld",
+        "url": "${VISA_HOST}vdp/helloworld",
         "tls": "84e59769f7f05b82",
         "persist": false,
         "proxy": "",
