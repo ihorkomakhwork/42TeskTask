@@ -701,14 +701,19 @@
                 "p": "error",
                 "v": "{\"message\":\"dsvfdgfbddssfd\"}",
                 "vt": "json"
+            },
+            {
+                "p": "payload"
             }
         ],
         "repeat": "",
         "crontab": "",
-        "once": false,
+        "once": true,
         "onceDelay": 0.1,
         "topic": "",
-        "x": 430,
+        "payload": "frtrtegtertg",
+        "payloadType": "str",
+        "x": 450,
         "y": 400,
         "wires": [
             [
