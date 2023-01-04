@@ -336,7 +336,7 @@
             },
             {
                 "t": "set",
-                "p": "status",
+                "p": "payload.status",
                 "pt": "msg",
                 "to": "statusCode",
                 "tot": "msg"
@@ -347,8 +347,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 540,
-        "y": 300,
+        "x": 600,
+        "y": 320,
         "wires": [
             [
                 "a243132f1a50ae62"
@@ -362,8 +362,8 @@
         "name": "",
         "statusCode": "",
         "headers": {},
-        "x": 770,
-        "y": 300,
+        "x": 830,
+        "y": 320,
         "wires": []
     },
     {
