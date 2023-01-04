@@ -315,21 +315,23 @@
         "propertyType": "msg",
         "rules": [
             {
-                "t": "hask",
-                "v": "message",
-                "vt": "str"
+                "t": "nnull"
+            },
+            {
+                "t": "null"
             }
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 1,
+        "outputs": 2,
         "x": 230,
         "y": 260,
         "wires": [
             [
                 "c96f05db9a5c248c",
                 "5ef5d304bde5933a"
-            ]
+            ],
+            []
         ]
     },
     {
