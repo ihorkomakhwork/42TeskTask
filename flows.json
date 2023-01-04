@@ -389,7 +389,7 @@
                 "t": "set",
                 "p": "triggered",
                 "pt": "msg",
-                "to": "$exists(error.errorCode)",
+                "to": "$exists(msg.errorCode)",
                 "tot": "jsonata"
             }
         ],
