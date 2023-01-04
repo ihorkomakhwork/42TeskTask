@@ -475,35 +475,11 @@
         "y": 240,
         "wires": [
             [
-                "d365f059aea32f0c"
+                "d365f059aea32f0c",
+                "add41942c9b6ea29"
             ]
         ],
         "icon": "font-awesome/fa-bank"
-    },
-    {
-        "id": "0709cf8790772006",
-        "type": "change",
-        "z": "412669072e03744e",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "req.body",
-                "tot": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 540,
-        "y": 180,
-        "wires": [
-            []
-        ]
     },
     {
         "id": "add41942c9b6ea29",
@@ -828,8 +804,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 360,
-        "y": 140,
+        "x": 400,
+        "y": 160,
         "wires": []
     },
     {
