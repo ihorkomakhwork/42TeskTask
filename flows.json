@@ -116,6 +116,9 @@
                 "wires": [
                     {
                         "id": "ef363de3347b746e"
+                    },
+                    {
+                        "id": "78a40b04c9386e9b"
                     }
                 ]
             }
@@ -256,7 +259,7 @@
         "checkall": "false",
         "repair": false,
         "outputs": 4,
-        "x": 530,
+        "x": 630,
         "y": 260,
         "wires": [
             [
@@ -280,7 +283,7 @@
         "name": "",
         "statusCode": "400",
         "headers": {},
-        "x": 880,
+        "x": 980,
         "y": 160,
         "wires": []
     },
@@ -291,7 +294,7 @@
         "name": "",
         "statusCode": "404",
         "headers": {},
-        "x": 880,
+        "x": 980,
         "y": 260,
         "wires": []
     },
@@ -302,7 +305,7 @@
         "name": "",
         "statusCode": "500",
         "headers": {},
-        "x": 880,
+        "x": 980,
         "y": 380,
         "wires": []
     },
@@ -324,7 +327,7 @@
         "checkall": "false",
         "repair": false,
         "outputs": 2,
-        "x": 230,
+        "x": 330,
         "y": 260,
         "wires": [
             [
@@ -348,7 +351,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 600,
+        "x": 700,
         "y": 180,
         "wires": []
     },
@@ -365,7 +368,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 560,
+        "x": 660,
         "y": 380,
         "wires": []
     },
@@ -388,7 +391,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 400,
+        "x": 500,
         "y": 180,
         "wires": [
             [
@@ -415,13 +418,29 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 380,
+        "x": 480,
         "y": 380,
         "wires": [
             [
                 "fc688068848019bd"
             ]
         ]
+    },
+    {
+        "id": "78a40b04c9386e9b",
+        "type": "debug",
+        "z": "d70e53f04ea4219d",
+        "name": "debug 8",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 180,
+        "y": 200,
+        "wires": []
     },
     {
         "id": "c6801ec5417f1bb9",
