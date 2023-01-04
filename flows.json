@@ -209,7 +209,7 @@
         "type": "function",
         "z": "3d8368539d02f074",
         "name": "alias validation",
-        "func": "const ajv = new Ajv({ strict: false});\n\nconst schema = env.get('schema');\nconst validate = ajv.compile(schema);\n\nif (validate(msg.payload)) return msg;\nmsg.errorCode = 1002;\nmsg.triggered = true;\nnode.error(`Validation error`, msg);",
+        "func": "const ajv = new Ajv({ strict: false});\n\nconst schema = env.get('schema');\nconst validate = ajv.compile(schema);\n\nif (validate(msg.payload)) return msg;\nmsg.statusCode = 400;\nmsg.triggered = true;\nnode.error(`Validation error`, msg);",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -225,86 +225,6 @@
         "wires": [
             []
         ]
-    },
-    {
-        "id": "51d088d99949334d",
-        "type": "switch",
-        "z": "d70e53f04ea4219d",
-        "name": "",
-        "property": "errorCode",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "eq",
-                "v": "1001",
-                "vt": "num"
-            },
-            {
-                "t": "eq",
-                "v": "1002",
-                "vt": "num"
-            },
-            {
-                "t": "eq",
-                "v": "1003",
-                "vt": "str"
-            },
-            {
-                "t": "null"
-            }
-        ],
-        "checkall": "false",
-        "repair": false,
-        "outputs": 4,
-        "x": 610,
-        "y": 340,
-        "wires": [
-            [
-                "ddcc4203cdae4bab"
-            ],
-            [
-                "034531df60d423c1"
-            ],
-            [
-                "adad5243ec9d9eeb"
-            ],
-            [
-                "adad5243ec9d9eeb"
-            ]
-        ]
-    },
-    {
-        "id": "ddcc4203cdae4bab",
-        "type": "http response",
-        "z": "d70e53f04ea4219d",
-        "name": "",
-        "statusCode": "400",
-        "headers": {},
-        "x": 860,
-        "y": 240,
-        "wires": []
-    },
-    {
-        "id": "034531df60d423c1",
-        "type": "http response",
-        "z": "d70e53f04ea4219d",
-        "name": "",
-        "statusCode": "404",
-        "headers": {},
-        "x": 820,
-        "y": 320,
-        "wires": []
-    },
-    {
-        "id": "adad5243ec9d9eeb",
-        "type": "http response",
-        "z": "d70e53f04ea4219d",
-        "name": "",
-        "statusCode": "500",
-        "headers": {},
-        "x": 820,
-        "y": 420,
-        "wires": []
     },
     {
         "id": "ef363de3347b746e",
@@ -333,7 +253,7 @@
                 "471897e05182350b"
             ],
             [
-                "51d088d99949334d"
+                "007e7181347da3a3"
             ]
         ]
     },
@@ -393,6 +313,58 @@
                 "64c993181fda90ee"
             ]
         ]
+    },
+    {
+        "id": "007e7181347da3a3",
+        "type": "change",
+        "z": "d70e53f04ea4219d",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{}",
+                "tot": "json"
+            },
+            {
+                "t": "set",
+                "p": "payload.message",
+                "pt": "msg",
+                "to": "error.message",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "status",
+                "pt": "msg",
+                "to": "statusCode",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 540,
+        "y": 300,
+        "wires": [
+            [
+                "a243132f1a50ae62"
+            ]
+        ]
+    },
+    {
+        "id": "a243132f1a50ae62",
+        "type": "http response",
+        "z": "d70e53f04ea4219d",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 770,
+        "y": 300,
+        "wires": []
     },
     {
         "id": "c6801ec5417f1bb9",
@@ -550,7 +522,7 @@
         "type": "function",
         "z": "412669072e03744e",
         "name": "throw error",
-        "func": "const { message } = msg.payload;\n\nconst reasons = message ? message : 'unknown visa api error'; \nmsg.errorCode = 1001;\nmsg.triggered = true;\nnode.error(`Alias wasn\\'t create, ${reasons}` , msg);",
+        "func": "const { message } = msg.payload;\n\nconst reasons = message ? message : 'unknown visa api error'; \nmsg.statusCode = 500;\nmsg.triggered = true;\nnode.error(`Alias wasn\\'t create, ${reasons}` , msg);",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
