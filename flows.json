@@ -115,10 +115,10 @@
                 "y": 260,
                 "wires": [
                     {
-                        "id": "ef363de3347b746e"
+                        "id": "78a40b04c9386e9b"
                     },
                     {
-                        "id": "78a40b04c9386e9b"
+                        "id": "07e486e17285fd74"
                     }
                 ]
             }
@@ -259,7 +259,7 @@
         "checkall": "false",
         "repair": false,
         "outputs": 4,
-        "x": 630,
+        "x": 870,
         "y": 260,
         "wires": [
             [
@@ -283,7 +283,7 @@
         "name": "",
         "statusCode": "400",
         "headers": {},
-        "x": 980,
+        "x": 1220,
         "y": 160,
         "wires": []
     },
@@ -294,7 +294,7 @@
         "name": "",
         "statusCode": "404",
         "headers": {},
-        "x": 980,
+        "x": 1220,
         "y": 260,
         "wires": []
     },
@@ -305,7 +305,7 @@
         "name": "",
         "statusCode": "500",
         "headers": {},
-        "x": 980,
+        "x": 1220,
         "y": 380,
         "wires": []
     },
@@ -318,23 +318,19 @@
         "propertyType": "msg",
         "rules": [
             {
-                "t": "true"
-            },
-            {
-                "t": "false"
+                "t": "jsonata_exp",
+                "v": "$exists(error.message)",
+                "vt": "jsonata"
             }
         ],
         "checkall": "false",
         "repair": false,
-        "outputs": 2,
-        "x": 330,
+        "outputs": 1,
+        "x": 570,
         "y": 260,
         "wires": [
             [
                 "c96f05db9a5c248c"
-            ],
-            [
-                "5ef5d304bde5933a"
             ]
         ]
     },
@@ -351,7 +347,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 700,
+        "x": 940,
         "y": 180,
         "wires": []
     },
@@ -368,7 +364,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 660,
+        "x": 900,
         "y": 380,
         "wires": []
     },
@@ -391,7 +387,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 500,
+        "x": 740,
         "y": 180,
         "wires": [
             [
@@ -418,7 +414,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 480,
+        "x": 720,
         "y": 380,
         "wires": [
             [
@@ -442,6 +438,33 @@
         "x": 220,
         "y": 180,
         "wires": []
+    },
+    {
+        "id": "07e486e17285fd74",
+        "type": "change",
+        "z": "d70e53f04ea4219d",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "hasMessage",
+                "pt": "msg",
+                "to": "$exists(error.message)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 320,
+        "y": 260,
+        "wires": [
+            [
+                "ef363de3347b746e"
+            ]
+        ]
     },
     {
         "id": "c6801ec5417f1bb9",
