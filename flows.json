@@ -453,9 +453,11 @@
         "type": "http response",
         "z": "412669072e03744e",
         "name": "",
-        "statusCode": "",
-        "headers": {},
-        "x": 1330,
+        "statusCode": "201",
+        "headers": {
+            "content-type": "application/json"
+        },
+        "x": 1260,
         "y": 140,
         "wires": [],
         "icon": "font-awesome/fa-bank"
@@ -466,7 +468,7 @@
         "z": "412669072e03744e",
         "name": "",
         "info": "",
-        "x": 1340,
+        "x": 1240,
         "y": 100,
         "wires": []
     },
@@ -496,10 +498,10 @@
         "y": 220,
         "wires": [
             [
-                "4d3b7e78d9b7985c"
+                "8513a15eeda3a034"
             ],
             [
-                "6255f639480175b4"
+                "ac3657e7afd769ed"
             ]
         ]
     },
@@ -508,14 +510,14 @@
         "type": "function",
         "z": "412669072e03744e",
         "name": "throw error",
-        "func": "node.error(`sadvavsavdssavd`, msg);",
+        "func": "node.error(`Alias wasn't create ${msg.payload.message}`, msg);",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
         "x": 1250,
-        "y": 280,
+        "y": 260,
         "wires": [
             []
         ]
@@ -709,40 +711,6 @@
         "wires": [
             []
         ]
-    },
-    {
-        "id": "4d3b7e78d9b7985c",
-        "type": "debug",
-        "z": "412669072e03744e",
-        "name": "debug 9",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "statusCode",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1200,
-        "y": 160,
-        "wires": []
-    },
-    {
-        "id": "6255f639480175b4",
-        "type": "debug",
-        "z": "412669072e03744e",
-        "name": "debug 10",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1220,
-        "y": 240,
-        "wires": []
     },
     {
         "id": "429f2ffb076cd474",
