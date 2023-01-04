@@ -321,7 +321,7 @@
                 "t": "empty"
             }
         ],
-        "checkall": "true",
+        "checkall": "false",
         "repair": false,
         "outputs": 2,
         "x": 230,
