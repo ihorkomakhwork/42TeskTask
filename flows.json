@@ -738,7 +738,7 @@
         "type": "function",
         "z": "412669072e03744e",
         "name": "function 2",
-        "func": "\nthrow Error(\"dsdfsvsvfdvdf\");",
+        "func": "\nthrow Error();",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
