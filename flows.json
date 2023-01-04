@@ -555,7 +555,7 @@
         "type": "function",
         "z": "412669072e03744e",
         "name": "throw error",
-        "func": "node.error(`Alias wasn't create ${msg.payload.message}`, msg);",
+        "func": "node.error(`Alias wasn't create`, msg);",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
