@@ -415,7 +415,8 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "false",
+        "complete": "true",
+        "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
         "x": 880,
@@ -688,9 +689,7 @@
         "name": "",
         "props": [
             {
-                "p": "triggered",
-                "v": "{\"message\": \"sdcfvsfdvdfsv\" }",
-                "vt": "json"
+                "p": "payload"
             },
             {
                 "p": "topic",
@@ -702,7 +701,9 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "x": 1050,
+        "payload": "sdcsdcdvdvs",
+        "payloadType": "str",
+        "x": 1070,
         "y": 360,
         "wires": [
             [
