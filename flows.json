@@ -344,11 +344,12 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "false",
+        "complete": "payload",
+        "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 520,
-        "y": 160,
+        "x": 600,
+        "y": 180,
         "wires": []
     },
     {
@@ -364,8 +365,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 520,
-        "y": 360,
+        "x": 560,
+        "y": 380,
         "wires": []
     },
     {
@@ -388,7 +389,7 @@
         "to": "",
         "reg": false,
         "x": 400,
-        "y": 200,
+        "y": 180,
         "wires": [
             [
                 "aaafb46c9f66a6be"
@@ -414,8 +415,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 400,
-        "y": 320,
+        "x": 380,
+        "y": 380,
         "wires": [
             [
                 "fc688068848019bd"
@@ -618,12 +619,10 @@
         "y": 240,
         "wires": [
             [
-                "8513a15eeda3a034",
-                "7a36e1caa79bcba5"
+                "8513a15eeda3a034"
             ],
             [
-                "ac3657e7afd769ed",
-                "f0637c16bdfabc2a"
+                "ac3657e7afd769ed"
             ]
         ]
     },
@@ -684,46 +683,12 @@
         "wires": []
     },
     {
-        "id": "7a36e1caa79bcba5",
-        "type": "debug",
-        "z": "412669072e03744e",
-        "name": "debug 3",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1080,
-        "y": 100,
-        "wires": []
-    },
-    {
-        "id": "f0637c16bdfabc2a",
-        "type": "debug",
-        "z": "412669072e03744e",
-        "name": "debug 4",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1100,
-        "y": 400,
-        "wires": []
-    },
-    {
         "id": "edb57ed9ed190ea7",
         "type": "subflow:d70e53f04ea4219d",
         "z": "412669072e03744e",
         "name": "",
         "x": 650,
-        "y": 420,
+        "y": 400,
         "wires": []
     },
     {
