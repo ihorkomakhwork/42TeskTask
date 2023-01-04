@@ -465,16 +465,6 @@
         "icon": "font-awesome/fa-bank"
     },
     {
-        "id": "cf0204ff01d91717",
-        "type": "comment",
-        "z": "412669072e03744e",
-        "name": "",
-        "info": "",
-        "x": 1300,
-        "y": 160,
-        "wires": []
-    },
-    {
         "id": "fc57ea6402090e73",
         "type": "switch",
         "z": "412669072e03744e",
@@ -552,16 +542,6 @@
                 "fc57ea6402090e73"
             ]
         ]
-    },
-    {
-        "id": "e7de84cfa6d70d75",
-        "type": "comment",
-        "z": "412669072e03744e",
-        "name": "",
-        "info": "",
-        "x": 1100,
-        "y": 380,
-        "wires": []
     },
     {
         "id": "8ab91041abef5398",
