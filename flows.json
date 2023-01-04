@@ -318,10 +318,10 @@
         "propertyType": "msg",
         "rules": [
             {
-                "t": "null"
+                "t": "true"
             },
             {
-                "t": "nnull"
+                "t": "false"
             }
         ],
         "checkall": "false",
