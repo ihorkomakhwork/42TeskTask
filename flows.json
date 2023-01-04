@@ -437,7 +437,7 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 610,
+        "x": 710,
         "y": 140,
         "wires": [
             []
@@ -454,7 +454,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 330,
+        "x": 410,
         "y": 140,
         "wires": [
             [
@@ -475,7 +475,6 @@
         "y": 240,
         "wires": [
             [
-                "d365f059aea32f0c",
                 "add41942c9b6ea29"
             ]
         ],
@@ -493,7 +492,7 @@
                 "type": "json"
             }
         ],
-        "x": 530,
+        "x": 450,
         "y": 240,
         "wires": [
             [
@@ -612,7 +611,7 @@
                 "type": "str"
             }
         ],
-        "x": 770,
+        "x": 690,
         "y": 240,
         "wires": [
             [
@@ -683,23 +682,6 @@
         "statusType": "auto",
         "x": 1140,
         "y": 340,
-        "wires": []
-    },
-    {
-        "id": "d365f059aea32f0c",
-        "type": "debug",
-        "z": "412669072e03744e",
-        "name": "debug 9",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 400,
-        "y": 160,
         "wires": []
     },
     {
