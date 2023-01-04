@@ -297,8 +297,15 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{\"message\":\"Internal server error\",\"code\":\"1000\"}",
+                "to": "{\"message\":\"Internal server error\",\"status\":\"1000\"}",
                 "tot": "json"
+            },
+            {
+                "t": "set",
+                "p": "statusCode",
+                "pt": "msg",
+                "to": "500",
+                "tot": "str"
             }
         ],
         "action": "",
