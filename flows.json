@@ -652,7 +652,7 @@
         "arraySpltType": "len",
         "stream": false,
         "addname": "",
-        "x": 630,
+        "x": 650,
         "y": 340,
         "wires": [
             [
@@ -679,7 +679,9 @@
         "x": 1190,
         "y": 340,
         "wires": [
-            []
+            [
+                "af222ed522191bb7"
+            ]
         ]
     },
     {
