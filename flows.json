@@ -115,7 +115,7 @@
                 "y": 260,
                 "wires": [
                     {
-                        "id": "07e486e17285fd74"
+                        "id": "ef363de3347b746e"
                     }
                 ]
             }
@@ -256,8 +256,8 @@
         "checkall": "false",
         "repair": false,
         "outputs": 4,
-        "x": 990,
-        "y": 420,
+        "x": 970,
+        "y": 340,
         "wires": [
             [
                 "ddcc4203cdae4bab"
@@ -280,8 +280,8 @@
         "name": "",
         "statusCode": "400",
         "headers": {},
-        "x": 1240,
-        "y": 320,
+        "x": 1220,
+        "y": 240,
         "wires": []
     },
     {
@@ -291,8 +291,8 @@
         "name": "",
         "statusCode": "404",
         "headers": {},
-        "x": 1280,
-        "y": 420,
+        "x": 1180,
+        "y": 320,
         "wires": []
     },
     {
@@ -302,55 +302,38 @@
         "name": "",
         "statusCode": "500",
         "headers": {},
-        "x": 1280,
-        "y": 540,
+        "x": 1180,
+        "y": 420,
         "wires": []
     },
     {
         "id": "ef363de3347b746e",
         "type": "switch",
         "z": "d70e53f04ea4219d",
-        "name": "",
+        "name": "type error",
         "property": "triggered",
         "propertyType": "msg",
         "rules": [
             {
-                "t": "true"
+                "t": "false"
             },
             {
-                "t": "false"
+                "t": "true"
             }
         ],
         "checkall": "false",
         "repair": false,
         "outputs": 2,
-        "x": 550,
+        "x": 420,
         "y": 260,
         "wires": [
             [
-                "aaafb46c9f66a6be"
+                "471897e05182350b"
             ],
             [
                 "5ef5d304bde5933a"
             ]
         ]
-    },
-    {
-        "id": "aaafb46c9f66a6be",
-        "type": "debug",
-        "z": "d70e53f04ea4219d",
-        "name": "debug 6",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 780,
-        "y": 240,
-        "wires": []
     },
     {
         "id": "5ef5d304bde5933a",
@@ -371,38 +354,11 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 700,
-        "y": 400,
+        "x": 620,
+        "y": 320,
         "wires": [
             [
                 "0f49a250a77ec087"
-            ]
-        ]
-    },
-    {
-        "id": "07e486e17285fd74",
-        "type": "change",
-        "z": "d70e53f04ea4219d",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "triggered",
-                "pt": "msg",
-                "to": "$exists(msg.errorCode)",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 310,
-        "y": 260,
-        "wires": [
-            [
-                "ef363de3347b746e"
             ]
         ]
     },
@@ -419,9 +375,49 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 880,
-        "y": 360,
+        "x": 800,
+        "y": 320,
         "wires": []
+    },
+    {
+        "id": "64c993181fda90ee",
+        "type": "http response",
+        "z": "d70e53f04ea4219d",
+        "name": "",
+        "statusCode": "500",
+        "headers": {
+            "content-type": "application/json"
+        },
+        "x": 840,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "471897e05182350b",
+        "type": "change",
+        "z": "d70e53f04ea4219d",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"message\":\"Internal server error\",\"code\":1000}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 660,
+        "y": 160,
+        "wires": [
+            [
+                "64c993181fda90ee"
+            ]
+        ]
     },
     {
         "id": "c6801ec5417f1bb9",
@@ -525,7 +521,8 @@
         "y": 240,
         "wires": [
             [
-                "4fd869c8b618edd5"
+                "4fd869c8b618edd5",
+                "408f3da969811283"
             ]
         ]
     },
@@ -719,6 +716,23 @@
         "x": 990,
         "y": 400,
         "wires": []
+    },
+    {
+        "id": "408f3da969811283",
+        "type": "function",
+        "z": "412669072e03744e",
+        "name": "function 2",
+        "func": "throw Error(\"sdcsdcsdc\");",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 720,
+        "y": 160,
+        "wires": [
+            []
+        ]
     },
     {
         "id": "a9b2a57e9e4e1a7a",
