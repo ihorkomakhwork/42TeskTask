@@ -723,9 +723,9 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 1060,
+        "payload": "{\"message\": \"sdcfvsfdvdfsv\" }",
+        "payloadType": "json",
+        "x": 1050,
         "y": 360,
         "wires": [
             [
