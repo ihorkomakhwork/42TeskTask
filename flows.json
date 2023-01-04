@@ -404,7 +404,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{\"message\":\"Internal server error\",\"code\":1000}",
+                "to": "{\"message\":\"Internal server error\",\"code\":\"1000\"}",
                 "tot": "json"
             }
         ],
@@ -716,6 +716,87 @@
         "name": "",
         "x": 990,
         "y": 400,
+        "wires": []
+    },
+    {
+        "id": "c8107088.37ef9",
+        "type": "http in",
+        "z": "412669072e03744e",
+        "name": "",
+        "url": "/hello-json",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 540,
+        "y": 640,
+        "wires": [
+            [
+                "4e8237da.b17dc8"
+            ]
+        ]
+    },
+    {
+        "id": "4e8237da.b17dc8",
+        "type": "template",
+        "z": "412669072e03744e",
+        "name": "page",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "json",
+        "syntax": "plain",
+        "template": "",
+        "output": "json",
+        "x": 710,
+        "y": 640,
+        "wires": [
+            [
+                "65401623.9abfe8"
+            ]
+        ]
+    },
+    {
+        "id": "65401623.9abfe8",
+        "type": "change",
+        "z": "412669072e03744e",
+        "name": "Set Headers",
+        "rules": [
+            {
+                "t": "set",
+                "p": "headers",
+                "pt": "msg",
+                "to": "{}",
+                "tot": "json"
+            },
+            {
+                "t": "set",
+                "p": "headers.content-type",
+                "pt": "msg",
+                "to": "application/json",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 870,
+        "y": 640,
+        "wires": [
+            [
+                "f7d3e35a.082c2"
+            ]
+        ]
+    },
+    {
+        "id": "f7d3e35a.082c2",
+        "type": "http response",
+        "z": "412669072e03744e",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1030,
+        "y": 640,
         "wires": []
     },
     {
