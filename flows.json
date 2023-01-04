@@ -231,22 +231,22 @@
         "type": "switch",
         "z": "d70e53f04ea4219d",
         "name": "",
-        "property": "statusCode",
+        "property": "errorCode",
         "propertyType": "msg",
         "rules": [
             {
                 "t": "eq",
-                "v": "400",
-                "vt": "str"
+                "v": "1001",
+                "vt": "num"
             },
             {
                 "t": "eq",
-                "v": "404",
-                "vt": "str"
+                "v": "1002",
+                "vt": "num"
             },
             {
                 "t": "eq",
-                "v": "500",
+                "v": "1003",
                 "vt": "str"
             },
             {
@@ -256,7 +256,7 @@
         "checkall": "false",
         "repair": false,
         "outputs": 4,
-        "x": 970,
+        "x": 610,
         "y": 340,
         "wires": [
             [
@@ -280,7 +280,7 @@
         "name": "",
         "statusCode": "400",
         "headers": {},
-        "x": 1220,
+        "x": 860,
         "y": 240,
         "wires": []
     },
@@ -291,7 +291,7 @@
         "name": "",
         "statusCode": "404",
         "headers": {},
-        "x": 1180,
+        "x": 820,
         "y": 320,
         "wires": []
     },
@@ -302,7 +302,7 @@
         "name": "",
         "statusCode": "500",
         "headers": {},
-        "x": 1180,
+        "x": 820,
         "y": 420,
         "wires": []
     },
@@ -333,34 +333,7 @@
                 "471897e05182350b"
             ],
             [
-                "5ef5d304bde5933a"
-            ]
-        ]
-    },
-    {
-        "id": "5ef5d304bde5933a",
-        "type": "change",
-        "z": "d70e53f04ea4219d",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "false",
-                "tot": "bool"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 620,
-        "y": 320,
-        "wires": [
-            [
-                "0f49a250a77ec087"
+                "51d088d99949334d"
             ]
         ]
     },
@@ -377,8 +350,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 800,
-        "y": 320,
+        "x": 1100,
+        "y": 100,
         "wires": []
     },
     {
