@@ -115,9 +115,6 @@
                 "y": 260,
                 "wires": [
                     {
-                        "id": "78a40b04c9386e9b"
-                    },
-                    {
                         "id": "07e486e17285fd74"
                     }
                 ]
@@ -316,23 +313,13 @@
         "name": "",
         "property": "error.message",
         "propertyType": "msg",
-        "rules": [
-            {
-                "t": "jsonata_exp",
-                "v": "$exists(error.message)",
-                "vt": "jsonata"
-            }
-        ],
+        "rules": [],
         "checkall": "false",
         "repair": false,
-        "outputs": 1,
-        "x": 570,
+        "outputs": 0,
+        "x": 690,
         "y": 260,
-        "wires": [
-            [
-                "c96f05db9a5c248c"
-            ]
-        ]
+        "wires": []
     },
     {
         "id": "aaafb46c9f66a6be",
@@ -423,23 +410,6 @@
         ]
     },
     {
-        "id": "78a40b04c9386e9b",
-        "type": "debug",
-        "z": "d70e53f04ea4219d",
-        "name": "debug 8",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 220,
-        "y": 180,
-        "wires": []
-    },
-    {
         "id": "07e486e17285fd74",
         "type": "change",
         "z": "d70e53f04ea4219d",
@@ -462,9 +432,26 @@
         "y": 260,
         "wires": [
             [
-                "ef363de3347b746e"
+                "7c7c25e6f39ffea0"
             ]
         ]
+    },
+    {
+        "id": "7c7c25e6f39ffea0",
+        "type": "debug",
+        "z": "d70e53f04ea4219d",
+        "name": "debug 8",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 520,
+        "y": 220,
+        "wires": []
     },
     {
         "id": "c6801ec5417f1bb9",
