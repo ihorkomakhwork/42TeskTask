@@ -315,7 +315,9 @@
         "propertyType": "msg",
         "rules": [
             {
-                "t": "false"
+                "t": "neq",
+                "v": "undefined",
+                "vt": "jsonata"
             },
             {
                 "t": "true"
@@ -324,7 +326,7 @@
         "checkall": "false",
         "repair": false,
         "outputs": 2,
-        "x": 420,
+        "x": 340,
         "y": 260,
         "wires": [
             [
