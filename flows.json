@@ -314,7 +314,7 @@
         "type": "switch",
         "z": "d70e53f04ea4219d",
         "name": "",
-        "property": "error",
+        "property": "error.message",
         "propertyType": "msg",
         "rules": [
             {
