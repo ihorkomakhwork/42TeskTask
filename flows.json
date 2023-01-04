@@ -711,7 +711,9 @@
         "name": "",
         "props": [
             {
-                "p": "payload"
+                "p": "triggered",
+                "v": "{\"message\": \"sdcfvsfdvdfsv\" }",
+                "vt": "json"
             },
             {
                 "p": "topic",
@@ -723,8 +725,6 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "{\"message\": \"sdcfvsfdvdfsv\" }",
-        "payloadType": "json",
         "x": 1050,
         "y": 360,
         "wires": [
