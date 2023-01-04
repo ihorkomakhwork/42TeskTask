@@ -311,7 +311,7 @@
         "type": "switch",
         "z": "d70e53f04ea4219d",
         "name": "",
-        "property": "hasMessage",
+        "property": "triggered",
         "propertyType": "msg",
         "rules": [
             {
@@ -614,7 +614,7 @@
         "type": "function",
         "z": "412669072e03744e",
         "name": "throw error",
-        "func": "const { message } = msg.payload;\n\nconst reasons = message ? message : 'unknown visa api error'; \nmsg.errorCode = 1001;\nnode.error(`Alias wasn\\'t create, ${reasons}` , msg);",
+        "func": "const { message } = msg.payload;\n\nconst reasons = message ? message : 'unknown visa api error'; \nmsg.errorCode = 1001;\nmsg.triggerd = true;\nnode.error(`Alias wasn\\'t create, ${reasons}` , msg);",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
