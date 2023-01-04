@@ -387,9 +387,9 @@
         "rules": [
             {
                 "t": "set",
-                "p": "hasMessage",
+                "p": "triggered",
                 "pt": "msg",
-                "to": "$exists(error.message)",
+                "to": "$exists(error.errorCode)",
                 "tot": "jsonata"
             }
         ],
@@ -398,7 +398,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 320,
+        "x": 310,
         "y": 260,
         "wires": [
             [
@@ -614,14 +614,14 @@
         "type": "function",
         "z": "412669072e03744e",
         "name": "throw error",
-        "func": "node.error(`Alias wasn't create visa api operation was failed`, msg);",
+        "func": "const { message } = msg.payload;\n\nconst reasons = message ? message : 'unknown visa api error'; \nmsg.errorCode = 1001;\nnode.error(`Alias wasn\\'t create, ${reasons}` , msg);",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1230,
-        "y": 300,
+        "x": 1290,
+        "y": 320,
         "wires": [
             []
         ]
@@ -661,8 +661,8 @@
         "z": "412669072e03744e",
         "name": "",
         "info": "",
-        "x": 1220,
-        "y": 260,
+        "x": 1280,
+        "y": 280,
         "wires": []
     },
     {
@@ -705,7 +705,7 @@
         ]
     },
     {
-        "id": "5fb53480522138d5",
+        "id": "5eb945fe1e06dc98",
         "type": "inject",
         "z": "412669072e03744e",
         "name": "",
@@ -725,29 +725,12 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 160,
-        "y": 640,
+        "x": 1060,
+        "y": 360,
         "wires": [
             [
-                "bd4801504a8c58ad"
+                "ac3657e7afd769ed"
             ]
-        ]
-    },
-    {
-        "id": "bd4801504a8c58ad",
-        "type": "function",
-        "z": "412669072e03744e",
-        "name": "function 2",
-        "func": "\nthrow Error();",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 320,
-        "y": 640,
-        "wires": [
-            []
         ]
     },
     {
