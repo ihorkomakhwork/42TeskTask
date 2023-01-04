@@ -437,6 +437,36 @@
         ]
     },
     {
+        "id": "82caa1d4792b30e8",
+        "type": "inject",
+        "z": "d70e53f04ea4219d",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "v": "{\"error\":{\"message\":\"dsvfdgfbddssfd\"}}",
+                "vt": "json"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 120,
+        "y": 320,
+        "wires": [
+            [
+                "ef363de3347b746e"
+            ]
+        ]
+    },
+    {
         "id": "c6801ec5417f1bb9",
         "type": "http request",
         "z": "a19c35db171e7c08",
