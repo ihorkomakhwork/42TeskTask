@@ -387,7 +387,9 @@
         "z": "d70e53f04ea4219d",
         "name": "",
         "statusCode": "500",
-        "headers": {},
+        "headers": {
+            "content-type": "application/json"
+        },
         "x": 840,
         "y": 160,
         "wires": []
@@ -618,7 +620,8 @@
                 "8513a15eeda3a034"
             ],
             [
-                "ac3657e7afd769ed"
+                "ac3657e7afd769ed",
+                "036ac1b664d48db7"
             ]
         ]
     },
@@ -795,6 +798,22 @@
         "headers": {},
         "x": 1030,
         "y": 640,
+        "wires": []
+    },
+    {
+        "id": "036ac1b664d48db7",
+        "type": "debug",
+        "z": "412669072e03744e",
+        "name": "debug 8",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1040,
+        "y": 340,
         "wires": []
     },
     {
