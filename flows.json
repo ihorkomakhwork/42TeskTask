@@ -614,7 +614,7 @@
         "type": "function",
         "z": "412669072e03744e",
         "name": "throw error",
-        "func": "node.error(`Alias wasn't create ${msg.payload.message}`, msg);",
+        "func": "node.error(`Alias wasn't create visa api operation was failed`, msg);",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -682,7 +682,7 @@
         "props": [
             {
                 "p": "error",
-                "v": "{\"messag\":\"dsvfdgfbddssfd\"}",
+                "v": "{\"errCode\":234}",
                 "vt": "json"
             },
             {
@@ -702,6 +702,52 @@
             [
                 "edb57ed9ed190ea7"
             ]
+        ]
+    },
+    {
+        "id": "5fb53480522138d5",
+        "type": "inject",
+        "z": "412669072e03744e",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 160,
+        "y": 640,
+        "wires": [
+            [
+                "bd4801504a8c58ad"
+            ]
+        ]
+    },
+    {
+        "id": "bd4801504a8c58ad",
+        "type": "function",
+        "z": "412669072e03744e",
+        "name": "function 2",
+        "func": "\nthrow Error(\"dsdfsvsvfdvdf\");",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 640,
+        "wires": [
+            []
         ]
     },
     {
