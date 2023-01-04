@@ -406,8 +406,8 @@
         "method": "post",
         "upload": false,
         "swaggerDoc": "",
-        "x": 180,
-        "y": 240,
+        "x": 200,
+        "y": 320,
         "wires": [
             [
                 "add41942c9b6ea29"
@@ -427,8 +427,8 @@
                 "type": "json"
             }
         ],
-        "x": 450,
-        "y": 240,
+        "x": 470,
+        "y": 320,
         "wires": [
             [
                 "4fd869c8b618edd5"
@@ -443,7 +443,7 @@
         "scope": null,
         "uncaught": false,
         "x": 160,
-        "y": 480,
+        "y": 680,
         "wires": [
             [
                 "890a307b4d633211"
@@ -459,8 +459,8 @@
         "headers": {
             "content-type": "application/json"
         },
-        "x": 1060,
-        "y": 160,
+        "x": 1300,
+        "y": 200,
         "wires": [],
         "icon": "font-awesome/fa-bank"
     },
@@ -470,8 +470,8 @@
         "z": "412669072e03744e",
         "name": "",
         "info": "",
-        "x": 1060,
-        "y": 120,
+        "x": 1300,
+        "y": 160,
         "wires": []
     },
     {
@@ -496,12 +496,11 @@
         "checkall": "false",
         "repair": false,
         "outputs": 2,
-        "x": 870,
-        "y": 240,
+        "x": 890,
+        "y": 320,
         "wires": [
             [
-                "8513a15eeda3a034",
-                "20f59d76ca43312a"
+                "8ab91041abef5398"
             ],
             [
                 "ac3657e7afd769ed"
@@ -519,8 +518,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1070,
-        "y": 300,
+        "x": 1110,
+        "y": 420,
         "wires": [
             []
         ]
@@ -531,7 +530,7 @@
         "z": "412669072e03744e",
         "name": "",
         "x": 330,
-        "y": 480,
+        "y": 680,
         "wires": []
     },
     {
@@ -546,8 +545,8 @@
                 "type": "str"
             }
         ],
-        "x": 690,
-        "y": 240,
+        "x": 710,
+        "y": 320,
         "wires": [
             [
                 "fc57ea6402090e73"
@@ -560,26 +559,36 @@
         "z": "412669072e03744e",
         "name": "",
         "info": "",
-        "x": 1060,
-        "y": 260,
+        "x": 1100,
+        "y": 380,
         "wires": []
     },
     {
-        "id": "20f59d76ca43312a",
-        "type": "debug",
+        "id": "8ab91041abef5398",
+        "type": "change",
         "z": "412669072e03744e",
-        "name": "debug 3",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 880,
-        "y": 120,
-        "wires": []
+        "name": "set message",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.message",
+                "pt": "msg",
+                "to": "Alias was create sccesfull",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1110,
+        "y": 200,
+        "wires": [
+            [
+                "8513a15eeda3a034"
+            ]
+        ]
     },
     {
         "id": "a9b2a57e9e4e1a7a",
