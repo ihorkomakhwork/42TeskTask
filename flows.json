@@ -311,15 +311,29 @@
         "type": "switch",
         "z": "d70e53f04ea4219d",
         "name": "",
-        "property": "error.message",
+        "property": "hasMessage",
         "propertyType": "msg",
-        "rules": [],
+        "rules": [
+            {
+                "t": "true"
+            },
+            {
+                "t": "false"
+            }
+        ],
         "checkall": "false",
         "repair": false,
-        "outputs": 0,
-        "x": 690,
+        "outputs": 2,
+        "x": 550,
         "y": 260,
-        "wires": []
+        "wires": [
+            [
+                "c96f05db9a5c248c"
+            ],
+            [
+                "5ef5d304bde5933a"
+            ]
+        ]
     },
     {
         "id": "aaafb46c9f66a6be",
@@ -432,26 +446,9 @@
         "y": 260,
         "wires": [
             [
-                "7c7c25e6f39ffea0"
+                "ef363de3347b746e"
             ]
         ]
-    },
-    {
-        "id": "7c7c25e6f39ffea0",
-        "type": "debug",
-        "z": "d70e53f04ea4219d",
-        "name": "debug 8",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 520,
-        "y": 220,
-        "wires": []
     },
     {
         "id": "c6801ec5417f1bb9",
