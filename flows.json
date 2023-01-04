@@ -480,8 +480,8 @@
         "headers": {
             "content-type": "application/json"
         },
-        "x": 1220,
-        "y": 180,
+        "x": 1280,
+        "y": 140,
         "wires": [],
         "icon": "font-awesome/fa-bank"
     },
@@ -491,8 +491,8 @@
         "z": "412669072e03744e",
         "name": "",
         "info": "",
-        "x": 1220,
-        "y": 140,
+        "x": 1280,
+        "y": 100,
         "wires": []
     },
     {
@@ -521,10 +521,12 @@
         "y": 240,
         "wires": [
             [
-                "8513a15eeda3a034"
+                "8513a15eeda3a034",
+                "7a36e1caa79bcba5"
             ],
             [
-                "ac3657e7afd769ed"
+                "ac3657e7afd769ed",
+                "f0637c16bdfabc2a"
             ]
         ]
     },
@@ -582,6 +584,40 @@
         "info": "",
         "x": 1220,
         "y": 260,
+        "wires": []
+    },
+    {
+        "id": "7a36e1caa79bcba5",
+        "type": "debug",
+        "z": "412669072e03744e",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1080,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "f0637c16bdfabc2a",
+        "type": "debug",
+        "z": "412669072e03744e",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1100,
+        "y": 400,
         "wires": []
     },
     {
