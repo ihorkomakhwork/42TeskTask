@@ -387,9 +387,7 @@
         "z": "d70e53f04ea4219d",
         "name": "",
         "statusCode": "500",
-        "headers": {
-            "content-type": "application/json"
-        },
+        "headers": {},
         "x": 840,
         "y": 160,
         "wires": []
