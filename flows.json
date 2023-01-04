@@ -315,7 +315,7 @@
         "propertyType": "msg",
         "rules": [
             {
-                "t": "neq",
+                "t": "eq",
                 "v": "undefined",
                 "vt": "jsonata"
             },
@@ -524,8 +524,8 @@
         "headers": {
             "content-type": "application/json"
         },
-        "x": 1380,
-        "y": 140,
+        "x": 1180,
+        "y": 160,
         "wires": [],
         "icon": "font-awesome/fa-bank"
     },
@@ -535,8 +535,8 @@
         "z": "412669072e03744e",
         "name": "",
         "info": "",
-        "x": 1380,
-        "y": 100,
+        "x": 1180,
+        "y": 120,
         "wires": []
     },
     {
@@ -568,8 +568,7 @@
                 "8513a15eeda3a034"
             ],
             [
-                "ac3657e7afd769ed",
-                "036ac1b664d48db7"
+                "ac3657e7afd769ed"
             ]
         ]
     },
@@ -584,7 +583,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1390,
+        "x": 1210,
         "y": 320,
         "wires": [
             []
@@ -625,7 +624,7 @@
         "z": "412669072e03744e",
         "name": "",
         "info": "",
-        "x": 1380,
+        "x": 1200,
         "y": 280,
         "wires": []
     },
@@ -665,23 +664,6 @@
         "name": "",
         "x": 1090,
         "y": 400,
-        "wires": []
-    },
-    {
-        "id": "036ac1b664d48db7",
-        "type": "debug",
-        "z": "412669072e03744e",
-        "name": "debug 8",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1140,
-        "y": 340,
         "wires": []
     },
     {
