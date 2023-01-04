@@ -209,7 +209,7 @@
         "type": "function",
         "z": "3d8368539d02f074",
         "name": "alias validation",
-        "func": "const ajv = new Ajv({ strict: false});\n\nconst schema = env.get('schema');\nconst validate = ajv.compile(schema);\n\nif (validate(msg.payload)) return msg;\nnode.warn(validate.errors);\nnode.error(`Invalid massge`, msg);",
+        "func": "const ajv = new Ajv({ strict: false});\n\nconst schema = env.get('schema');\nconst validate = ajv.compile(schema);\n\nif (validate(msg.payload)) return msg;\nnode.error(`Validation error`, msg);",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -493,36 +493,11 @@
                 "type": "json"
             }
         ],
-        "x": 750,
+        "x": 530,
         "y": 240,
         "wires": [
             [
                 "4fd869c8b618edd5"
-            ]
-        ]
-    },
-    {
-        "id": "2f062a5572c1ac19",
-        "type": "inject",
-        "z": "412669072e03744e",
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": true,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"country\":\"US\",\"recipientLastName\":\"Due\",\"recipientMiddleName\":\"C.\",\"city\":\"NY\",\"address2\":\"Region 3\",\"recipientFirstName\":\"Jon\",\"recipientPrimaryAccountNumber\":\"9000000000004175\",\"address1\":\"Street 1\",\"issuerName\":\"UA Bank 2\",\"postalCode\":\"00111\",\"cardType\":\"Visa Classic\",\"consentDateTime\":\"2021-01-11 12:12:12\",\"aliasType\":\"01\",\"guid\":\"uscard222gc222g\",\"alias\":\"7673335667\"}",
-        "payloadType": "json",
-        "x": 410,
-        "y": 320,
-        "wires": [
-            [
-                "add41942c9b6ea29"
             ]
         ]
     },
@@ -587,7 +562,7 @@
         "checkall": "false",
         "repair": false,
         "outputs": 2,
-        "x": 1130,
+        "x": 970,
         "y": 240,
         "wires": [
             [
@@ -637,7 +612,7 @@
                 "type": "str"
             }
         ],
-        "x": 950,
+        "x": 770,
         "y": 240,
         "wires": [
             [
@@ -691,87 +666,6 @@
         "name": "",
         "x": 1090,
         "y": 400,
-        "wires": []
-    },
-    {
-        "id": "c8107088.37ef9",
-        "type": "http in",
-        "z": "412669072e03744e",
-        "name": "",
-        "url": "/hello-json",
-        "method": "get",
-        "upload": false,
-        "swaggerDoc": "",
-        "x": 540,
-        "y": 640,
-        "wires": [
-            [
-                "4e8237da.b17dc8"
-            ]
-        ]
-    },
-    {
-        "id": "4e8237da.b17dc8",
-        "type": "template",
-        "z": "412669072e03744e",
-        "name": "page",
-        "field": "payload",
-        "fieldType": "msg",
-        "format": "json",
-        "syntax": "plain",
-        "template": "",
-        "output": "json",
-        "x": 710,
-        "y": 640,
-        "wires": [
-            [
-                "65401623.9abfe8"
-            ]
-        ]
-    },
-    {
-        "id": "65401623.9abfe8",
-        "type": "change",
-        "z": "412669072e03744e",
-        "name": "Set Headers",
-        "rules": [
-            {
-                "t": "set",
-                "p": "headers",
-                "pt": "msg",
-                "to": "{}",
-                "tot": "json"
-            },
-            {
-                "t": "set",
-                "p": "headers.content-type",
-                "pt": "msg",
-                "to": "application/json",
-                "tot": "str"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 870,
-        "y": 640,
-        "wires": [
-            [
-                "f7d3e35a.082c2"
-            ]
-        ]
-    },
-    {
-        "id": "f7d3e35a.082c2",
-        "type": "http response",
-        "z": "412669072e03744e",
-        "name": "",
-        "statusCode": "",
-        "headers": {},
-        "x": 1030,
-        "y": 640,
         "wires": []
     },
     {
