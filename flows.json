@@ -115,9 +115,6 @@
                 "y": 260,
                 "wires": [
                     {
-                        "id": "148833827c862a1b"
-                    },
-                    {
                         "id": "58a0d9d6859b5ad5"
                     }
                 ]
@@ -259,7 +256,7 @@
         "checkall": "false",
         "repair": false,
         "outputs": 4,
-        "x": 470,
+        "x": 530,
         "y": 260,
         "wires": [
             [
@@ -283,7 +280,7 @@
         "name": "",
         "statusCode": "400",
         "headers": {},
-        "x": 700,
+        "x": 880,
         "y": 160,
         "wires": []
     },
@@ -294,7 +291,7 @@
         "name": "",
         "statusCode": "404",
         "headers": {},
-        "x": 700,
+        "x": 880,
         "y": 260,
         "wires": []
     },
@@ -305,28 +302,9 @@
         "name": "",
         "statusCode": "500",
         "headers": {},
-        "x": 700,
+        "x": 880,
         "y": 380,
         "wires": []
-    },
-    {
-        "id": "148833827c862a1b",
-        "type": "change",
-        "z": "d70e53f04ea4219d",
-        "name": "",
-        "rules": [],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 280,
-        "y": 260,
-        "wires": [
-            [
-                "51d088d99949334d"
-            ]
-        ]
     },
     {
         "id": "58a0d9d6859b5ad5",
@@ -344,6 +322,119 @@
         "x": 220,
         "y": 140,
         "wires": []
+    },
+    {
+        "id": "ef363de3347b746e",
+        "type": "switch",
+        "z": "d70e53f04ea4219d",
+        "name": "",
+        "property": "error",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "hask",
+                "v": "message",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 310,
+        "y": 260,
+        "wires": [
+            [
+                "c96f05db9a5c248c",
+                "5ef5d304bde5933a"
+            ]
+        ]
+    },
+    {
+        "id": "aaafb46c9f66a6be",
+        "type": "debug",
+        "z": "d70e53f04ea4219d",
+        "name": "debug 6",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 520,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "fc688068848019bd",
+        "type": "debug",
+        "z": "d70e53f04ea4219d",
+        "name": "debug 7",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 520,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "c96f05db9a5c248c",
+        "type": "change",
+        "z": "d70e53f04ea4219d",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "true",
+                "tot": "bool"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 400,
+        "y": 200,
+        "wires": [
+            [
+                "aaafb46c9f66a6be"
+            ]
+        ]
+    },
+    {
+        "id": "5ef5d304bde5933a",
+        "type": "change",
+        "z": "d70e53f04ea4219d",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "false",
+                "tot": "bool"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 400,
+        "y": 320,
+        "wires": [
+            [
+                "fc688068848019bd"
+            ]
+        ]
     },
     {
         "id": "c6801ec5417f1bb9",
@@ -555,7 +646,7 @@
         "type": "function",
         "z": "412669072e03744e",
         "name": "throw error",
-        "func": "node.error(`Alias wasn't create`, msg);",
+        "func": "node.error(`Alias wasn't create ${msg.payload.message}`, msg);",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
