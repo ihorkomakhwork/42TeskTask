@@ -521,8 +521,7 @@
         "y": 240,
         "wires": [
             [
-                "4fd869c8b618edd5",
-                "408f3da969811283"
+                "4fd869c8b618edd5"
             ]
         ]
     },
@@ -716,23 +715,6 @@
         "x": 990,
         "y": 400,
         "wires": []
-    },
-    {
-        "id": "408f3da969811283",
-        "type": "function",
-        "z": "412669072e03744e",
-        "name": "function 2",
-        "func": "throw Error(\"sdcsdcsdc\");",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 720,
-        "y": 160,
-        "wires": [
-            []
-        ]
     },
     {
         "id": "a9b2a57e9e4e1a7a",
