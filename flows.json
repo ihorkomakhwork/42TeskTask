@@ -116,9 +116,6 @@
                 "wires": [
                     {
                         "id": "51d088d99949334d"
-                    },
-                    {
-                        "id": "96bb068f8f1f1830"
                     }
                 ]
             }
@@ -247,7 +244,7 @@
         "repair": false,
         "outputs": 1,
         "x": 290,
-        "y": 260,
+        "y": 160,
         "wires": [
             []
         ]
@@ -257,9 +254,9 @@
         "type": "http response",
         "z": "d70e53f04ea4219d",
         "name": "",
-        "statusCode": "",
+        "statusCode": "400",
         "headers": {},
-        "x": 510,
+        "x": 520,
         "y": 100,
         "wires": []
     },
@@ -283,23 +280,6 @@
         "headers": {},
         "x": 520,
         "y": 260,
-        "wires": []
-    },
-    {
-        "id": "96bb068f8f1f1830",
-        "type": "debug",
-        "z": "d70e53f04ea4219d",
-        "name": "debug 8",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 280,
-        "y": 140,
         "wires": []
     },
     {
