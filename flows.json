@@ -766,6 +766,42 @@
         "wires": []
     },
     {
+        "id": "f92e8a7689be2b7f",
+        "type": "subflow:3d8368539d02f074",
+        "z": "f7abbef9ef4f4067",
+        "name": "validate alias(old api)",
+        "env": [
+            {
+                "name": "schema",
+                "value": "{\"type\":\"object\",\"properties\":{\"aliasType\":{\"type\":\"string\",\"const\":\"01\"},\"alias\":{\"type\":\"string\",\"minLength\":9,\"maxLength\":15,\"pattern\":\"^[1-9]\\\\d{1,14}$\"},\"issuerName\":{\"type\":\"string\"},\"recipientFirstName\":{\"type\":\"string\"},\"recipientLastName\":{\"type\":\"string\"},\"guid\":{\"type\":\"string\",\"pattern\":\"[^\\\\s]+\"},\"cardType\":{\"type\":\"string\"},\"country\":{\"type\":\"string\",\"pattern\":\"^(A(D|E|F|G|I|L|M|N|O|R|S|T|Q|U|W|X|Z)|B(A|B|D|E|F|G|H|I|J|L|M|N|O|R|S|T|V|W|Y|Z)|C(A|C|D|F|G|H|I|K|L|M|N|O|R|U|V|X|Y|Z)|D(E|J|K|M|O|Z)|E(C|E|G|H|R|S|T)|F(I|J|K|M|O|R)|G(A|B|D|E|F|G|H|I|L|M|N|P|Q|R|S|T|U|W|Y)|H(K|M|N|R|T|U)|I(D|E|Q|L|M|N|O|R|S|T)|J(E|M|O|P)|K(E|G|H|I|M|N|P|R|W|Y|Z)|L(A|B|C|I|K|R|S|T|U|V|Y)|M(A|C|D|E|F|G|H|K|L|M|N|O|Q|P|R|S|T|U|V|W|X|Y|Z)|N(A|C|E|F|G|I|L|O|P|R|U|Z)|OM|P(A|E|F|G|H|K|L|M|N|R|S|T|W|Y)|QA|R(E|O|S|U|W)|S(A|B|C|D|E|G|H|I|J|K|L|M|N|O|R|T|V|Y|Z)|T(C|D|F|G|H|J|K|L|M|N|O|R|T|V|W|Z)|U(A|G|M|S|Y|Z)|V(A|C|E|G|I|N|U)|W(F|S)|Y(E|T)|Z(A|M|W))$\"},\"consentDateTime\":{\"type\":\"string\",\"pattern\":\"[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) (2[0-3]|[01][0-9]):[0-5][0-9]:[0-5][0-9]\"}},\"required\":[\"aliasType\",\"alias\",\"cardType\",\"country\",\"consentDateTime\",\"guid\",\"recipientLastName\",\"recipientFirstName\",\"issuerName\"]}",
+                "type": "json"
+            }
+        ],
+        "x": 500,
+        "y": 540,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1589b08ea9f51358",
+        "type": "subflow:3d8368539d02f074",
+        "z": "f7abbef9ef4f4067",
+        "name": "validate validate(both type)",
+        "env": [
+            {
+                "name": "schema",
+                "value": "{\"type\":\"object\",\"properties\":{\"aliasType\":{\"type\":\"string\",\"enum\":[\"PHONE\",\"EMAIL\"]},\"consent\":{\"type\":\"object\",\"properties\":{\"presenter\":{\"type\":\"string\"},\"version\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":9,\"pattern\":\"^[0-9]+.[0-9]+$\"}},\"required\":[\"presenter\",\"version\"]},\"identification\":{\"type\":\"object\",\"properties\":{\"type\":{\"type\":\"string\",\"enum\":[\"PASSPORT\",\"DL\",\"NIDN\",\"DPI\"]},\"value\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":36}},\"required\":[\"type\",\"value\"]},\"paymentCredentials\":{\"type\":\"array\",\"items\":{\"oneOf\":[{\"type\":\"object\",\"properties\":{\"accountNumber\":{\"type\":\"string\",\"minLength\":6,\"maxLength\":19,\"pattern\":\"^d*$\"},\"type\":{\"type\":\"string\",\"enum\":[\"CARD\",\"BANK\"]},\"billingAddress\":{\"type\":\"object\",\"properties\":{\"country\":{\"type\":\"string\",\"maxLength\":3,\"minLength\":3,\"pattern\":\"rn/^ABW|AFG|AGO|AIA|ALA|ALB|AND|ARE|ARG|ARM|ASM|ATA|ATF|ATG|AUS|AUT|AZE|BDI|BEL|BEN|BES|BFA|BGD|BGR|BHR|BHS|BIH|BLM|BLR|BLZ|BMU|BOL|BRA|BRB|BRN|BTN|BVT|BWA|CAF|CAN|CCK|CHE|CHL|CHN|CIV|CMR|COD|COG|COK|COL|COM|CPV|CRI|CUB|CUW|CXR|CYM|CYP|CZE|DEU|DJI|DMA|DNK|DOM|DZA|ECU|EGY|ERI|ESH|ESP|EST|ETH|FIN|FJI|FLK|FRA|FRO|FSM|GAB|GBR|GEO|GGY|GHA|GIB|GIN|GLP|GMB|GNB|GNQ|GRC|GRD|GRL|GTM|GUF|GUM|GUY|HKG|HMD|HND|HRV|HTI|HUN|IDN|IMN|IND|IOT|IRL|IRN|IRQ|ISL|ISR|ITA|JAM|JEY|JOR|JPN|KAZ|KEN|KGZ|KHM|KIR|KNA|KOR|KWT|LAO|LBN|LBR|LBY|LCA|LIE|LKA|LSO|LTU|LUX|LVA|MAC|MAF|MAR|MCO|MDA|MDG|MDV|MEX|MHL|MKD|MLI|MLT|MMR|MNE|MNG|MNP|MOZ|MRT|MSR|MTQ|MUS|MWI|MYS|MYT|NAM|NCL|NER|NFK|NGA|NIC|NIU|NLD|NOR|NPL|NRU|NZL|OMN|PAK|PAN|PCN|PER|PHL|PLW|PNG|POL|PRI|PRK|PRT|PRY|PSE|PYF|QAT|REU|ROU|RUS|RWA|SAU|SDN|SEN|SGP|SGS|SHN|SJM|SLB|SLE|SLV|SMR|SOM|SPM|SRB|SSD|STP|SUR|SVK|SVN|SWE|SWZ|SXM|SYC|SYR|TCA|TCD|TGO|THA|TJK|TKL|TKM|TLS|TON|TTO|TUN|TUR|TUV|TWN|TZA|UGA|UKR|UMI|URY|USA|UZB|VAT|VCT|VEN|VGB|VIR|VNM|VUT|WLF|WSM|YEM|ZAF|ZMB|ZWE$/\"}},\"required\":[\"country\"]},\"preferredFor\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"type\":{\"type\":\"string\",\"enum\":[\"RECEIVE\",\"SEND\",\"PAY\"]}},\"required\":[\"type\"]},\"minContains\":0,\"maxContains\":3}},\"required\":[\"accountNumber\",\"type\",\"billingAddress\",\"preferredFor\"]},{\"type\":\"object\",\"properties\":{\"accountName\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":70,\"pattern\":\"^[a-zA-Z0-9/-:()'+]+$rn\"},\"type\":{\"type\":\"string\",\"enum\":[\"CARD\",\"BANK\"]},\"accountNumber\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":34,\"pattern\":\"^[a-zA-Z0-9/-:()'+]+$rn\"},\"accountNumberType\":{\"type\":\"string\",\"enum\":[\"IBAN\",\"DEFAULT\"]},\"bankName\":{\"type\":\"string\",\"pattern\":\"^[a-zA-Z0-9/-:()'+]+$rn\",\"minLength\":1,\"maxLength\":50},\"countryCode\":{\"type\":\"string\",\"minLength\":3,\"maxLength\":3,\"pattern\":\"/^A(BW|FG|GO|IA|L[AB]|ND|R[EGM]|SM|T[ArnFG]|U[ST]|ZE)|B(DI|E[LNS]|FA|G[DR]|H[RS]|IH|L[MRZ]|MU|OL|rnR[ABN]|TN|VT|WA)|C(A[FN]|CK|H[ELN]|IV|MR|O[DGKLM]|PV|RI|Urn[BW]|XR|Y[MP]|ZE)|D(EU|JI|MA|NK|OM|ZA)|E(CU|GY|RI|S[HPT]|rnTH)|F(IN|JI|LK|R[AO]|SM)|G(AB|BR|EO|GY|HA|I[BN]|LP|MB|N[BrnQ]|R[CDL]|TM|U[FMY])|H(KG|MD|ND|RV|TI|UN)|I(DN|MN|ND|OT|Rrn[LNQ]|S[LR]|TA)|J(AM|EY|OR|PN)|K(AZ|EN|GZ|HM|IR|NA|OR|WT)rn|L(AO|B[NRY]|CA|IE|KA|SO|TU|UX|VA)|M(A[CFR]|CO|D[AGV]|EX|rnHL|KD|L[IT]|MR|N[EGP]|OZ|RT|SR|TQ|US|WI|Y[ST])|N(AM|CL|ERrn|FK|GA|I[CU]|LD|OR|PL|RU|ZL)|OMN|P(A[KN]|CN|ER|HL|LW|NG|OrnL|R[IKTY]|SE|YF)|QAT|R(EU|OU|US|WA)|S(AU|DN|EN|G[PS]|HN|JrnM|L[BEV]|MR|OM|PM|RB|SD|TP|UR|V[KN]|W[EZ]|XM|Y[CR])|T(C[ArnD]|GO|HA|JK|K[LM]|LS|ON|TO|U[NRV]|WN|ZA)|U(GA|KR|MI|RY|SArn|ZB)|V(AT|CT|EN|GB|IR|NM|UT)|W(LF|SM)|YEM|Z(AF|MB|WE)$/ix\"},\"currencyCode\":{\"type\":\"string\",\"minLength\":3,\"maxLength\":3,\"pattern\":\"rnrn/^AED|AFN|ALL|AMD|ANG|AOA|ARS|AUD|AWG|AZN|BAM|BBD|BDT|BGN|BHD|BIF|BMD|BND|BOB|BRL|BSD|BTN|BWP|BYR|BZD|CAD|CDF|CHF|CLP|CNY|COP|CRC|CUC|CUP|CVE|CZK|DJF|DKK|DOP|DZD|EGP|ERN|ETB|EUR|FJD|FKP|GBP|GEL|GGP|GHS|GIP|GMD|GNF|GTQ|GYD|HKD|HNL|HRK|HTG|HUF|IDR|ILS|IMP|INR|IQD|IRR|ISK|JEP|JMD|JOD|JPY|KES|KGS|KHR|KMF|KPW|KRW|KWD|KYD|KZT|LAK|LBP|LKR|LRD|LSL|LYD|MAD|MDL|MGA|MKD|MMK|MNT|MOP|MRO|MUR|MVR|MWK|MXN|MYR|MZN|NAD|NGN|NIO|NOK|NPR|NZD|OMR|PAB|PEN|PGK|PHP|PKR|PLN|PYG|QAR|RON|RSD|RUB|RWF|SAR|SBD|SCR|SDG|SEK|SGD|SHP|SLL|SOS|SPL|SRD|STD|SVC|SYP|SZL|THB|TJS|TMT|TND|TOP|TRY|TTD|TVD|TWD|TZS|UAH|UGX|USD|UYU|UZS|VEF|VND|VUV|WST|XAF|XCD|XDR|XOF|XPF|YER|ZAR|ZMW|ZWD$/\"},\"preferredFor\":{\"type\":\"string\",\"enum\":[\"RECEIVE\",\"SEND\",\"PAY\"]}},\"required\":[\"accountName\",\"type\",\"accountNumber\",\"accountNumberType\",\"bankName\",\"countryCode\",\"currencyCode\",\"preferredFor\"]}]},\"minContains\":1,\"maxContains\":10},\"profile\":{\"type\":\"object\",\"properties\":{\"contactInfo\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"type\":{\"type\":\"string\",\"enum\":[\"EMAIL\",\"PHONE\"]},\"value\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":320}},\"required\":[\"type\",\"value\"]},\"minContains\":2}},\"required\":[\"contactInfo\"]}},\"allOf\":[{\"if\":{\"properties\":{\"aliasType\":{\"const\":\"EMAIL\"}}},\"then\":{\"properties\":{\"aliasValue\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":128,\"pattern\":\"^([a-z0-9_.-]+)@([da-z.-]+).([a-z.]{2,6})$\"}}}},{\"if\":{\"properties\":{\"aliasType\":{\"const\":\"PHONE\"}}},\"then\":{\"properties\":{\"aliasValue\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":128,\"pattern\":\"^[1-9]+[0-9]*$\"}}}}],\"required\":[\"aliasType\",\"aliasValue\",\"consent\",\"identification\",\"paymentCredentials\",\"profile\"]}",
+                "type": "json"
+            }
+        ],
+        "x": 560,
+        "y": 620,
+        "wires": [
+            []
+        ]
+    },
+    {
         "id": "f83075e5cc12da3c",
         "type": "http in",
         "z": "412669072e03744e",
@@ -778,30 +814,10 @@
         "y": 320,
         "wires": [
             [
-                "add41942c9b6ea29"
+                "b95759322ffdf456"
             ]
         ],
         "icon": "font-awesome/fa-bank"
-    },
-    {
-        "id": "add41942c9b6ea29",
-        "type": "subflow:3d8368539d02f074",
-        "z": "412669072e03744e",
-        "name": "validate alias",
-        "env": [
-            {
-                "name": "schema",
-                "value": "{\"type\":\"object\",\"properties\":{\"aliasType\":{\"type\":\"string\",\"const\":\"01\"},\"alias\":{\"type\":\"string\",\"minLength\":9,\"maxLength\":15,\"pattern\":\"^[1-9]\\\\d{1,14}$\"},\"issuerName\":{\"type\":\"string\"},\"recipientFirstName\":{\"type\":\"string\"},\"recipientLastName\":{\"type\":\"string\"},\"guid\":{\"type\":\"string\",\"pattern\":\"[^\\\\s]+\"},\"cardType\":{\"type\":\"string\"},\"country\":{\"type\":\"string\",\"pattern\":\"^(A(D|E|F|G|I|L|M|N|O|R|S|T|Q|U|W|X|Z)|B(A|B|D|E|F|G|H|I|J|L|M|N|O|R|S|T|V|W|Y|Z)|C(A|C|D|F|G|H|I|K|L|M|N|O|R|U|V|X|Y|Z)|D(E|J|K|M|O|Z)|E(C|E|G|H|R|S|T)|F(I|J|K|M|O|R)|G(A|B|D|E|F|G|H|I|L|M|N|P|Q|R|S|T|U|W|Y)|H(K|M|N|R|T|U)|I(D|E|Q|L|M|N|O|R|S|T)|J(E|M|O|P)|K(E|G|H|I|M|N|P|R|W|Y|Z)|L(A|B|C|I|K|R|S|T|U|V|Y)|M(A|C|D|E|F|G|H|K|L|M|N|O|Q|P|R|S|T|U|V|W|X|Y|Z)|N(A|C|E|F|G|I|L|O|P|R|U|Z)|OM|P(A|E|F|G|H|K|L|M|N|R|S|T|W|Y)|QA|R(E|O|S|U|W)|S(A|B|C|D|E|G|H|I|J|K|L|M|N|O|R|T|V|Y|Z)|T(C|D|F|G|H|J|K|L|M|N|O|R|T|V|W|Z)|U(A|G|M|S|Y|Z)|V(A|C|E|G|I|N|U)|W(F|S)|Y(E|T)|Z(A|M|W))$\"},\"consentDateTime\":{\"type\":\"string\",\"pattern\":\"[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) (2[0-3]|[01][0-9]):[0-5][0-9]:[0-5][0-9]\"}},\"required\":[\"aliasType\",\"alias\",\"cardType\",\"country\",\"consentDateTime\",\"guid\",\"recipientLastName\",\"recipientFirstName\",\"issuerName\"]}",
-                "type": "json"
-            }
-        ],
-        "x": 410,
-        "y": 320,
-        "wires": [
-            [
-                "4fd869c8b618edd5"
-            ]
-        ]
     },
     {
         "id": "4d4d480fadc22978",
@@ -899,11 +915,11 @@
         "env": [
             {
                 "name": "resource",
-                "value": "visaaliasdirectory/v1/manage/createalias",
+                "value": "aliasdirectory/v1/aliases",
                 "type": "str"
             }
         ],
-        "x": 630,
+        "x": 670,
         "y": 320,
         "wires": [
             [
@@ -935,6 +951,26 @@
         "wires": [
             [
                 "8513a15eeda3a034"
+            ]
+        ]
+    },
+    {
+        "id": "b95759322ffdf456",
+        "type": "subflow:3d8368539d02f074",
+        "z": "412669072e03744e",
+        "name": "validate alias(by phone number)",
+        "env": [
+            {
+                "name": "schema",
+                "value": "{\"type\":\"object\",\"properties\":{\"aliasType\":{\"type\":\"string\",\"const\":\"PHONE\"},\"consent\":{\"type\":\"object\",\"properties\":{\"presenter\":{\"type\":\"string\"},\"version\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":9,\"pattern\":\"^[0-9]+.[0-9]+$\"}},\"required\":[\"presenter\",\"version\"]},\"identification\":{\"type\":\"object\",\"properties\":{\"type\":{\"type\":\"string\",\"enum\":[\"PASSPORT\",\"DL\",\"NIDN\",\"DPI\"]},\"value\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":36}},\"required\":[\"type\",\"value\"]},\"paymentCredentials\":{\"type\":\"array\",\"items\":{\"oneOf\":[{\"type\":\"object\",\"properties\":{\"accountNumber\":{\"type\":\"string\",\"minLength\":6,\"maxLength\":19,\"pattern\":\"\\\\d*$\"},\"type\":{\"type\":\"string\",\"enum\":[\"CARD\",\"BANK\"]},\"billingAddress\":{\"type\":\"object\",\"properties\":{\"country\":{\"type\":\"string\",\"maxLength\":3,\"minLength\":3,\"pattern\":\"rn/^ABW|AFG|AGO|AIA|ALA|ALB|AND|ARE|ARG|ARM|ASM|ATA|ATF|ATG|AUS|AUT|AZE|BDI|BEL|BEN|BES|BFA|BGD|BGR|BHR|BHS|BIH|BLM|BLR|BLZ|BMU|BOL|BRA|BRB|BRN|BTN|BVT|BWA|CAF|CAN|CCK|CHE|CHL|CHN|CIV|CMR|COD|COG|COK|COL|COM|CPV|CRI|CUB|CUW|CXR|CYM|CYP|CZE|DEU|DJI|DMA|DNK|DOM|DZA|ECU|EGY|ERI|ESH|ESP|EST|ETH|FIN|FJI|FLK|FRA|FRO|FSM|GAB|GBR|GEO|GGY|GHA|GIB|GIN|GLP|GMB|GNB|GNQ|GRC|GRD|GRL|GTM|GUF|GUM|GUY|HKG|HMD|HND|HRV|HTI|HUN|IDN|IMN|IND|IOT|IRL|IRN|IRQ|ISL|ISR|ITA|JAM|JEY|JOR|JPN|KAZ|KEN|KGZ|KHM|KIR|KNA|KOR|KWT|LAO|LBN|LBR|LBY|LCA|LIE|LKA|LSO|LTU|LUX|LVA|MAC|MAF|MAR|MCO|MDA|MDG|MDV|MEX|MHL|MKD|MLI|MLT|MMR|MNE|MNG|MNP|MOZ|MRT|MSR|MTQ|MUS|MWI|MYS|MYT|NAM|NCL|NER|NFK|NGA|NIC|NIU|NLD|NOR|NPL|NRU|NZL|OMN|PAK|PAN|PCN|PER|PHL|PLW|PNG|POL|PRI|PRK|PRT|PRY|PSE|PYF|QAT|REU|ROU|RUS|RWA|SAU|SDN|SEN|SGP|SGS|SHN|SJM|SLB|SLE|SLV|SMR|SOM|SPM|SRB|SSD|STP|SUR|SVK|SVN|SWE|SWZ|SXM|SYC|SYR|TCA|TCD|TGO|THA|TJK|TKL|TKM|TLS|TON|TTO|TUN|TUR|TUV|TWN|TZA|UGA|UKR|UMI|URY|USA|UZB|VAT|VCT|VEN|VGB|VIR|VNM|VUT|WLF|WSM|YEM|ZAF|ZMB|ZWE$/\"}},\"required\":[\"country\"]},\"preferredFor\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"type\":{\"type\":\"string\",\"enum\":[\"RECEIVE\",\"SEND\",\"PAY\"]}},\"required\":[\"type\"]},\"minContains\":0,\"maxContains\":3}},\"required\":[\"accountNumber\",\"type\",\"billingAddress\",\"preferredFor\"]},{\"type\":\"object\",\"properties\":{\"accountName\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":70,\"pattern\":\"^[a-zA-Z0-9/-:()'+]+$rn\"},\"type\":{\"type\":\"string\",\"enum\":[\"CARD\",\"BANK\"]},\"accountNumber\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":34,\"pattern\":\"^[a-zA-Z0-9/-:()'+]+$rn\"},\"accountNumberType\":{\"type\":\"string\",\"enum\":[\"IBAN\",\"DEFAULT\"]},\"bankName\":{\"type\":\"string\",\"pattern\":\"^[a-zA-Z0-9/-:()'+]+$rn\",\"minLength\":1,\"maxLength\":50},\"countryCode\":{\"type\":\"string\",\"minLength\":3,\"maxLength\":3,\"pattern\":\"/^A(BW|FG|GO|IA|L[AB]|ND|R[EGM]|SM|T[ArnFG]|U[ST]|ZE)|B(DI|E[LNS]|FA|G[DR]|H[RS]|IH|L[MRZ]|MU|OL|rnR[ABN]|TN|VT|WA)|C(A[FN]|CK|H[ELN]|IV|MR|O[DGKLM]|PV|RI|Urn[BW]|XR|Y[MP]|ZE)|D(EU|JI|MA|NK|OM|ZA)|E(CU|GY|RI|S[HPT]|rnTH)|F(IN|JI|LK|R[AO]|SM)|G(AB|BR|EO|GY|HA|I[BN]|LP|MB|N[BrnQ]|R[CDL]|TM|U[FMY])|H(KG|MD|ND|RV|TI|UN)|I(DN|MN|ND|OT|Rrn[LNQ]|S[LR]|TA)|J(AM|EY|OR|PN)|K(AZ|EN|GZ|HM|IR|NA|OR|WT)rn|L(AO|B[NRY]|CA|IE|KA|SO|TU|UX|VA)|M(A[CFR]|CO|D[AGV]|EX|rnHL|KD|L[IT]|MR|N[EGP]|OZ|RT|SR|TQ|US|WI|Y[ST])|N(AM|CL|ERrn|FK|GA|I[CU]|LD|OR|PL|RU|ZL)|OMN|P(A[KN]|CN|ER|HL|LW|NG|OrnL|R[IKTY]|SE|YF)|QAT|R(EU|OU|US|WA)|S(AU|DN|EN|G[PS]|HN|JrnM|L[BEV]|MR|OM|PM|RB|SD|TP|UR|V[KN]|W[EZ]|XM|Y[CR])|T(C[ArnD]|GO|HA|JK|K[LM]|LS|ON|TO|U[NRV]|WN|ZA)|U(GA|KR|MI|RY|SArn|ZB)|V(AT|CT|EN|GB|IR|NM|UT)|W(LF|SM)|YEM|Z(AF|MB|WE)$/ix\"},\"currencyCode\":{\"type\":\"string\",\"minLength\":3,\"maxLength\":3,\"pattern\":\"rnrn/^AED|AFN|ALL|AMD|ANG|AOA|ARS|AUD|AWG|AZN|BAM|BBD|BDT|BGN|BHD|BIF|BMD|BND|BOB|BRL|BSD|BTN|BWP|BYR|BZD|CAD|CDF|CHF|CLP|CNY|COP|CRC|CUC|CUP|CVE|CZK|DJF|DKK|DOP|DZD|EGP|ERN|ETB|EUR|FJD|FKP|GBP|GEL|GGP|GHS|GIP|GMD|GNF|GTQ|GYD|HKD|HNL|HRK|HTG|HUF|IDR|ILS|IMP|INR|IQD|IRR|ISK|JEP|JMD|JOD|JPY|KES|KGS|KHR|KMF|KPW|KRW|KWD|KYD|KZT|LAK|LBP|LKR|LRD|LSL|LYD|MAD|MDL|MGA|MKD|MMK|MNT|MOP|MRO|MUR|MVR|MWK|MXN|MYR|MZN|NAD|NGN|NIO|NOK|NPR|NZD|OMR|PAB|PEN|PGK|PHP|PKR|PLN|PYG|QAR|RON|RSD|RUB|RWF|SAR|SBD|SCR|SDG|SEK|SGD|SHP|SLL|SOS|SPL|SRD|STD|SVC|SYP|SZL|THB|TJS|TMT|TND|TOP|TRY|TTD|TVD|TWD|TZS|UAH|UGX|USD|UYU|UZS|VEF|VND|VUV|WST|XAF|XCD|XDR|XOF|XPF|YER|ZAR|ZMW|ZWD$/\"},\"preferredFor\":{\"type\":\"string\",\"enum\":[\"RECEIVE\",\"SEND\",\"PAY\"]}},\"required\":[\"accountName\",\"type\",\"accountNumber\",\"accountNumberType\",\"bankName\",\"countryCode\",\"currencyCode\",\"preferredFor\"]}]},\"minContains\":1,\"maxContains\":10},\"profile\":{\"type\":\"object\",\"properties\":{\"contactInfo\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"type\":{\"type\":\"string\",\"enum\":[\"EMAIL\",\"PHONE\"]},\"value\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":320}},\"required\":[\"type\",\"value\"]},\"minContains\":2}},\"required\":[\"contactInfo\"]},\"aliasValue\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":128,\"pattern\":\"^[1-9]+[0-9]*$\"}},\"required\":[\"aliasType\",\"aliasValue\",\"consent\",\"identification\",\"paymentCredentials\",\"profile\"]}",
+                "type": "json"
+            }
+        ],
+        "x": 430,
+        "y": 320,
+        "wires": [
+            [
+                "4fd869c8b618edd5"
             ]
         ]
     },
