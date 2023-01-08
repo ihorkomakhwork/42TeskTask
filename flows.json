@@ -1267,55 +1267,21 @@
         ]
     },
     {
-        "id": "8cbf97951148ab45",
-        "type": "subflow:a19c35db171e7c08",
-        "z": "0127f0442eaff100",
-        "name": "",
-        "env": [
-            {
-                "name": "resource",
-                "value": "visaaliasdirectory/v1/resolve",
-                "type": "str"
-            }
-        ],
-        "x": 2120,
-        "y": 300,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "1c57d7d42ed6c25c",
-        "type": "debug",
-        "z": "0127f0442eaff100",
-        "name": "debug 8",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1980,
-        "y": 220,
-        "wires": []
-    },
-    {
         "id": "804ba5cbdcd99679",
         "type": "function",
         "z": "0127f0442eaff100",
-        "name": "function 2",
-        "func": "const { id } = msg.parts;\n\nlet sequences = flow.get('sequences').get(id);\nreturn msg;",
+        "name": "set validatiom request ",
+        "func": "const { recipientPrimaryAccountNumber } = msg.payload;\n\nmsg.payload = {\n    cardAcceptor: {\n        address: {\n            country: 'US',\n            zipCode: '94404',\n            city: 'fostr city',\n            state: 'CA'\n        },\n        idCode: '111111',\n        name: 'ABC Corp',\n        terminalId: '12345678'\n    },\n    primaryAccountNumber: recipientPrimaryAccountNumber,\n    addressVerificationResults: {\n        street: '801 Metro Center Blv',\n        postalCode: '94404'\n    }\n}\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1840,
+        "x": 2080,
         "y": 300,
         "wires": [
             [
-                "8cbf97951148ab45"
+                "7cc62fab146a70c2"
             ]
         ]
     },
@@ -1324,7 +1290,7 @@
         "type": "function",
         "z": "0127f0442eaff100",
         "name": "throw error",
-        "func": "const { message } = msg.payload;\n\nconst reasons = message ? message : 'unknown visa api error'; \nmsg.statusCode = 500;\nmsg.triggered = true;\nnode.error(`Alias wasn\\'t create, ${reasons}` , msg);",
+        "func": "const { message } = msg.payload;\n\nconst reasons = message ? message : 'unknown visa api error'; \nmsg.statusCode = 500;\nmsg.triggered = true;\nnode.error(`Phone alias does not exist, ${reasons}` , msg);",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -1379,8 +1345,7 @@
         "y": 320,
         "wires": [
             [
-                "804ba5cbdcd99679",
-                "b7015b947818d1cd"
+                "19dba9dd514d43fa"
             ],
             [
                 "6d490b55aa133820"
@@ -1388,34 +1353,17 @@
         ]
     },
     {
-        "id": "b7015b947818d1cd",
-        "type": "debug",
-        "z": "0127f0442eaff100",
-        "name": "debug 15",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1780,
-        "y": 220,
-        "wires": []
-    },
-    {
         "id": "94d3e232468ed809",
         "type": "function",
         "z": "0127f0442eaff100",
-        "name": "store sequence",
+        "name": "set sequence store",
         "func": "const TOKEN_LENGTH = 16;\nconst ALPHA = 'abcdefghijklmnopqrstuvwxyz';\nconst DIGIT = '0123456789';\nconst ALPHA_DIGIT = ALPHA + DIGIT;\n\nconst base = ALPHA_DIGIT.length;\n\nmsg.sequenceID = '';\nfor (let i = 0; i < TOKEN_LENGTH; i++) {\n    const index = Math.floor(Math.random() * base);\n    msg.sequenceID += ALPHA_DIGIT[index];\n}\n\nflow.set(msg.sequenceID, { statusCodes: [] });\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 720,
+        "x": 730,
         "y": 320,
         "wires": [
             [
@@ -1476,5 +1424,147 @@
         "wires": [
             []
         ]
+    },
+    {
+        "id": "7cc62fab146a70c2",
+        "type": "subflow:a19c35db171e7c08",
+        "z": "0127f0442eaff100",
+        "name": "",
+        "env": [
+            {
+                "name": "resource",
+                "value": "pav/v1/cardvalidation",
+                "type": "str"
+            }
+        ],
+        "x": 2300,
+        "y": 300,
+        "wires": [
+            [
+                "b02501b128e5071d"
+            ]
+        ]
+    },
+    {
+        "id": "19dba9dd514d43fa",
+        "type": "split",
+        "z": "0127f0442eaff100",
+        "name": "",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "role",
+        "x": 1870,
+        "y": 300,
+        "wires": [
+            [
+                "804ba5cbdcd99679"
+            ]
+        ]
+    },
+    {
+        "id": "0684cebe3350a1e1",
+        "type": "join",
+        "z": "0127f0442eaff100",
+        "name": "",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "role",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "num",
+        "reduceFixup": "",
+        "x": 2670,
+        "y": 300,
+        "wires": [
+            [
+                "94d8cab90cf35a16"
+            ]
+        ]
+    },
+    {
+        "id": "94d8cab90cf35a16",
+        "type": "function",
+        "z": "0127f0442eaff100",
+        "name": " handle error",
+        "func": "const { reciver, sender } = msg.payload\n\nlet sequence = flow.get(msg.sequenceID);\nconst different = sequence.statusCodes.toString() != [200, 200].toString();\n\nif (different) return [null, msg];\nsequence.statusCodes.length = 0;\nreturn [msg, null]; ",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2850,
+        "y": 300,
+        "wires": [
+            [
+                "b764c507baa2b7dd"
+            ],
+            [
+                "fdd78e84af94170e"
+            ]
+        ]
+    },
+    {
+        "id": "b02501b128e5071d",
+        "type": "function",
+        "z": "0127f0442eaff100",
+        "name": "save codes",
+        "func": "const sequence = flow.get(msg.sequenceID);\nsequence.statusCodes.push(msg.statusCode);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2490,
+        "y": 300,
+        "wires": [
+            [
+                "0684cebe3350a1e1"
+            ]
+        ]
+    },
+    {
+        "id": "fdd78e84af94170e",
+        "type": "function",
+        "z": "0127f0442eaff100",
+        "name": "throw error",
+        "func": "const { message } = msg.payload;\n\nconst reasons = message ? message : 'unknown visa api error'; \nmsg.statusCode = 500;\nmsg.triggered = true;\nnode.error(`Card validation was unsuccessful, ${reasons}` , msg);",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 3090,
+        "y": 440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b764c507baa2b7dd",
+        "type": "debug",
+        "z": "0127f0442eaff100",
+        "name": "debug 13",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 3100,
+        "y": 280,
+        "wires": []
     }
 ]
