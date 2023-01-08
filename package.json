@@ -2,7 +2,9 @@
     "name": "42TestTask",
     "description": "A Node-RED Project",
     "version": "0.0.1",
-    "dependencies": {},
+    "dependencies": {
+        "node-jose": "^2.1.1"
+    },
     "node-red": {
         "settings": {
             "flowFile": "flows.json",

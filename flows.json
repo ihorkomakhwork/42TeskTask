@@ -94,22 +94,22 @@
         "category": "",
         "in": [
             {
-                "x": 140,
-                "y": 140,
+                "x": 100,
+                "y": 400,
                 "wires": [
                     {
-                        "id": "f30d1578157685b0"
+                        "id": "7ed523e23c4da3f5"
                     }
                 ]
             }
         ],
         "out": [
             {
-                "x": 900,
-                "y": 140,
+                "x": 1040,
+                "y": 400,
                 "wires": [
                     {
-                        "id": "c6801ec5417f1bb9",
+                        "id": "157d264fc187f9e3",
                         "port": 0
                     }
                 ]
@@ -147,6 +147,14 @@
         "env": [],
         "meta": {},
         "color": "#DDAA99"
+    },
+    {
+        "id": "f66bf781e6dd219d",
+        "type": "subflow",
+        "name": "Subflow 1",
+        "info": "",
+        "in": [],
+        "out": []
     },
     {
         "id": "84e59769f7f05b82",
@@ -366,10 +374,12 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 710,
-        "y": 140,
+        "x": 670,
+        "y": 400,
         "wires": [
-            []
+            [
+                "157d264fc187f9e3"
+            ]
         ]
     },
     {
@@ -377,18 +387,72 @@
         "type": "function",
         "z": "a19c35db171e7c08",
         "name": "set request",
-        "func": "const VISA_HOST =  env.get('VISA_HOST');\nconst VISA_AUTH_ID = env.get('VISA_AUTH_ID');\nconst VISA_AUTH_PASSWORD = env.get('VISA_AUTH_PASSWORD');\n\nconst resource = env.get('resource');\nconst query = env.get('query');  \n\nconst token = Buffer.from(VISA_AUTH_ID + ':' + VISA_AUTH_PASSWORD, 'binary' ).toString('base64');  \n\nmsg.headers = {\n    'Authorization': 'Basic ' + token,\n    'Content-Type': 'application/json;', \n    'Accept': 'application/json;' \n};\n\nmsg.method = env.get('method');\nmsg.url = VISA_HOST + resource + query;\nreturn msg\n",
+        "func": "const VISA_HOST =  env.get('VISA_HOST');\nconst VISA_MLE_KEY_ID = env.get('VISA_MLE_KEY_ID');\nconst VISA_AUTH_ID = env.get('VISA_AUTH_ID');\nconst VISA_AUTH_PASSWORD = env.get('VISA_AUTH_PASSWORD');\n\nconst resource = env.get('resource');\nconst query = env.get('query');  \n\nconst token = Buffer.from(VISA_AUTH_ID + ':' + VISA_AUTH_PASSWORD).toString('base64');  \n\nmsg.headers = {\n    'Authorization': 'Basic ' + token,\n    'Content-Type': 'application/json;', \n    'Accept': 'application/json;', \n    'keyId': VISA_MLE_KEY_ID,\n};\n\nmsg.method = env.get('method');\nmsg.url = VISA_HOST + resource + query;\nreturn msg\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 410,
-        "y": 140,
+        "x": 470,
+        "y": 400,
         "wires": [
             [
                 "c6801ec5417f1bb9"
             ]
+        ]
+    },
+    {
+        "id": "7ed523e23c4da3f5",
+        "type": "function",
+        "z": "a19c35db171e7c08",
+        "name": "encrypt payload",
+        "func": "const fsp = fs.promises;\nconst VISA_MLE_SERVER_CERT = env.get('VISA_MLE_SERVER_CERT');\nconst VISA_MLE_KEY = env.get('VISA_MLE_KEY');\nconst VISA_MLE_KEY_ID = env.get('VISA_MLE_KEY_ID');\n\nconst payloadString = JSON.stringify(msg.payload);\nconst keyStore = jose.JWK.createKeyStore();\nconst encryptionKey = await fsp.readFile(VISA_MLE_KEY);\nconst encProps = {\n    kid: VISA_MLE_KEY_ID,\n    alg: 'RSA-OAEP-256',\n    enc: 'A128GCM'\n};\n\nconst encryptionCert = await fsp.readFile(VISA_MLE_SERVER_CERT);\nconst key = await keyStore.add(encryptionCert, 'pem', encProps);\nconst result = await jose.JWE.createEncrypt({\n                                            format: 'compact', \n                                            fields: { 'enc': 'A128GCM', \n                                                      'iat': Date.now()\n                                                    }\n                                          } ,key )\n                                            .update(payloadString)\n                                            .final() \nmsg.payload = { encData: result }\nnode.send(msg);",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [
+            {
+                "var": "jose",
+                "module": "node-jose"
+            },
+            {
+                "var": "fs",
+                "module": "fs"
+            }
+        ],
+        "x": 260,
+        "y": 400,
+        "wires": [
+            [
+                "f30d1578157685b0"
+            ]
+        ]
+    },
+    {
+        "id": "157d264fc187f9e3",
+        "type": "function",
+        "z": "a19c35db171e7c08",
+        "name": "decrypt payload",
+        "func": "const fsp = fs.promises;\nconst VISA_MLE_KEY = env.get('VISA_MLE_KEY');\nconst VISA_MLE_KEY_ID = env.get('VISA_MLE_KEY_ID');\n\nconst encryptedPayload = typeof msg.payload == 'string' ? JSON.parse(msg.payload) : msg.payload;\n\nconst keystore = jose.JWK.createKeyStore();\nconst decProps = {\n    kid:  VISA_MLE_KEY_ID,\n    alg: 'RSA-OAEP-256',\n    enc: 'A128GCM'\n};\n\nconst decryptionKey = await fsp.readFile(VISA_MLE_KEY);\nconst key = await keystore.add(decryptionKey, 'pem', decProps);\nconst result = await jose.JWE.createDecrypt(key).decrypt(encryptedPayload.encData)\n\nmsg.payload = JSON.parse(result.payload.toString());\n\nnode.send(msg);",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [
+            {
+                "var": "jose",
+                "module": "node-jose"
+            },
+            {
+                "var": "fs",
+                "module": "fs"
+            }
+        ],
+        "x": 880,
+        "y": 400,
+        "wires": [
+            []
         ]
     },
     {
@@ -802,6 +866,109 @@
         ]
     },
     {
+        "id": "bd45081350bace21",
+        "type": "split",
+        "z": "f66bf781e6dd219d",
+        "name": "",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "role",
+        "x": 390,
+        "y": 80,
+        "wires": [
+            [
+                "cfa624d5d326a870"
+            ]
+        ]
+    },
+    {
+        "id": "cfa624d5d326a870",
+        "type": "subflow:a19c35db171e7c08",
+        "z": "f66bf781e6dd219d",
+        "name": "",
+        "env": [
+            {
+                "name": "resource",
+                "value": "visaaliasdirectory/v1/resolve",
+                "type": "str"
+            }
+        ],
+        "x": 560,
+        "y": 80,
+        "wires": [
+            [
+                "be1d08fd12237b45"
+            ]
+        ]
+    },
+    {
+        "id": "7f296807ed86873a",
+        "type": "join",
+        "z": "f66bf781e6dd219d",
+        "name": "",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "role",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "num",
+        "reduceFixup": "",
+        "x": 930,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5da25f2c3bf73737",
+        "type": "function",
+        "z": "f66bf781e6dd219d",
+        "name": "store sequence",
+        "func": "const TOKEN_LENGTH = 16;\nconst ALPHA = 'abcdefghijklmnopqrstuvwxyz';\nconst DIGIT = '0123456789';\nconst ALPHA_DIGIT = ALPHA + DIGIT;\n\nconst base = ALPHA_DIGIT.length;\n\nmsg.sequenceID = '';\nfor (let i = 0; i < TOKEN_LENGTH; i++) {\n    const index = Math.floor(Math.random() * base);\n    msg.sequenceID += ALPHA_DIGIT[index];\n}\n\nflow.set(msg.sequenceID, { statusCodes: [] });\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 200,
+        "y": 80,
+        "wires": [
+            [
+                "bd45081350bace21"
+            ]
+        ]
+    },
+    {
+        "id": "be1d08fd12237b45",
+        "type": "function",
+        "z": "f66bf781e6dd219d",
+        "name": "save codes",
+        "func": "const sequence = flow.get(msg.sequenceID);\nsequence.statusCodes.push(msg.statusCode);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 750,
+        "y": 80,
+        "wires": [
+            [
+                "7f296807ed86873a"
+            ]
+        ]
+    },
+    {
         "id": "f83075e5cc12da3c",
         "type": "http in",
         "z": "412669072e03744e",
@@ -886,7 +1053,7 @@
         "type": "function",
         "z": "412669072e03744e",
         "name": "throw error",
-        "func": "const { message } = msg.payload;\n\nconst reasons = message ? message : 'unknown visa api error'; \nmsg.statusCode = 500;\nmsg.triggered = true;\nnode.error(`Alias wasn\\'t create, ${reasons}` , msg);",
+        "func": "const { errorMessages } = msg.payload;\n\nconst message = errorMessages.join(', ')\nconst reasons = message ? message : 'unknown visa api error';\nmsg.statusCode = 500;\nmsg.triggered = true;\nnode.error(`Alias wasn\\'t create, ${reasons}` , msg);",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -1112,7 +1279,7 @@
             }
         ],
         "x": 2120,
-        "y": 360,
+        "y": 300,
         "wires": [
             []
         ]
@@ -1280,70 +1447,34 @@
         "type": "subflow:f7abbef9ef4f4067",
         "z": "0127f0442eaff100",
         "name": "",
-        "x": 1050,
-        "y": 680,
+        "x": 690,
+        "y": 660,
         "wires": []
     },
     {
-        "id": "8fd64b11611b52fa",
-        "type": "subflow:a19c35db171e7c08",
+        "id": "073e1a22b37815ad",
+        "type": "function",
         "z": "0127f0442eaff100",
-        "name": "",
-        "env": [
+        "name": "encrypt for MLE",
+        "func": "const fsp = fs.promises;\nconst VISA_MLE_SERVER_CERT = env.get('VISA_MLE_SERVER_CERT');\nconst VISA_MLE_KEY = env.get('VISA_MLE_KEY');\n\nconst payloadString = JSON.stringify(msg.payload);\nconst keyStore = jose.JWK.createKeyStore();\n\nconst encProps = {\n    kid:  VISA_MLE_KEY,\n    alg: 'RSA-OAEP-256',\n    enc: 'A128GCM'\n};\n\nconst encryptionCert = await fsp.readFile(VISA_MLE_SERVER_CERT);\nconst key = await keyStore.add(encryptionCert, 'pem', encProps);\nmsg.payload = await jose.JWE.createEncrypt({\n                                            format: 'compact', \n                                            fields: { 'enc': 'A128GCM', \n                                                      'iat': Date.now()\n                                                    }\n                                          } ,key )\n                                            .update(payloadString)\n                                            .final() \nnode.send(msg);",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [
             {
-                "name": "resource",
-                "value": "pav/v1/cardvalidation",
-                "type": "str"
+                "var": "jose",
+                "module": "node-jose"
+            },
+            {
+                "var": "fs",
+                "module": "fs"
             }
         ],
-        "x": 820,
-        "y": 420,
+        "x": 380,
+        "y": 580,
         "wires": [
-            [
-                "11da876084323c89"
-            ]
+            []
         ]
-    },
-    {
-        "id": "ecf5b3d76e2d4259",
-        "type": "inject",
-        "z": "0127f0442eaff100",
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"cardAcceptor\":{\"address\":{\"country\":\"USA\",\"zipCode\":\"94404\",\"city\":\"San Francisco\",\"state\":\"CA\"},\"idCode\":\"408999\",\"name\":\"Visa Inc\"},\"cardExpiryDate\":\"2015-10\",\"cardCvv2Value\":\"111\",\"primaryAccountNumber\":\"9000000000002005\",\"addressVerificationResults\":{\"street\":\"Metro Center Blv\",\"postalCode\":\"94404\"}}",
-        "payloadType": "json",
-        "x": 590,
-        "y": 420,
-        "wires": [
-            [
-                "8fd64b11611b52fa"
-            ]
-        ]
-    },
-    {
-        "id": "11da876084323c89",
-        "type": "debug",
-        "z": "0127f0442eaff100",
-        "name": "debug 16",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1040,
-        "y": 420,
-        "wires": []
     }
 ]
