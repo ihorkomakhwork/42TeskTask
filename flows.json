@@ -15,6 +15,13 @@
         "env": []
     },
     {
+        "id": "243cf85e.3e3af8",
+        "type": "tab",
+        "label": "VISA SEND MONEY FLOW",
+        "disabled": false,
+        "info": ""
+    },
+    {
         "id": "3d8368539d02f074",
         "type": "subflow",
         "name": "json schema validator",
@@ -406,7 +413,7 @@
         "type": "function",
         "z": "a19c35db171e7c08",
         "name": "encrypt payload",
-        "func": "const fsp = fs.promises;\nconst VISA_MLE_SERVER_CERT = env.get('VISA_MLE_SERVER_CERT');\nconst VISA_MLE_KEY = env.get('VISA_MLE_KEY');\nconst VISA_MLE_KEY_ID = env.get('VISA_MLE_KEY_ID');\n\nconst payloadString = JSON.stringify(msg.payload);\nconst keyStore = jose.JWK.createKeyStore();\nconst encryptionKey = await fsp.readFile(VISA_MLE_KEY);\nconst encProps = {\n    kid: VISA_MLE_KEY_ID,\n    alg: 'RSA-OAEP-256',\n    enc: 'A128GCM'\n};\n\nconst encryptionCert = await fsp.readFile(VISA_MLE_SERVER_CERT);\nconst key = await keyStore.add(encryptionCert, 'pem', encProps);\nconst result = await jose.JWE.createEncrypt({\n                                            format: 'compact', \n                                            fields: { 'enc': 'A128GCM', \n                                                      'iat': Date.now()\n                                                    }\n                                          } ,key )\n                                            .update(payloadString)\n                                            .final() \nmsg.payload = { encData: result }\nnode.send(msg);",
+        "func": "const fsp = fs.promises;\nconst VISA_MLE_SERVER_CERT = env.get('VISA_MLE_SERVER_CERT');\nconst VISA_MLE_KEY = env.get('VISA_MLE_KEY');\nconst VISA_MLE_KEY_ID = env.get('VISA_MLE_KEY_ID');\n\nconst payloadString = JSON.stringify(msg.payload);\nconst keyStore = jose.JWK.createKeyStore();\nconst encryptionKey = await fsp.readFile(VISA_MLE_KEY);\nconst encProps = {\n    kid: VISA_MLE_KEY_ID,\n    alg: 'RSA-OAEP-256',\n    enc: 'A128GCM'\n};\ntry {\nconst encryptionCert = await fsp.readFile(VISA_MLE_SERVER_CERT);\nconst key = await keyStore.add(encryptionCert, 'pem', encProps);\nconst result = await jose.JWE.createEncrypt({\n                                            format: 'compact', \n                                            fields: { 'enc': 'A128GCM', \n                                                      'iat': Date.now()\n                                                    }\n                                          } ,key )\n                                            .update(payloadString)\n                                            .final() \nmsg.payload = { encData: result }\n} catch (error) {\n  node.error(error.message, msg);\n}\nnode.send(msg);",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -434,7 +441,7 @@
         "type": "function",
         "z": "a19c35db171e7c08",
         "name": "decrypt payload",
-        "func": "const fsp = fs.promises;\nconst VISA_MLE_KEY = env.get('VISA_MLE_KEY');\nconst VISA_MLE_KEY_ID = env.get('VISA_MLE_KEY_ID');\n\nconst encryptedPayload = typeof msg.payload == 'string' ? JSON.parse(msg.payload) : msg.payload;\n\nconst keystore = jose.JWK.createKeyStore();\nconst decProps = {\n    kid:  VISA_MLE_KEY_ID,\n    alg: 'RSA-OAEP-256',\n    enc: 'A128GCM'\n};\n\nconst decryptionKey = await fsp.readFile(VISA_MLE_KEY);\nconst key = await keystore.add(decryptionKey, 'pem', decProps);\nconst result = await jose.JWE.createDecrypt(key).decrypt(encryptedPayload.encData)\n\nmsg.payload = JSON.parse(result.payload.toString());\n\nnode.send(msg);",
+        "func": "const fsp = fs.promises;\nconst VISA_MLE_KEY = env.get('VISA_MLE_KEY');\nconst VISA_MLE_KEY_ID = env.get('VISA_MLE_KEY_ID');\n\nconst encryptedPayload = typeof msg.payload == 'string' ? JSON.parse(msg.payload) : msg.payload;\n\n\nconst decrypt = async ( payload ) => {\n    try {\n        const keystore = jose.JWK.createKeyStore();\n        const decProps = {\n            kid: VISA_MLE_KEY_ID,\n            alg: 'RSA-OAEP-256',\n            enc: 'A128GCM'\n        };\n        \n        const decryptionKey = await fsp.readFile(VISA_MLE_KEY);\n        const key = await keystore.add(decryptionKey, 'pem', decProps);\n        const data = await jose.JWE.createDecrypt(key).decrypt(payload)\n        return data;\n    } catch (error) {\n        node.error(error.message, msg);\n    }\n}\n\nconst result = await decrypt(encryptedPayload.encData);\n\nmsg.payload = JSON.parse(result.payload.toString());\nnode.send(msg);\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -1150,31 +1157,11 @@
         "method": "post",
         "upload": false,
         "swaggerDoc": "",
-        "x": 180,
-        "y": 320,
+        "x": 300,
+        "y": 220,
         "wires": [
             [
                 "c4894dd666641e9e"
-            ]
-        ]
-    },
-    {
-        "id": "c4894dd666641e9e",
-        "type": "subflow:3d8368539d02f074",
-        "z": "0127f0442eaff100",
-        "name": "",
-        "env": [
-            {
-                "name": "schema",
-                "value": "{\"type\":\"object\",\"properties\":{\"reciver\":{\"type\":\"object\",\"properties\":{\"alias\":{\"type\":\"string\",\"minLength\":9,\"maxLength\":15,\"pattern\":\"^[1-9]\\\\d{1,14}$\"},\"businessApplicationId\":{\"type\":\"string\",\"const\":\"PP\"}},\"required\":[\"businessApplicationId\",\"alias\"]},\"sender\":{\"type\":\"object\",\"properties\":{\"alias\":{\"type\":\"string\",\"minLength\":9,\"maxLength\":15,\"pattern\":\"^[1-9]\\\\d{1,14}$\"},\"businessApplicationId\":{\"type\":\"string\",\"const\":\"PP\"}},\"required\":[\"alias\",\"businessApplicationId\"]}},\"required\":[\"reciver\",\"sender\"]}",
-                "type": "json"
-            }
-        ],
-        "x": 480,
-        "y": 320,
-        "wires": [
-            [
-                "94d3e232468ed809"
             ]
         ]
     },
@@ -1185,8 +1172,8 @@
         "name": "",
         "scope": null,
         "uncaught": false,
-        "x": 120,
-        "y": 460,
+        "x": 240,
+        "y": 980,
         "wires": [
             [
                 "170eca90885ba555"
@@ -1198,8 +1185,8 @@
         "type": "subflow:d70e53f04ea4219d",
         "z": "0127f0442eaff100",
         "name": "",
-        "x": 310,
-        "y": 460,
+        "x": 430,
+        "y": 980,
         "wires": []
     },
     {
@@ -1217,10 +1204,10 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "{\"reciver\":{\"businessApplicationId\":\"PP\",\"alias\":\"380673335666\"},\"sender\":{\"businessApplicationId\":\"PP\",\"alias\":\"380673335667\"}}",
+        "payload": "{\"currency\":\"USD\",\"amount\":\"100.01\",\"reciver\":{\"aliasType\":\"PHONE\",\"aliasValue\":\"380967449119\"},\"sender\":{\"aliasValue\":\"1231231234\",\"aliasType\":\"PHONE\"}}",
         "payloadType": "json",
-        "x": 210,
-        "y": 240,
+        "x": 410,
+        "y": 120,
         "wires": [
             [
                 "c4894dd666641e9e"
@@ -1228,165 +1215,21 @@
         ]
     },
     {
-        "id": "c9e3016dfa631c57",
-        "type": "split",
-        "z": "0127f0442eaff100",
-        "name": "",
-        "splt": "\\n",
-        "spltType": "str",
-        "arraySplt": 1,
-        "arraySpltType": "len",
-        "stream": false,
-        "addname": "role",
-        "x": 910,
-        "y": 320,
-        "wires": [
-            [
-                "83b96dca89d70abb"
-            ]
-        ]
-    },
-    {
-        "id": "83b96dca89d70abb",
-        "type": "subflow:a19c35db171e7c08",
-        "z": "0127f0442eaff100",
-        "name": "",
-        "env": [
-            {
-                "name": "resource",
-                "value": "visaaliasdirectory/v1/resolve",
-                "type": "str"
-            }
-        ],
-        "x": 1080,
-        "y": 320,
-        "wires": [
-            [
-                "c0e5d2ae430c9e6d"
-            ]
-        ]
-    },
-    {
         "id": "804ba5cbdcd99679",
         "type": "function",
         "z": "0127f0442eaff100",
-        "name": "set validatiom request ",
-        "func": "const { recipientPrimaryAccountNumber } = msg.payload;\n\nmsg.payload = {\n    cardAcceptor: {\n        address: {\n            country: 'US',\n            zipCode: '94404',\n            city: 'fostr city',\n            state: 'CA'\n        },\n        idCode: '111111',\n        name: 'ABC Corp',\n        terminalId: '12345678'\n    },\n    primaryAccountNumber: recipientPrimaryAccountNumber,\n    addressVerificationResults: {\n        street: '801 Metro Center Blv',\n        postalCode: '94404'\n    }\n}\n\nreturn msg;",
+        "name": "set request ",
+        "func": "const { accountNumber } = msg.payload.paymentCredentials[0]; \nmsg.payload = {\n    cardAcceptor: {\n        address: {\n            country: 'US',\n            zipCode: '94404',\n            city: 'fostr city',\n            state: 'CA'\n        },\n        idCode: '111111',\n        name: 'ABC Corp',\n        terminalId: '12345678'\n    },\n    primaryAccountNumber: accountNumber,\n    addressVerificationResults: {\n        street: '801 Metro Center Blv',\n        postalCode: '94404'\n    }\n}\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 2080,
-        "y": 300,
+        "x": 490,
+        "y": 560,
         "wires": [
             [
                 "7cc62fab146a70c2"
-            ]
-        ]
-    },
-    {
-        "id": "6d490b55aa133820",
-        "type": "function",
-        "z": "0127f0442eaff100",
-        "name": "throw error",
-        "func": "const { message } = msg.payload;\n\nconst reasons = message ? message : 'unknown visa api error'; \nmsg.statusCode = 500;\nmsg.triggered = true;\nnode.error(`Phone alias does not exist, ${reasons}` , msg);",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1870,
-        "y": 440,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "d98739bb2c059605",
-        "type": "join",
-        "z": "0127f0442eaff100",
-        "name": "",
-        "mode": "custom",
-        "build": "object",
-        "property": "payload",
-        "propertyType": "msg",
-        "key": "role",
-        "joiner": "\\n",
-        "joinerType": "str",
-        "accumulate": false,
-        "timeout": "",
-        "count": "",
-        "reduceRight": false,
-        "reduceExp": "",
-        "reduceInit": "",
-        "reduceInitType": "num",
-        "reduceFixup": "",
-        "x": 1450,
-        "y": 320,
-        "wires": [
-            [
-                "015864eb24882e77"
-            ]
-        ]
-    },
-    {
-        "id": "015864eb24882e77",
-        "type": "function",
-        "z": "0127f0442eaff100",
-        "name": " handle error",
-        "func": "const { reciver, sender } = msg.payload\n\nlet sequence = flow.get(msg.sequenceID);\nconst different = sequence.statusCodes.toString() != [200, 200].toString();\n\nif (different) return [null, msg];\nsequence.statusCodes.length = 0;\nreturn [msg, null]; ",
-        "outputs": 2,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1630,
-        "y": 320,
-        "wires": [
-            [
-                "19dba9dd514d43fa"
-            ],
-            [
-                "6d490b55aa133820"
-            ]
-        ]
-    },
-    {
-        "id": "94d3e232468ed809",
-        "type": "function",
-        "z": "0127f0442eaff100",
-        "name": "set sequence store",
-        "func": "const TOKEN_LENGTH = 16;\nconst ALPHA = 'abcdefghijklmnopqrstuvwxyz';\nconst DIGIT = '0123456789';\nconst ALPHA_DIGIT = ALPHA + DIGIT;\n\nconst base = ALPHA_DIGIT.length;\n\nmsg.sequenceID = '';\nfor (let i = 0; i < TOKEN_LENGTH; i++) {\n    const index = Math.floor(Math.random() * base);\n    msg.sequenceID += ALPHA_DIGIT[index];\n}\n\nflow.set(msg.sequenceID, { statusCodes: [] });\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 730,
-        "y": 320,
-        "wires": [
-            [
-                "c9e3016dfa631c57"
-            ]
-        ]
-    },
-    {
-        "id": "c0e5d2ae430c9e6d",
-        "type": "function",
-        "z": "0127f0442eaff100",
-        "name": "save codes",
-        "func": "const sequence = flow.get(msg.sequenceID);\nsequence.statusCodes.push(msg.statusCode);\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1270,
-        "y": 320,
-        "wires": [
-            [
-                "d98739bb2c059605"
             ]
         ]
     },
@@ -1395,8 +1238,8 @@
         "type": "subflow:f7abbef9ef4f4067",
         "z": "0127f0442eaff100",
         "name": "",
-        "x": 690,
-        "y": 660,
+        "x": 1870,
+        "y": 1320,
         "wires": []
     },
     {
@@ -1419,8 +1262,8 @@
                 "module": "fs"
             }
         ],
-        "x": 380,
-        "y": 580,
+        "x": 1400,
+        "y": 1240,
         "wires": [
             []
         ]
@@ -1429,7 +1272,7 @@
         "id": "7cc62fab146a70c2",
         "type": "subflow:a19c35db171e7c08",
         "z": "0127f0442eaff100",
-        "name": "",
+        "name": "validate card",
         "env": [
             {
                 "name": "resource",
@@ -1437,8 +1280,8 @@
                 "type": "str"
             }
         ],
-        "x": 2300,
-        "y": 300,
+        "x": 690,
+        "y": 560,
         "wires": [
             [
                 "b02501b128e5071d"
@@ -1456,8 +1299,8 @@
         "arraySpltType": "len",
         "stream": false,
         "addname": "role",
-        "x": 1870,
-        "y": 300,
+        "x": 310,
+        "y": 560,
         "wires": [
             [
                 "804ba5cbdcd99679"
@@ -1484,8 +1327,8 @@
         "reduceInit": "",
         "reduceInitType": "num",
         "reduceFixup": "",
-        "x": 2670,
-        "y": 300,
+        "x": 1090,
+        "y": 560,
         "wires": [
             [
                 "94d8cab90cf35a16"
@@ -1496,18 +1339,18 @@
         "id": "94d8cab90cf35a16",
         "type": "function",
         "z": "0127f0442eaff100",
-        "name": " handle error",
+        "name": "error",
         "func": "const { reciver, sender } = msg.payload\n\nlet sequence = flow.get(msg.sequenceID);\nconst different = sequence.statusCodes.toString() != [200, 200].toString();\n\nif (different) return [null, msg];\nsequence.statusCodes.length = 0;\nreturn [msg, null]; ",
         "outputs": 2,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 2850,
-        "y": 300,
+        "x": 1250,
+        "y": 560,
         "wires": [
             [
-                "b764c507baa2b7dd"
+                "d7baf271dfdb5e27"
             ],
             [
                 "fdd78e84af94170e"
@@ -1525,8 +1368,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 2490,
-        "y": 300,
+        "x": 910,
+        "y": 560,
         "wires": [
             [
                 "0684cebe3350a1e1"
@@ -1539,22 +1382,84 @@
         "z": "0127f0442eaff100",
         "name": "throw error",
         "func": "const { message } = msg.payload;\n\nconst reasons = message ? message : 'unknown visa api error'; \nmsg.statusCode = 500;\nmsg.triggered = true;\nnode.error(`Card validation was unsuccessful, ${reasons}` , msg);",
+        "outputs": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1470,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "94d3e232468ed809",
+        "type": "function",
+        "z": "0127f0442eaff100",
+        "name": "set sequence store",
+        "func": "const { amount, cuncurency, reciver, sender, currency } = msg.payload;\n\nconst TOKEN_LENGTH = 16;\nconst ALPHA = 'abcdefghijklmnopqrstuvwxyz';\nconst DIGIT = '0123456789';\nconst ALPHA_DIGIT = ALPHA + DIGIT;\n\nconst base = ALPHA_DIGIT.length;\n\nmsg.sequenceID = '';\nfor (let i = 0; i < TOKEN_LENGTH; i++) {\n    const index = Math.floor(Math.random() * base);\n    msg.sequenceID += ALPHA_DIGIT[index];\n} \n\nconst sequence = { statusCodes: [], amount, reciver, sender, currency };\n\nflow.set(msg.sequenceID, sequence);\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 3090,
-        "y": 440,
+        "x": 810,
+        "y": 220,
         "wires": [
-            []
+            [
+                "06696da444de7fdc"
+            ]
         ]
     },
     {
-        "id": "b764c507baa2b7dd",
+        "id": "90d7bb2b41bca9e7",
+        "type": "subflow:a19c35db171e7c08",
+        "z": "0127f0442eaff100",
+        "name": "",
+        "env": [
+            {
+                "name": "resource",
+                "value": "visadirect/fundstransfer/v1/pullfundstransactions",
+                "type": "str"
+            }
+        ],
+        "x": 2140,
+        "y": 1140,
+        "wires": [
+            [
+                "168bdb7121ccb9f0"
+            ]
+        ]
+    },
+    {
+        "id": "cabaf7ae976d9223",
+        "type": "inject",
+        "z": "0127f0442eaff100",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "sdcsdcdsc",
+        "payloadType": "str",
+        "x": 1780,
+        "y": 1140,
+        "wires": [
+            [
+                "6103a775f6ca8b1e"
+            ]
+        ]
+    },
+    {
+        "id": "168bdb7121ccb9f0",
         "type": "debug",
         "z": "0127f0442eaff100",
-        "name": "debug 13",
+        "name": "debug 15",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -1563,8 +1468,1357 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 3100,
-        "y": 280,
+        "x": 2360,
+        "y": 1140,
         "wires": []
+    },
+    {
+        "id": "8959f1e82aefe2d7",
+        "type": "function",
+        "z": "0127f0442eaff100",
+        "name": "set req body",
+        "func": "msg.reqBody = {\n  \"amount\": msg.amount,\n  \"localTransactionDateTime\": new Date(new Date().toLocaleString(\"en-US\", {timeZone: \"Europe/Kiev\"})).toISOString().slice(0, 19),\n  \"cardAcceptor\": {\n    \"address\": {\n      \"country\": msg.cardAcceptor.cardAcceptorCountry,\n      \"zipCode\": msg.cardAcceptor.cardAcceptorZipCode,\n      \"state\": msg.cardAcceptor.cardAcceptorState\n    },\n    \"idCode\": msg.cardAcceptor.cardAcceptorIdCode,\n    \"name\": msg.cardAcceptor.cardAcceptorName,\n    \"terminalId\": msg.cardAcceptor.cardAcceptorTerminalId\n  },\n  \"transactionIdentifier\": msg.payload.transactionIdentifier,\n  \"acquirerCountryCode\": msg.acqInfo.acquirerCountryCode,\n  \"acquiringBin\": msg.acqInfo.acquiringBin,\n  \"senderCurrencyCode\": msg.currency,\n   \"retrievalReferenceNumber\": msg.retNumber,\n  \"systemsTraceAuditNumber\": msg.traceAuditNumber,\n  \"businessApplicationId\": \"PP\",\n  \"senderPrimaryAccountNumber\": msg.senderAccountNumber,\n  \"originalDataElements\": {\n    \"transmissionDateTime\": msg.payload.transmissionDateTime,\n    \"systemsTraceAuditNumber\": msg.traceAuditNumber,\n    \"approvalCode\": msg.payload.approvalCode,\n    \"acquiringBin\": msg.acqInfo.acquiringBin\n  }\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1930,
+        "y": 1440,
+        "wires": [
+            []
+        ],
+        "info": "Возвращения предств по транзакции \n\nДокументация метода - [https://developer.visa.com/capabilities/visa_direct/reference#tag/Funds-Transfer-API/operation/Create%20Reverse%20Funds%20Transaction_v1%20-%20Latest](Reverse Funds Transaction)"
+    },
+    {
+        "id": "1214a35a6be3903a",
+        "type": "comment",
+        "z": "0127f0442eaff100",
+        "name": "Reverse funds",
+        "info": "",
+        "x": 1870,
+        "y": 1400,
+        "wires": []
+    },
+    {
+        "id": "6103a775f6ca8b1e",
+        "type": "function",
+        "z": "0127f0442eaff100",
+        "name": "function 5",
+        "func": "\n\n\n msg.payload =  {\n    \"surcharge\": \"11.99\",\n    \"amount\": \"124.02\",\n    \"localTransactionDateTime\": new Date(new Date().toLocaleString(\"en-US\", { timeZone: \"Europe/Kiev\" })).toISOString().slice(0, 19),\n    \"cpsAuthorizationCharacteristicsIndicator\": \"Y\",\n    \"riskAssessmentData\": {\n        \"traExemptionIndicator\": true,\n        \"trustedMerchantExemptionIndicator\": true,\n        \"scpExemptionIndicator\": true,\n        \"delegatedAuthenticationIndicator\": true,\n        \"lowValueExemptionIndicator\": true\n    },\n     \"colombiaNationalServiceData\": {\n         \"addValueTaxReturn\": \"10.00\",\n         \"taxAmountConsumption\": \"10.00\",\n         \"nationalNetReimbursementFeeBaseAmount\": \"20.00\",\n         \"addValueTaxAmount\": \"10.00\",\n         \"nationalNetMiscAmount\": \"10.00\",\n         \"countryCodeNationalService\": \"170\",\n         \"nationalChargebackReason\": \"11\",\n         \"emvTransactionIndicator\": \"1\",\n        \"nationalNetMiscAmountType\": \"A\",\n        \"costTransactionIndicator\": \"0\",\n        \"nationalReimbursementFee\": \"20.00\"\n    },\n    \"cardAcceptor\": {\n        \"address\": {\n            \"country\": \"USA\",\n            \"zipCode\": \"94404\",\n            \"county\": \"081\",\n            \"state\": \"CA\"\n        },\n        \"idCode\": \"ABCD1234ABCD123\",\n        \"name\": \"Visa Inc. USA-Foster City\",\n        \"terminalId\": \"ABCD1234\"\n    },\n    \"acquirerCountryCode\": \"840\",\n    \"acquiringBin\": \"408999\",\n    \"senderCurrencyCode\": \"USD\",\n    \"retrievalReferenceNumber\": \"330000550000\",\n    \"addressVerificationData\": {\n        \"street\": \"XYZ St\",\n        \"postalCode\": \"12345\"\n    },\n    \"cavv\": \"0700100038238906000013405823891061668252\",\n    \"systemsTraceAuditNumber\": \"451001\",\n    \"businessApplicationId\": \"AA\",\n    \"senderPrimaryAccountNumber\": \"4895142232120006\",\n    \"settlementServiceIndicator\": \"9\",\n    \"visaMerchantIdentifier\": \"73625198\",\n    \"foreignExchangeFeeTransaction\": \"11.99\",\n    \"senderCardExpiryDate\": \"2033-10\", \n    \"nationalReimbursementFee\": \"11.22\"\n}\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1960,
+        "y": 1140,
+        "wires": [
+            [
+                "90d7bb2b41bca9e7"
+            ]
+        ]
+    },
+    {
+        "id": "04970cd91f19d153",
+        "type": "subflow:a19c35db171e7c08",
+        "z": "0127f0442eaff100",
+        "name": "",
+        "env": [
+            {
+                "name": "resource",
+                "value": "pav/v1/cardvalidation",
+                "type": "str"
+            }
+        ],
+        "x": 2480,
+        "y": 1340,
+        "wires": [
+            [
+                "c50a5ec0926d64aa"
+            ]
+        ]
+    },
+    {
+        "id": "643dee1b55e398ee",
+        "type": "inject",
+        "z": "0127f0442eaff100",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "sdcsdcdsc",
+        "payloadType": "str",
+        "x": 2120,
+        "y": 1340,
+        "wires": [
+            [
+                "2244261b02bdd929"
+            ]
+        ]
+    },
+    {
+        "id": "c50a5ec0926d64aa",
+        "type": "debug",
+        "z": "0127f0442eaff100",
+        "name": "debug 16",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2680,
+        "y": 1340,
+        "wires": []
+    },
+    {
+        "id": "2244261b02bdd929",
+        "type": "function",
+        "z": "0127f0442eaff100",
+        "name": "function 6",
+        "func": "msg.payload = {\n    cardAcceptor: {\n        address: {\n            country: 'US',\n            zipCode: '94404',\n            city: 'fostr city',\n            state: 'CA'\n        },\n        idCode: '111111',\n        name: 'ABC Corp',\n        terminalId: '12345678'\n    },\n    primaryAccountNumber: '4000000000000003',\n    cardCurrencyCode: 'USD',\n    addressVerificationResults: {\n        street: '801 Metro Center Blv',\n        postalCode: '94404'\n    }\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2300,
+        "y": 1340,
+        "wires": [
+            [
+                "04970cd91f19d153"
+            ]
+        ]
+    },
+    {
+        "id": "6b480c3912182f95",
+        "type": "comment",
+        "z": "0127f0442eaff100",
+        "name": "Pull funds transaction",
+        "info": "",
+        "x": 280,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "6aa59ad6c3ad6945",
+        "type": "function",
+        "z": "0127f0442eaff100",
+        "name": "set request",
+        "func": "const VISA_CARD_ACCEPTOR = env.get('VISA_CARD_ACCEPTOR');\nconst VISA_ACQUIRING_INFO = env.get('VISA_ACQUIRING_INFO'); \nconst VISA_RET_NUMBER = env.get('VISA_RET_NUMBER');\nconst VISA_TRACE_AUDIT_NUMBER= env.get('VISA_TRACE_AUDIT_NUMBER');\nconst VISA_BUSINESS_AUDIT_APLIACTION_ID = env.get('VISA_BUSINESS_AUDIT_APLIACTION_ID');\n\nconst cardAcceptor = JSON.parse(VISA_CARD_ACCEPTOR);\nconst acquringInfo = JSON.parse(VISA_ACQUIRING_INFO);\n\nconst { acquiringBin, acquirerCountryCode } = acquringInfo;\n\nconst { amount , sender, currency } = flow.get(msg.sequenceID);\n\nconst localTransactionDateTime =  new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Kiev' })).toISOString().slice(0, 19);\n\nmsg.payload = {\n  retrievalReferenceNumber: VISA_RET_NUMBER,\n  businessApplicationId: VISA_BUSINESS_AUDIT_APLIACTION_ID,\n  systemsTraceAuditNumber: VISA_TRACE_AUDIT_NUMBER,\n  localTransactionDateTime,\n  cardAcceptor,\n  acquirerCountryCode,\n  acquiringBin,\n  amount, \n  senderCurrencyCode: currency, \n  senderPrimaryAccountNumber: sender.accountNumber, \n  senderCardExpiryDate: sender.expirationDate\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 720,
+        "wires": [
+            [
+                "57e30ba81e19c65a"
+            ]
+        ],
+        "info": "Создания платежа по senderPrimaryAccountNumber\n\nДокументация метода - [https://developer.visa.com/capabilities/visa_direct/reference#tag/Funds-Transfer-API/operation/createPullFundsTransaction_v1%20-%20Latest](Pull Funds Transaction)"
+    },
+    {
+        "id": "06696da444de7fdc",
+        "type": "link out",
+        "z": "0127f0442eaff100",
+        "name": "",
+        "mode": "link",
+        "links": [
+            "18573924669bde91"
+        ],
+        "x": 975,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "18573924669bde91",
+        "type": "link in",
+        "z": "0127f0442eaff100",
+        "name": "",
+        "links": [
+            "06696da444de7fdc"
+        ],
+        "x": 195,
+        "y": 360,
+        "wires": [
+            [
+                "6c371002aeb22d72"
+            ]
+        ]
+    },
+    {
+        "id": "c4894dd666641e9e",
+        "type": "subflow:3d8368539d02f074",
+        "z": "0127f0442eaff100",
+        "name": "",
+        "env": [
+            {
+                "name": "schema",
+                "value": "{\"type\":\"object\",\"properties\":{\"amount\":{\"type\":\"string\",\"pattern\":\"^[+-]?[0-9]{1,3}(?:,?[0-9]{3})*\\\\.[0-9]{2}$\"},\"currency\":{\"type\":\"string\",\"minLength\":3,\"maxLength\":3,\"pattern\":\"rnrn/^AED|AFN|ALL|AMD|ANG|AOA|ARS|AUD|AWG|AZN|BAM|BBD|BDT|BGN|BHD|BIF|BMD|BND|BOB|BRL|BSD|BTN|BWP|BYR|BZD|CAD|CDF|CHF|CLP|CNY|COP|CRC|CUC|CUP|CVE|CZK|DJF|DKK|DOP|DZD|EGP|ERN|ETB|EUR|FJD|FKP|GBP|GEL|GGP|GHS|GIP|GMD|GNF|GTQ|GYD|HKD|HNL|HRK|HTG|HUF|IDR|ILS|IMP|INR|IQD|IRR|ISK|JEP|JMD|JOD|JPY|KES|KGS|KHR|KMF|KPW|KRW|KWD|KYD|KZT|LAK|LBP|LKR|LRD|LSL|LYD|MAD|MDL|MGA|MKD|MMK|MNT|MOP|MRO|MUR|MVR|MWK|MXN|MYR|MZN|NAD|NGN|NIO|NOK|NPR|NZD|OMR|PAB|PEN|PGK|PHP|PKR|PLN|PYG|QAR|RON|RSD|RUB|RWF|SAR|SBD|SCR|SDG|SEK|SGD|SHP|SLL|SOS|SPL|SRD|STD|SVC|SYP|SZL|THB|TJS|TMT|TND|TOP|TRY|TTD|TVD|TWD|TZS|UAH|UGX|USD|UYU|UZS|VEF|VND|VUV|WST|XAF|XCD|XDR|XOF|XPF|YER|ZAR|ZMW|ZWD$/\"},\"reciver\":{\"type\":\"object\",\"properties\":{\"aliasValue\":{\"type\":\"string\",\"minLength\":9,\"maxLength\":15,\"pattern\":\"^[1-9]\\\\d{1,14}$\"}},\"required\":[\"aliasValue\"]},\"sender\":{\"type\":\"object\",\"properties\":{\"aliasValue\":{\"type\":\"string\",\"minLength\":9,\"maxLength\":15,\"pattern\":\"^[1-9]\\\\d{1,14}$\"}},\"required\":[\"aliasValue\"]}},\"required\":[\"reciver\",\"sender\"]}",
+                "type": "json"
+            }
+        ],
+        "x": 580,
+        "y": 220,
+        "wires": [
+            [
+                "94d3e232468ed809"
+            ]
+        ]
+    },
+    {
+        "id": "6c371002aeb22d72",
+        "type": "function",
+        "z": "0127f0442eaff100",
+        "name": "set request",
+        "func": "const { reciver, sender }  = msg.payload;\nmsg.payload = { reciver, sender };\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 360,
+        "wires": [
+            [
+                "c9e3016dfa631c57"
+            ]
+        ]
+    },
+    {
+        "id": "c9e3016dfa631c57",
+        "type": "split",
+        "z": "0127f0442eaff100",
+        "name": "",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "role",
+        "x": 490,
+        "y": 360,
+        "wires": [
+            [
+                "83b96dca89d70abb"
+            ]
+        ]
+    },
+    {
+        "id": "83b96dca89d70abb",
+        "type": "subflow:a19c35db171e7c08",
+        "z": "0127f0442eaff100",
+        "name": "resolve alias",
+        "env": [
+            {
+                "name": "resource",
+                "value": "aliasdirectory/v1/aliases/resolve",
+                "type": "str"
+            }
+        ],
+        "x": 670,
+        "y": 360,
+        "wires": [
+            [
+                "c0e5d2ae430c9e6d"
+            ]
+        ]
+    },
+    {
+        "id": "c0e5d2ae430c9e6d",
+        "type": "function",
+        "z": "0127f0442eaff100",
+        "name": "save result",
+        "func": "const { statusCode, role, sequenceID }  = msg; \nconst { paymentCredentials } = msg.payload;\n\nconst sequence = flow.get(msg.sequenceID);\nconst roleValue = sequence[role];\n\nconst result = {\n     ...sequence, \n    [role]: { ...roleValue, ...paymentCredentials[0] }  \n}\n\nsequence.statusCodes.push(statusCode);\nflow.set(msg.sequenceID, result);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 870,
+        "y": 360,
+        "wires": [
+            [
+                "d98739bb2c059605"
+            ]
+        ]
+    },
+    {
+        "id": "d98739bb2c059605",
+        "type": "join",
+        "z": "0127f0442eaff100",
+        "name": "",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "role",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "num",
+        "reduceFixup": "",
+        "x": 1030,
+        "y": 360,
+        "wires": [
+            [
+                "015864eb24882e77"
+            ]
+        ]
+    },
+    {
+        "id": "015864eb24882e77",
+        "type": "function",
+        "z": "0127f0442eaff100",
+        "name": "error",
+        "func": "const { reciver, sender } = msg.payload\n\nlet sequence = flow.get(msg.sequenceID);\nconst difference = sequence.statusCodes.toString() != [200, 200].toString();\n\nif (difference) return [null, msg];\nsequence.statusCodes.length = 0;\nreturn [msg, null]; ",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1190,
+        "y": 360,
+        "wires": [
+            [
+                "95e8ee77e67d3f05"
+            ],
+            [
+                "6d490b55aa133820"
+            ]
+        ]
+    },
+    {
+        "id": "6d490b55aa133820",
+        "type": "function",
+        "z": "0127f0442eaff100",
+        "name": "throw error",
+        "func": "const { message } = msg.payload;\n\nconst reasons = message ? message : 'unknown visa api error'; \nmsg.statusCode = 500;\nmsg.triggered = true;\nnode.error(`Phone alias does not exist, ${reasons}` , msg);",
+        "outputs": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1410,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "027907d2b4abde6d",
+        "type": "link in",
+        "z": "0127f0442eaff100",
+        "name": "",
+        "links": [
+            "95e8ee77e67d3f05"
+        ],
+        "x": 195,
+        "y": 560,
+        "wires": [
+            [
+                "19dba9dd514d43fa"
+            ]
+        ]
+    },
+    {
+        "id": "95e8ee77e67d3f05",
+        "type": "link out",
+        "z": "0127f0442eaff100",
+        "name": "",
+        "mode": "link",
+        "links": [
+            "027907d2b4abde6d"
+        ],
+        "x": 1365,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "d7baf271dfdb5e27",
+        "type": "link out",
+        "z": "0127f0442eaff100",
+        "name": "",
+        "mode": "link",
+        "links": [
+            "5db08ae554bc5770",
+            "aa5f827f84a26599"
+        ],
+        "x": 1425,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "5db08ae554bc5770",
+        "type": "link in",
+        "z": "0127f0442eaff100",
+        "name": "",
+        "links": [
+            "d7baf271dfdb5e27"
+        ],
+        "x": 195,
+        "y": 720,
+        "wires": [
+            [
+                "6aa59ad6c3ad6945"
+            ]
+        ]
+    },
+    {
+        "id": "1b1d2b567d0fb78f",
+        "type": "comment",
+        "z": "0127f0442eaff100",
+        "name": "Validate sender and reciver card's",
+        "info": "",
+        "x": 310,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "edcc4ba0bf1e9668",
+        "type": "comment",
+        "z": "0127f0442eaff100",
+        "name": "Get information about sender and reciver by alias",
+        "info": "",
+        "x": 360,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "f276163aa8b72d83",
+        "type": "link out",
+        "z": "0127f0442eaff100",
+        "name": "",
+        "mode": "link",
+        "links": [
+            "502dd9779708b499"
+        ],
+        "x": 1055,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "502dd9779708b499",
+        "type": "link in",
+        "z": "0127f0442eaff100",
+        "name": "",
+        "links": [
+            "f276163aa8b72d83"
+        ],
+        "x": 185,
+        "y": 880,
+        "wires": [
+            [
+                "981418de9accd9c2"
+            ]
+        ]
+    },
+    {
+        "id": "9780338d83ba91eb",
+        "type": "comment",
+        "z": "0127f0442eaff100",
+        "name": "p2p money transfer",
+        "info": "",
+        "x": 270,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "57e30ba81e19c65a",
+        "type": "subflow:a19c35db171e7c08",
+        "z": "0127f0442eaff100",
+        "name": "pull dunds transaction",
+        "env": [
+            {
+                "name": "resource",
+                "value": "visadirect/fundstransfer/v1/pullfundstransactions",
+                "type": "str"
+            }
+        ],
+        "x": 580,
+        "y": 720,
+        "wires": [
+            [
+                "abc623b79b20a38f"
+            ]
+        ]
+    },
+    {
+        "id": "981418de9accd9c2",
+        "type": "function",
+        "z": "0127f0442eaff100",
+        "name": "set request",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 880,
+        "wires": [
+            [
+                "cd800dc587b0808d"
+            ]
+        ]
+    },
+    {
+        "id": "cd800dc587b0808d",
+        "type": "debug",
+        "z": "0127f0442eaff100",
+        "name": "debug 17",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 540,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "abc623b79b20a38f",
+        "type": "debug",
+        "z": "0127f0442eaff100",
+        "name": "debug 18",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 800,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "dd135725.e41be8",
+        "type": "http in",
+        "z": "243cf85e.3e3af8",
+        "name": "",
+        "url": "/sendMoney",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 150,
+        "y": 400,
+        "wires": [
+            [
+                "9ddbd012.1c81b",
+                "817d7d8c.cadcd"
+            ]
+        ]
+    },
+    {
+        "id": "4815e363.2c4b8c",
+        "type": "http response",
+        "z": "243cf85e.3e3af8",
+        "name": "",
+        "statusCode": "401",
+        "headers": {},
+        "x": 920,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "9ddbd012.1c81b",
+        "type": "debug",
+        "z": "243cf85e.3e3af8",
+        "name": "/createTransaction",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 390,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "50c1d118.afbad",
+        "type": "switch",
+        "z": "243cf85e.3e3af8",
+        "name": "isTokenValid",
+        "property": "req.headers.authorization",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "authorization",
+                "vt": "msg"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 530,
+        "y": 400,
+        "wires": [
+            [
+                "6615d186.b7842"
+            ],
+            [
+                "afaef9ec.05b8f8"
+            ]
+        ]
+    },
+    {
+        "id": "afaef9ec.05b8f8",
+        "type": "function",
+        "z": "243cf85e.3e3af8",
+        "name": "error_description",
+        "func": "msg.payload = {\n    \"error_code\": 401,\n    \"error_description\": \"Invalid authorization token\"\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 730,
+        "y": 420,
+        "wires": [
+            [
+                "4815e363.2c4b8c"
+            ]
+        ]
+    },
+    {
+        "id": "6615d186.b7842",
+        "type": "change",
+        "z": "243cf85e.3e3af8",
+        "name": "set params",
+        "rules": [
+            {
+                "t": "set",
+                "p": "senderPhone",
+                "pt": "msg",
+                "to": "payload.senderPhone",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "receiverPhone",
+                "pt": "msg",
+                "to": "payload.receiverPhone",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "currency",
+                "pt": "msg",
+                "to": "payload.currency",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "amount",
+                "pt": "msg",
+                "to": "payload.amount",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 710,
+        "y": 380,
+        "wires": [
+            [
+                "6e7e2adb.438904"
+            ]
+        ]
+    },
+    {
+        "id": "5c7c0560.094c4c",
+        "type": "comment",
+        "z": "243cf85e.3e3af8",
+        "name": "Get information(sender) by alias",
+        "info": "",
+        "x": 950,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "c0fd8646.084f48",
+        "type": "link out",
+        "z": "243cf85e.3e3af8",
+        "name": "",
+        "mode": "link",
+        "links": [
+            "4f262db5.50c594"
+        ],
+        "x": 1195,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "4f262db5.50c594",
+        "type": "link in",
+        "z": "243cf85e.3e3af8",
+        "name": "",
+        "links": [
+            "c0fd8646.084f48",
+            "394c40b4.f96e8"
+        ],
+        "x": 395,
+        "y": 560,
+        "wires": [
+            [
+                "7ce0a5a0.69d9fc"
+            ]
+        ]
+    },
+    {
+        "id": "7922b9ee.798908",
+        "type": "link out",
+        "z": "243cf85e.3e3af8",
+        "name": "",
+        "mode": "link",
+        "links": [
+            "a6642921.1ae898"
+        ],
+        "x": 815,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "a6642921.1ae898",
+        "type": "link in",
+        "z": "243cf85e.3e3af8",
+        "name": "",
+        "links": [
+            "7922b9ee.798908"
+        ],
+        "x": 395,
+        "y": 740,
+        "wires": [
+            [
+                "5bca0972.5cdd48"
+            ]
+        ]
+    },
+    {
+        "id": "d795d811.ceb8c8",
+        "type": "link out",
+        "z": "243cf85e.3e3af8",
+        "name": "",
+        "links": [
+            "1be18cd5.04a8c3"
+        ],
+        "x": 1215,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "1be18cd5.04a8c3",
+        "type": "link in",
+        "z": "243cf85e.3e3af8",
+        "name": "",
+        "links": [
+            "d795d811.ceb8c8"
+        ],
+        "x": 395,
+        "y": 920,
+        "wires": [
+            [
+                "c04d77ad.a0d888"
+            ]
+        ]
+    },
+    {
+        "id": "6e641f44.b1f75",
+        "type": "http response",
+        "z": "243cf85e.3e3af8",
+        "name": "",
+        "statusCode": "200",
+        "headers": {},
+        "x": 1560,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "464f9068.4e22c",
+        "type": "function",
+        "z": "243cf85e.3e3af8",
+        "name": "description",
+        "func": "msg.payload = {\n    \"description\": \"Funds transactions was successful\"\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1390,
+        "y": 880,
+        "wires": [
+            [
+                "6e641f44.b1f75"
+            ]
+        ]
+    },
+    {
+        "id": "9237443.08bb4b8",
+        "type": "http response",
+        "z": "243cf85e.3e3af8",
+        "name": "",
+        "statusCode": "200",
+        "headers": {},
+        "x": 1140,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "d39ddf3a.0e9b7",
+        "type": "function",
+        "z": "243cf85e.3e3af8",
+        "name": "description",
+        "func": "msg.payload = {\n    \"description\": \"Reverse funds transaction was successful\"\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 970,
+        "y": 1040,
+        "wires": [
+            [
+                "9237443.08bb4b8"
+            ]
+        ]
+    },
+    {
+        "id": "c9328a27.4f65d8",
+        "type": "link out",
+        "z": "243cf85e.3e3af8",
+        "name": "",
+        "links": [
+            "a984c766.adb968"
+        ],
+        "x": 1335,
+        "y": 920,
+        "wires": []
+    },
+    {
+        "id": "a984c766.adb968",
+        "type": "link in",
+        "z": "243cf85e.3e3af8",
+        "name": "",
+        "links": [
+            "c9328a27.4f65d8"
+        ],
+        "x": 395,
+        "y": 1060,
+        "wires": [
+            [
+                "6c792270.5fddec"
+            ]
+        ]
+    },
+    {
+        "id": "19cbfaf3.e14385",
+        "type": "http response",
+        "z": "243cf85e.3e3af8",
+        "name": "",
+        "statusCode": "400",
+        "headers": {},
+        "x": 1180,
+        "y": 1080,
+        "wires": []
+    },
+    {
+        "id": "612e54ff.646e2c",
+        "type": "http response",
+        "z": "243cf85e.3e3af8",
+        "name": "",
+        "statusCode": "400",
+        "headers": {},
+        "x": 1160,
+        "y": 940,
+        "wires": []
+    },
+    {
+        "id": "9b0a3a4f.9b6638",
+        "type": "http response",
+        "z": "243cf85e.3e3af8",
+        "name": "",
+        "statusCode": "400",
+        "headers": {},
+        "x": 1080,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "47b625eb.d4f16c",
+        "type": "http response",
+        "z": "243cf85e.3e3af8",
+        "name": "",
+        "statusCode": "400",
+        "headers": {},
+        "x": 1460,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "349d5d2.153f0a2",
+        "type": "http response",
+        "z": "243cf85e.3e3af8",
+        "name": "",
+        "statusCode": "400",
+        "headers": {},
+        "x": 1440,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "2d7dc905.6197c6",
+        "type": "function",
+        "z": "243cf85e.3e3af8",
+        "name": "error_description",
+        "func": "msg.payload = {\n    \"error_code\": msg.status,\n    \"error_status\": msg.error.errorCode,\n    \"error_description\": msg.error.message\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 1270,
+        "y": 420,
+        "wires": [
+            [
+                "349d5d2.153f0a2"
+            ]
+        ]
+    },
+    {
+        "id": "9861cd6d.132b8",
+        "type": "http response",
+        "z": "243cf85e.3e3af8",
+        "name": "",
+        "statusCode": "400",
+        "headers": {},
+        "x": 1060,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "6d9698d4.a89d58",
+        "type": "comment",
+        "z": "243cf85e.3e3af8",
+        "name": "Send Money",
+        "info": "Request body must contains \n\n    - senderPhone,\n    - receiverPhone\n    - currency\n    - amount\n \nAlso you must add in enviroment params information about \n\n    - card acceptor \n    - acquiring \n    - trace audit number\n    - business app id\n    - retrieval reference number",
+        "x": 130,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "6e7e2adb.438904",
+        "type": "function",
+        "z": "243cf85e.3e3af8",
+        "name": "set req body",
+        "func": "msg.reqBody = {\n    \"alias\":msg.senderPhone,\n    \"businessApplicationId\": msg.businessApplicationId,\n    \"aliasType\":\"01\"\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 890,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7ce0a5a0.69d9fc",
+        "type": "function",
+        "z": "243cf85e.3e3af8",
+        "name": "set req body",
+        "func": "msg.senderAccountNumber = msg.payload.recipientPrimaryAccountNumber\nmsg.senderExpiryDate = msg.payload.expiryDate\n\nmsg.reqBody = {\n    \"alias\":msg.receiverPhone,\n    \"businessApplicationId\": msg.businessApplicationId,\n    \"aliasType\":\"01\"\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 510,
+        "y": 560,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5bca0972.5cdd48",
+        "type": "function",
+        "z": "243cf85e.3e3af8",
+        "name": "set req body",
+        "func": "msg.recieverAccountNumber = msg.payload.recipientPrimaryAccountNumber\n\nmsg.reqBody = {\n  \"cardAcceptor\": {\n    \"address\": {\n      \"country\": msg.cardAcceptor.cardAcceptorCountry,\n      \"zipCode\": msg.cardAcceptor.cardAcceptorZipCode,\n      \"city\": msg.cardAcceptor.cardAcceptorCity,\n      \"state\": msg.cardAcceptor.cardAcceptorState\n    },\n    \"idCode\": msg.cardAcceptor.cardAcceptorIdCode,\n    \"name\": msg.cardAcceptor.cardAcceptorName,\n    \"terminalId\": msg.cardAcceptor.cardAcceptorTerminalId\n  },\n  \"primaryAccountNumber\": msg.recieverAccountNumber,\n  \"addressVerificationResults\": {\n    \"postalCode\": msg.cardAcceptor.cardAcceptorZipCode\n  }\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 510,
+        "y": 740,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e1189ab8.6e7298",
+        "type": "function",
+        "z": "243cf85e.3e3af8",
+        "name": "set req body",
+        "func": "msg.reqBody = {\n  \"cardAcceptor\": {\n    \"address\": {\n      \"country\": msg.cardAcceptor.cardAcceptorCountry,\n      \"zipCode\": msg.cardAcceptor.cardAcceptorZipCode,\n      \"city\": msg.cardAcceptor.cardAcceptorCity,\n      \"state\": msg.cardAcceptor.cardAcceptorState\n    },\n    \"idCode\": msg.cardAcceptor.cardAcceptorIdCode,\n    \"name\": msg.cardAcceptor.cardAcceptorName,\n    \"terminalId\": msg.cardAcceptor.cardAcceptorTerminalId\n  },\n  \"primaryAccountNumber\": msg.senderAccountNumber,\n  \"addressVerificationResults\": {\n    \"postalCode\": msg.cardAcceptor.cardAcceptorZipCode\n  }\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 890,
+        "y": 720,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2ac9c72b.082818",
+        "type": "comment",
+        "z": "243cf85e.3e3af8",
+        "name": "Card Validation",
+        "info": "",
+        "x": 460,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "1f50833f.67779d",
+        "type": "comment",
+        "z": "243cf85e.3e3af8",
+        "name": "Get information(receiver) by alias",
+        "info": "",
+        "x": 510,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "c2c7a91a.c37548",
+        "type": "comment",
+        "z": "243cf85e.3e3af8",
+        "name": "Create transaction",
+        "info": "",
+        "x": 350,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "c04d77ad.a0d888",
+        "type": "function",
+        "z": "243cf85e.3e3af8",
+        "name": "set req body ",
+        "func": "//msg.senderAccountNumber = \"4895142232120006\"\n//msg.senderExpiryDate = \"2015-10\"\n\nmsg.reqBody = {\n  \"amount\": msg.amount,\n  \"localTransactionDateTime\": new Date(new Date().toLocaleString(\"en-US\", {timeZone: \"Europe/Kiev\"})).toISOString().slice(0, 19),\n  \"cardAcceptor\": {\n    \"address\": {\n      \"country\": msg.cardAcceptor.cardAcceptorCountry,\n      \"zipCode\": msg.cardAcceptor.cardAcceptorZipCode,\n      \"state\": msg.cardAcceptor.cardAcceptorState\n    },\n    \"idCode\": msg.cardAcceptor.cardAcceptorIdCode,\n    \"name\": msg.cardAcceptor.cardAcceptorName,\n    \"terminalId\": msg.cardAcceptor.cardAcceptorTerminalId\n  },\n  \"acquirerCountryCode\": msg.acqInfo.acquirerCountryCode,\n  \"acquiringBin\": msg.acqInfo.acquiringBin,\n  \"senderCurrencyCode\": msg.currency,\n  \"retrievalReferenceNumber\": msg.retNumber,\n  \"systemsTraceAuditNumber\": msg.traceAuditNumber,\n  \"businessApplicationId\": msg.businessApplicationId,\n  \"senderPrimaryAccountNumber\": msg.senderAccountNumber,\n  \"senderCardExpiryDate\": msg.senderExpiryDate\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 510,
+        "y": 920,
+        "wires": [
+            []
+        ],
+        "info": "Создания платежа по senderPrimaryAccountNumber\n\nДокументация метода - [https://developer.visa.com/capabilities/visa_direct/reference#tag/Funds-Transfer-API/operation/createPullFundsTransaction_v1%20-%20Latest](Pull Funds Transaction)"
+    },
+    {
+        "id": "1b299ef5.0f0681",
+        "type": "function",
+        "z": "243cf85e.3e3af8",
+        "name": "set req body ",
+        "func": "//msg.senderAccountNumber = \"4653459515756154\"\n//msg.recieverAccountNumber =  \"4957030420210496\"\n\nmsg.reqBody = {\n    \"amount\": msg.amount,\n    \"localTransactionDateTime\": new Date(new Date().toLocaleString(\"en-US\", { timeZone: \"Europe/Kiev\" })).toISOString().slice(0, 19),\n    \"recipientPrimaryAccountNumber\": msg.recieverAccountNumber,\n    \"cardAcceptor\": {\n        \"address\": {\n            \"country\": msg.cardAcceptor.cardAcceptorCountry,\n            \"zipCode\": msg.cardAcceptor.cardAcceptorZipCode,\n            \"state\": msg.cardAcceptor.cardAcceptorState\n        },\n        \"idCode\": msg.cardAcceptor.cardAcceptorIdCode,\n        \"name\": msg.cardAcceptor.cardAcceptorName,\n        \"terminalId\": msg.cardAcceptor.cardAcceptorTerminalId\n    },\n    \"acquirerCountryCode\": msg.acqInfo.acquirerCountryCode,\n    \"acquiringBin\": msg.acqInfo.acquiringBin,\n    \"transactionCurrencyCode\": msg.currency,\n    \"retrievalReferenceNumber\": msg.retNumber,\n    \"systemsTraceAuditNumber\": msg.traceAuditNumber,\n    \"businessApplicationId\": msg.businessApplicationId,\n    \"senderAccountNumber\": msg.senderAccountNumber\n\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 950,
+        "y": 900,
+        "wires": [
+            []
+        ],
+        "info": "Проведение платежа по senderPrimaryAccountNumber\n\nДокументация метода - [https://developer.visa.com/capabilities/visa_direct/reference#tag/Funds-Transfer-API/operation/createPushFundsTransaction_v1%20-%20Latest](Push Funds Transaction)"
+    },
+    {
+        "id": "6c792270.5fddec",
+        "type": "function",
+        "z": "243cf85e.3e3af8",
+        "name": "set req body",
+        "func": "msg.reqBody = {\n  \"amount\": msg.amount,\n  \"localTransactionDateTime\": new Date(new Date().toLocaleString(\"en-US\", {timeZone: \"Europe/Kiev\"})).toISOString().slice(0, 19),\n  \"cardAcceptor\": {\n    \"address\": {\n      \"country\": msg.cardAcceptor.cardAcceptorCountry,\n      \"zipCode\": msg.cardAcceptor.cardAcceptorZipCode,\n      \"state\": msg.cardAcceptor.cardAcceptorState\n    },\n    \"idCode\": msg.cardAcceptor.cardAcceptorIdCode,\n    \"name\": msg.cardAcceptor.cardAcceptorName,\n    \"terminalId\": msg.cardAcceptor.cardAcceptorTerminalId\n  },\n  \"transactionIdentifier\": msg.payload.transactionIdentifier,\n  \"acquirerCountryCode\": msg.acqInfo.acquirerCountryCode,\n  \"acquiringBin\": msg.acqInfo.acquiringBin,\n  \"senderCurrencyCode\": msg.currency,\n   \"retrievalReferenceNumber\": msg.retNumber,\n  \"systemsTraceAuditNumber\": msg.traceAuditNumber,\n  \"businessApplicationId\": \"PP\",\n  \"senderPrimaryAccountNumber\": msg.senderAccountNumber,\n  \"originalDataElements\": {\n    \"transmissionDateTime\": msg.payload.transmissionDateTime,\n    \"systemsTraceAuditNumber\": msg.traceAuditNumber,\n    \"approvalCode\": msg.payload.approvalCode,\n    \"acquiringBin\": msg.acqInfo.acquiringBin\n  }\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 510,
+        "y": 1060,
+        "wires": [
+            []
+        ],
+        "info": "Возвращения предств по транзакции \n\nДокументация метода - [https://developer.visa.com/capabilities/visa_direct/reference#tag/Funds-Transfer-API/operation/Create%20Reverse%20Funds%20Transaction_v1%20-%20Latest](Reverse Funds Transaction)"
+    },
+    {
+        "id": "7a98b81c.8c65b8",
+        "type": "comment",
+        "z": "243cf85e.3e3af8",
+        "name": "Reverse funds",
+        "info": "",
+        "x": 450,
+        "y": 1020,
+        "wires": []
+    },
+    {
+        "id": "447dac79.35a844",
+        "type": "debug",
+        "z": "243cf85e.3e3af8",
+        "name": "API response",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1250,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "38970b1f.383c64",
+        "type": "debug",
+        "z": "243cf85e.3e3af8",
+        "name": "API response",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 870,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "42f6721e.bc600c",
+        "type": "debug",
+        "z": "243cf85e.3e3af8",
+        "name": "API response",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 890,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "6ea14557.92ef0c",
+        "type": "debug",
+        "z": "243cf85e.3e3af8",
+        "name": "API response",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1266.6666259765625,
+        "y": 661.111083984375,
+        "wires": []
+    },
+    {
+        "id": "90f12691.cc19c8",
+        "type": "debug",
+        "z": "243cf85e.3e3af8",
+        "name": "API response",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 950,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "8c0dbb54.77faf8",
+        "type": "debug",
+        "z": "243cf85e.3e3af8",
+        "name": "API response",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1390,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "937a4fd4.521a",
+        "type": "debug",
+        "z": "243cf85e.3e3af8",
+        "name": "API response",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 970,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "817d7d8c.cadcd",
+        "type": "function",
+        "z": "243cf85e.3e3af8",
+        "name": "get envs",
+        "func": "msg.baseUrl = env.get(\"VISA_API_URL\")\nmsg.authorization = env.get(\"AUTH_TOKEN\")\nmsg.sharedSecret = env.get(\"SHARED_SECRET\")\nmsg.apiKey = env.get(\"API_KEY\")\nmsg.host = env.get(\"HOST\")\n\nmsg.cardAcceptor = JSON.parse(env.get(\"CARD_ACCEPTOR\"))\nmsg.acqInfo = JSON.parse(env.get(\"ACQUIRING_INFO\"))\n\nmsg.retNumber = env.get(\"RET_NUMBER\")\nmsg.traceAuditNumber = env.get(\"TRACE_AUDIT_NUMBER\")\nmsg.businessApplicationId = env.get(\"BUSINESS_APP_ID\")\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 400,
+        "wires": [
+            [
+                "50c1d118.afbad"
+            ]
+        ]
+    },
+    {
+        "id": "3b32157e.8c295a",
+        "type": "function",
+        "z": "243cf85e.3e3af8",
+        "name": "error_description",
+        "func": "msg.payload = {\n    \"error_code\": msg.status,\n    \"error_status\": msg.error.errorCode,\n    \"error_description\": msg.error.message\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 890,
+        "y": 580,
+        "wires": [
+            [
+                "9861cd6d.132b8"
+            ]
+        ]
+    },
+    {
+        "id": "27c79eda.38d382",
+        "type": "function",
+        "z": "243cf85e.3e3af8",
+        "name": "error_description",
+        "func": "msg.payload = {\n    \"error_code\": msg.status,\n    \"error_status\": msg.error.errorCode,\n    \"error_description\": msg.error.message\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 910,
+        "y": 760,
+        "wires": [
+            [
+                "9b0a3a4f.9b6638"
+            ]
+        ]
+    },
+    {
+        "id": "308902f1.b3f36e",
+        "type": "function",
+        "z": "243cf85e.3e3af8",
+        "name": "error_description",
+        "func": "msg.payload = {\n    \"error_code\": msg.status,\n    \"error_status\": msg.error.errorCode,\n    \"error_description\": msg.error.message\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 1290,
+        "y": 740,
+        "wires": [
+            [
+                "47b625eb.d4f16c"
+            ]
+        ]
+    },
+    {
+        "id": "f540992e.6e7538",
+        "type": "function",
+        "z": "243cf85e.3e3af8",
+        "name": "error_description",
+        "func": "msg.payload = {\n    \"error_code\": msg.status,\n    \"error_status\": msg.error.errorCode,\n    \"error_description\": msg.error.message\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 970,
+        "y": 940,
+        "wires": [
+            [
+                "612e54ff.646e2c"
+            ]
+        ]
+    },
+    {
+        "id": "33f6dd29.68d912",
+        "type": "function",
+        "z": "243cf85e.3e3af8",
+        "name": "error_description",
+        "func": "msg.payload = {\n    \"error_code\": msg.status,\n    \"error_status\": msg.error.errorCode,\n    \"error_description\": msg.error.message\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 990,
+        "y": 1080,
+        "wires": [
+            [
+                "19cbfaf3.e14385"
+            ]
+        ]
     }
 ]

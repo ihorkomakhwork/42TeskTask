@@ -6,6 +6,25 @@ module.exports = {
           watch: true,
           env: {
             "VISA_MLE_KEY_ID": "eca211bd-ecb8-4f65-9b5c-80cec9abd5bd",
+            "VISA_TRACE_AUDIT_NUMBER":451001,
+            "VISA_RET_NUMBER": "330000550000",
+            "VISA_BUSINESS_AUDIT_APLIACTION_ID": "AA", 
+            "VISA_CARD_ACCEPTOR": {
+              "address": {
+              "country": "USA",
+              "zipCode": "94404",
+              "county": "081",
+              "state": "CA"
+              },
+              "idCode": "ABCD1234ABCD123",
+              "name": "Visa Inc. USA-Foster City",
+              "terminalId": "ABCD1234"
+              },
+             
+              "VISA_ACQUIRING_INFO": {
+              "acquirerCountryCode": "840",
+              "acquiringBin": "408999",
+            },
             "VISA_MLE_KEY": "/home/komigor/visa/privateKeyMLE.pem", 
             "VISA_MLE_CLIENT_CERT": "/home/komigor/visa/client_cert_MLE.pem",
             "VISA_MLE_SERVER_CERT": "/home/komigor/visa/server_cert_MLE.pem",              
