@@ -6,7 +6,7 @@ module.exports = {
           watch: true,
           env: {
             "VISA_MLE_KEY_ID": "eca211bd-ecb8-4f65-9b5c-80cec9abd5bd",
-            "VISA_TRACE_AUDIT_NUMBER":451001,
+            "VISA_TRACE_AUDIT_NUMBER": 806805 ,
             "VISA_RET_NUMBER": "330000550000",
             "VISA_BUSINESS_AUDIT_APLIACTION_ID": "AA", 
             "VISA_CARD_ACCEPTOR": {

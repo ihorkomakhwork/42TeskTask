@@ -1204,10 +1204,10 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "{\"currency\":\"USD\",\"amount\":\"100.01\",\"reciver\":{\"aliasType\":\"PHONE\",\"aliasValue\":\"380967449119\"},\"sender\":{\"aliasValue\":\"1231231234\",\"aliasType\":\"PHONE\"}}",
+        "payload": "{\"currency\":\"USD\",\"amount\":\"100.01\",\"reciver\":{\"aliasType\":\"PHONE\",\"aliasValue\":\"7678335669\"},\"sender\":{\"aliasValue\":\"380673335666\",\"aliasType\":\"PHONE\"}}",
         "payloadType": "json",
         "x": 410,
-        "y": 120,
+        "y": 100,
         "wires": [
             [
                 "c4894dd666641e9e"
@@ -1615,17 +1615,18 @@
         "type": "function",
         "z": "0127f0442eaff100",
         "name": "set request",
-        "func": "const VISA_CARD_ACCEPTOR = env.get('VISA_CARD_ACCEPTOR');\nconst VISA_ACQUIRING_INFO = env.get('VISA_ACQUIRING_INFO'); \nconst VISA_RET_NUMBER = env.get('VISA_RET_NUMBER');\nconst VISA_TRACE_AUDIT_NUMBER= env.get('VISA_TRACE_AUDIT_NUMBER');\nconst VISA_BUSINESS_AUDIT_APLIACTION_ID = env.get('VISA_BUSINESS_AUDIT_APLIACTION_ID');\n\nconst cardAcceptor = JSON.parse(VISA_CARD_ACCEPTOR);\nconst acquringInfo = JSON.parse(VISA_ACQUIRING_INFO);\n\nconst { acquiringBin, acquirerCountryCode } = acquringInfo;\n\nconst { amount , sender, currency } = flow.get(msg.sequenceID);\n\nconst localTransactionDateTime =  new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Kiev' })).toISOString().slice(0, 19);\n\nmsg.payload = {\n  retrievalReferenceNumber: VISA_RET_NUMBER,\n  businessApplicationId: VISA_BUSINESS_AUDIT_APLIACTION_ID,\n  systemsTraceAuditNumber: VISA_TRACE_AUDIT_NUMBER,\n  localTransactionDateTime,\n  cardAcceptor,\n  acquirerCountryCode,\n  acquiringBin,\n  amount, \n  senderCurrencyCode: currency, \n  senderPrimaryAccountNumber: sender.accountNumber, \n  senderCardExpiryDate: sender.expirationDate\n}\n\nreturn msg;",
+        "func": "const VISA_CARD_ACCEPTOR = env.get('VISA_CARD_ACCEPTOR');\nconst VISA_ACQUIRING_INFO = env.get('VISA_ACQUIRING_INFO'); \nconst VISA_RET_NUMBER = env.get('VISA_RET_NUMBER');\nconst VISA_TRACE_AUDIT_NUMBER= env.get('VISA_TRACE_AUDIT_NUMBER');\nconst VISA_BUSINESS_AUDIT_APLIACTION_ID = env.get('VISA_BUSINESS_AUDIT_APLIACTION_ID');\n\nconst cardAcceptor = JSON.parse(VISA_CARD_ACCEPTOR);\nconst acquringInfo = JSON.parse(VISA_ACQUIRING_INFO);\n\nconst { acquiringBin, acquirerCountryCode } = acquringInfo;\n\nconst { amount , sender, currency } = flow.get(msg.sequenceID);\n\nconst localTransactionDateTime =  new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Kiev' })).toISOString().slice(0, 19);\n\nmsg.payload = {\n  retrievalReferenceNumber: VISA_RET_NUMBER,\n  businessApplicationId: VISA_BUSINESS_AUDIT_APLIACTION_ID ,\n  systemsTraceAuditNumber: VISA_TRACE_AUDIT_NUMBER,\n  localTransactionDateTime,\n  cardAcceptor,\n  acquirerCountryCode,\n  acquiringBin,\n  amount, \n  senderCurrencyCode: currency, \n  senderPrimaryAccountNumber: sender.accountNumber, \n  senderCardExpiryDate: sender.expirationDate\n}\nmsg.reqBody = {\n\n    senderCardExpiryDate: msg.senderExpiryDate\n  }\n\n\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 350,
+        "x": 330,
         "y": 720,
         "wires": [
             [
-                "57e30ba81e19c65a"
+                "57e30ba81e19c65a",
+                "3681f1acadc0099e"
             ]
         ],
         "info": "Создания платежа по senderPrimaryAccountNumber\n\nДокументация метода - [https://developer.visa.com/capabilities/visa_direct/reference#tag/Funds-Transfer-API/operation/createPullFundsTransaction_v1%20-%20Latest](Pull Funds Transaction)"
@@ -1909,7 +1910,7 @@
         "links": [
             "502dd9779708b499"
         ],
-        "x": 1055,
+        "x": 945,
         "y": 720,
         "wires": []
     },
@@ -1943,7 +1944,7 @@
         "id": "57e30ba81e19c65a",
         "type": "subflow:a19c35db171e7c08",
         "z": "0127f0442eaff100",
-        "name": "pull dunds transaction",
+        "name": "pull funds transaction",
         "env": [
             {
                 "name": "resource",
@@ -1951,12 +1952,10 @@
                 "type": "str"
             }
         ],
-        "x": 580,
+        "x": 560,
         "y": 720,
         "wires": [
-            [
-                "abc623b79b20a38f"
-            ]
+            []
         ]
     },
     {
@@ -1990,25 +1989,24 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 540,
+        "x": 580,
         "y": 880,
         "wires": []
     },
     {
-        "id": "abc623b79b20a38f",
+        "id": "3681f1acadc0099e",
         "type": "debug",
         "z": "0127f0442eaff100",
-        "name": "debug 18",
+        "name": "debug 20",
         "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
+        "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 800,
-        "y": 720,
+        "x": 500,
+        "y": 640,
         "wires": []
     },
     {
